@@ -5,12 +5,27 @@ import NumberInput from '../../components/NumberInput';
 function FirstLevelScreen({ route, navigation }) {
   const { numbers } = route.params;
 
-  let maxNumber = 10;
+  let maxCount = 10;
 
-  const algorithm = (numbers) => {
-    return {
-      left: numbers.slice(0, maxNumber / 2),
-      right: numbers.slice(maxNumber / 2, maxNumber)
+  const algorithm = (step, numbers) => {
+    if (step == 2) {
+      return {
+        left: numbers.slice(0, maxCount / 2),
+        right: numbers.slice(maxCount / 2, maxCount)
+      }
+    } else if (step == 3) {
+      return {
+        left: {
+          left: numbers.slice(0, Math.ceil(maxCount / 4)),
+          right: numbers.slice(Math.ceil(maxCount / 4), maxCount / 2)
+        },
+        right: {
+          left: numbers.slice(maxCount / 2, maxCount / 2 + Math.ceil(maxCount / 4)),
+          right: numbers.slice(maxCount / 2 + Math.ceil(maxCount / 4), maxCount)
+        }
+      }
+    } else if (step == 4) {
+      return numbers;
     }
   };
 
@@ -25,39 +40,103 @@ function FirstLevelScreen({ route, navigation }) {
         })}
       </View>
       {/* First step description */}
+      <View style={{ height: 20 }} />
       <Text>Step 1: Randomly generate 10 numbers ranging from 1 to 20</Text>
       {/* Second step numbers */}
+      <View style={{ height: 20 }} />
       <View style={{ flexDirection: 'row' }}>
-        {algorithm(numbers).left.map((number) => {
+        {algorithm(2, numbers).left.map((number) => {
           return (
             <NumberInput value={number} editable={false} />
           )
         })}
         <View style={{ width: 20 }} />
-        {algorithm(numbers).right.map((number) => {
+        {algorithm(2, numbers).right.map((number) => {
           return (
             <NumberInput value={number} editable={false} />
           )
         })}
       </View>
       {/* Second step description */}
+      <View style={{ height: 20 }} />
       <Text>Step 2: Randomly generate 10 numbers ranging from 1 to 20</Text>
       {/* Second step numbers */}
+      <View style={{ height: 20 }} />
       <View style={{ flexDirection: 'row' }}>
-        {algorithm(numbers).left.map((number) => {
+        {algorithm(3, numbers).left.left.map((number) => {
           return (
             <NumberInput value={number} editable={false} />
           )
         })}
         <View style={{ width: 20 }} />
-        {algorithm(numbers).right.map((number) => {
+        {algorithm(3, numbers).left.right.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+        <View style={{ width: 20 }} />
+        {algorithm(3, numbers).right.left.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+        <View style={{ width: 20 }} />
+        {algorithm(3, numbers).right.right.map((number) => {
           return (
             <NumberInput value={number} editable={false} />
           )
         })}
       </View>
       {/* Second step description */}
-      <Text>Step 2: Randomly generate 10 numbers ranging from 1 to 20</Text>
+      <View style={{ height: 20 }} />
+      <Text>Step 3: Randomly generate 10 numbers ranging from 1 to 20</Text>
+
+      {/* Second step numbers */}
+      <View style={{ height: 20 }} />
+      <View style={{ flexDirection: 'row' }}>
+        {algorithm(3, numbers).left.left.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+        <View style={{ width: 20 }} />
+        {algorithm(3, numbers).left.right.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+        <View style={{ width: 20 }} />
+        {algorithm(3, numbers).right.left.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+        <View style={{ width: 20 }} />
+        {algorithm(3, numbers).right.right.map((number) => {
+          return (
+            <NumberInput value={number} editable={false} />
+          )
+        })}
+      </View>
+      {/* Second step description */}
+      <View style={{ height: 20 }} />
+      <Text>Step 3: Randomly generate 10 numbers ranging from 1 to 20</Text>
+
+      {/* Second step numbers */}
+      <View style={{ height: 20 }} />
+      <View style={{ flexDirection: 'row' }}>
+        {numbers.map((number, index) => {
+          return (
+            <>  
+              <View style={{ width: index == 0 ? 0 : 20 }} />
+              <NumberInput value={number} editable={false} />
+            </>
+          )
+        })}
+      </View>
+      {/* Second step description */}
+      <View style={{ height: 20 }} />
+      <Text>Step 3: Randomly generate 10 numbers ranging from 1 to 20</Text>
 
       <Button
         title="Go to Home"
