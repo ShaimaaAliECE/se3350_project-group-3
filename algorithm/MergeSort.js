@@ -1,13 +1,50 @@
-function mergeSort(array) {
-    const half = array.length / 2
+function generateArray(length, max) {
+    let array = new Array(length);
     
-    // Base case or terminating case
-    if(array.length < 2){
-      return array 
+    for(let i=0; i<length; i++)
+        array[i] = Math.floor(Math.random() * max);
+  
+  return array
+}
+
+function splitArray(array){
+    
+    
+    
+    if(array.length<2)
+        return array
+   
+   let left = array.splice(0, array.length/2+.5)
+        console.log(left)
+        console.log(array)
+        return merge(splitArray(left), splitArray(array))
+    
+}
+
+
+function merge(l, r) {
+    let array = new Array()
+    
+    while (l.length && r.length) {
+       
+        if (l[0] < r[0]) {
+            array.push(l.shift())  
+        } else {
+            array.push(r.shift()) 
+        }
     }
     
-    const left = array.splice(0, half)
-    return merge(mergeSort(left),mergeSort(array))
-  }
+    return [...array, ...l, ...r]
+}
 
-  console.log(5/2)
+
+let array = generateArray(10, 20)
+console.log(array)
+
+
+
+
+console.log(splitArray(array));
+
+
+
