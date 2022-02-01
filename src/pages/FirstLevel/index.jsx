@@ -118,7 +118,7 @@ function FirstLevelScreen({ route, navigation }) {
           )
         })}
       </View>
-      {/* Second step description */}
+      {/* Third step description */}
       <View style={{ height: 20 }} />
       <Text>Step 3: Randomly generate 10 numbers ranging from 1 to 20</Text>
 
