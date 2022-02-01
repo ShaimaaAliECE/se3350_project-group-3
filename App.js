@@ -6,15 +6,17 @@ import { Button } from 'react-native-web';
 
 import HomeScreen from './src/pages/Home';
 import FirstLevelScreen from './src/pages/FirstLevel';
+import LoginScreen from './src/pages/Login';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="FirstLevel" component={FirstLevelScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -31,7 +33,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-
-

@@ -37,6 +37,12 @@ function HomeScreen({ navigation }) {
           })
         }}
       />
+
+<Button
+        title="Login Here"
+        onPress={() => navigation.navigate('Login')}
+      />
+
     </View>
   );
 }
