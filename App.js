@@ -1,14 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Button } from 'react-native-web';
 
-export default function App() {
+import HomeScreen from './src/pages/Home';
+import FirstLevelScreen from './src/pages/FirstLevel';
+import SecondLevelScreen from './src/pages/SecondLevel';
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up! App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="FirstLevel" component={FirstLevelScreen} />
+        <Stack.Screen name="SecondLevel" component={SecondLevelScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
+export default App;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -18,3 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
+
