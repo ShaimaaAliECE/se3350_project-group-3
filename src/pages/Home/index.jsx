@@ -12,6 +12,13 @@ function HomeScreen({ navigation }) {
           navigation.navigate('MergeSortLevels')
         }}
       />
+      <View style={{ height: 20 }} />
+        <Button
+        title="Quick Sort Levels"
+        onPress={() => {
+          navigation.navigate('QuickSortLevels')
+        }}
+      />
     </View>
   );
 }

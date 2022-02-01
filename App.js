@@ -7,6 +7,7 @@ import { Button } from 'react-native-web';
 import HomeScreen from './src/pages/Home';
 import FirstLevelScreen from './src/pages/FirstLevel';
 import MergeSortLevels from './src/pages/mergeSortLevels';
+import QuickSortLevels from './src/pages/QuickSortLevels';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function App() {
         <Stack.Screen name="FourthLevel" component={FourthLevelScreen} />
         <Stack.Screen name="FifthLevel" component={FifthLevelScreen} /> */}
         <Stack.Screen name="MergeSortLevels" component={MergeSortLevels} />
+        <Stack.Screen name="QuickSortLevels" component={QuickSortLevels} />
       </Stack.Navigator>
     </NavigationContainer>
   );
