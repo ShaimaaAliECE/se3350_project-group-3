@@ -22,18 +22,14 @@ function HomeScreen({ navigation }) {
         <Button
           title="Merge Sort Algorithm"
           onPress={() => {
-            navigation.navigate('FirstLevel', {
-              numbers: generateRandomNumbers(1),
-            })
+            navigation.navigate('MergeSortLevels')
           }}
         />
         <View style={{ width: 30 }} />
         <Button
           title="Quick Sort Algorithm"
           onPress={() => {
-            navigation.navigate('QuickSortLevels', {
-              numbers: generateRandomNumbers(1),
-            })
+            navigation.navigate('QuickSortLevels')
           }}
         />
         
