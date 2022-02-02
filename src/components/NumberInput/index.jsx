@@ -16,7 +16,7 @@ function NumberInput({ value, setValue, editable }) {
   return (
     <TextInput 
       style={styles.container} 
-      value={value}
+      value={value.toString()}
       onChangeText={setValue}
       editable={editable}
     />
