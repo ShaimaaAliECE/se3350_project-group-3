@@ -17,7 +17,7 @@ function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"
+      <Stack.Navigator initialRouteName="FirstLevel"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#800080',
@@ -26,8 +26,8 @@ function App() {
       }}>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="FirstLevel" component={FirstLevelScreen}/>
-        {/* <Stack.Screen name="SecondLevel" component={SecondLevelScreen} />
-        <Stack.Screen name="ThirdLevel" component={ThirdLevelScreen} />
+        <Stack.Screen name="SecondLevel" component={SecondLevelScreen} />
+        {/*<Stack.Screen name="ThirdLevel" component={ThirdLevelScreen} />
         <Stack.Screen name="FourthLevel" component={FourthLevelScreen} />
         <Stack.Screen name="FifthLevel" component={FifthLevelScreen} /> */}
         <Stack.Screen name="MergeSortLevels" component={MergeSortLevels} />
