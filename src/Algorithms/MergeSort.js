@@ -9,20 +9,23 @@ module.exports = {
     return array
     },
 
+
     splitArray: (array) => {
-    
-    
-    
+
     if(array.length<2)
         return array
    
    let left = array.splice(0, array.length/2+.5)
-        console.log(left)
-        console.log(array)
-        return merge(splitArray(left), splitArray(array))
+        
+        //return merge(splitArray(left), splitArray(array))
+       return [left, array]
+    
     
 },
 
+    returnValues: (array) => {
+        return array
+    },
 
     merge: (l, r) => {
     let array = new Array()
