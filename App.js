@@ -9,11 +9,13 @@ import FirstLevelScreen from './src/pages/FirstLevel';
 import MergeSortLevels from './src/pages/mergeSortLevels';
 import QuickSortLevels from './src/pages/QuickSortLevels';
 import LoginScreen from './src/pages/Login';
+import SecondLevelScreen from './src/pages/SecondLevel';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home"
       screenOptions={{

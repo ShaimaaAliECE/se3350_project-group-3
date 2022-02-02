@@ -170,6 +170,15 @@ function FirstLevelScreen({ route, navigation }) {
         title="Go to Home"
         onPress={() => navigation.navigate('Home')}
       />
+
+      <Button 
+      title="Next Level"
+        onPress={() => {
+          navigation.navigate('SecondLevel', {
+            numbers: [1,2,3,4,5,6,7,8,9,10],
+          })
+        }}
+      />
     </View>
   );
 }
