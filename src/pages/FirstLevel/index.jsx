@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import NumberInput from '../../components/NumberInput';
 
@@ -26,7 +26,12 @@ function FirstLevelScreen({ route, navigation }) {
     }
     return arr;
   }
-  const { numbers } = route.params;
+  
+  const [numbers, setNumbers] = useState([]);
+
+  useEffect(() => {
+    setNumbers(generateRandomNumbers(1));
+  }, []);
 
   let maxCount = 10;
 
