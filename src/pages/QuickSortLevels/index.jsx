@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 function QuickSortLevels({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Merge Sort Levels</Text>
+      <Text>Quick Sort Levels</Text>
       <View style={{ height: 20 }} />
       <Button
         title="Level 1"
