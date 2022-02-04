@@ -54,9 +54,7 @@ function SecondLevelScreen({ route, navigation }) {
             <NumberInput value ={number} editable={false}/>
             )
         })}
-      </View>
-      {console.log(display(arr))}
-        
+      </View>        
         {arr[1]= splitArray(arr[0][0])}
         {arr[2]= splitArray(arr[0][1])}
 
