@@ -57,6 +57,29 @@ function SecondLevelScreen({ route, navigation }) {
       arr[step] = object
   }
 
+  function generateSplitAlgorithm(){
+
+    for(let i = 1; i < 4; i++){
+      let numOfSegment = arr.length
+        if(i = 1){
+          split(arr, 1)
+        }
+        else{
+          split(arr[i-1], i)
+        }
+        for(let n = 0; n < numOfSegment; n++) {
+          return(
+            <View style={{ flexDirection: 'row' }}> 
+              {arr[i][i-1].map((number) => {
+                return (
+                  <NumberInput value={number} editable={false} />
+                )
+              })}
+            </View>
+          )
+        }  
+      }
+    }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -67,10 +90,12 @@ function SecondLevelScreen({ route, navigation }) {
             <NumberInput value={number} editable={false} />
           )
         })}
+      <View style={{ width: 20 }} />
       </View>
 
       <View style={{ height: 20 }} />
-
+      {generateSplitAlgorithm()}
+      {/*}
       {split(arr, 1)}
       <View style={{ flexDirection: 'row' }}> 
         {arr[1][0].map((number) => {
@@ -346,7 +371,7 @@ function SecondLevelScreen({ route, navigation }) {
           )
         })}
       </View> 
-       
+      {*/}
         {console.log(arr)}
 
       <Button
