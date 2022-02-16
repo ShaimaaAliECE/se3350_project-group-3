@@ -3,11 +3,12 @@ import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
 
-
+let colorFeedback = ["#128CC1", "#128CC1"];
 function MergeSortLevels({ navigation }) {
   const [sound, setSound] = React.useState();
 
-  async function playCorrectSound() {
+  async function playCorrectFeedback() {
+    colorFeedback[0] = "#25C112";
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/correct.mp3')
     );
@@ -15,7 +16,8 @@ function MergeSortLevels({ navigation }) {
     await sound.playAsync(); 
   }
 
-  async function playIncorrectSound() {
+  async function playIncorrectFeedback() {
+    colorFeedback[1] = "#C22A25";
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/incorrect.mp3')
     );
@@ -35,14 +37,14 @@ function MergeSortLevels({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Merge Sort Levels</Text>
       <View style={{ height: 20 }} />
-      <Button
+      <Button 
         title="Level 1"
         onPress={() => {
           navigation.navigate('FirstLevel')
         }}
       />
        <View style={{ height: 20 }} />
-        <Button
+        <Button 
         title="Level 2"
         onPress={() => {
           navigation.navigate('SecondLevel')
@@ -56,17 +58,17 @@ function MergeSortLevels({ navigation }) {
         }}
       />
        <View style={{ height: 20 }} />
-        <Button
+        <Button color= {colorFeedback[0]}
         title="Level 4"
-        onPress={playCorrectSound}
+        onPress={playCorrectFeedback}
       />
-       <View style={{ height: 20 }} />
-        <Button
+       <View style={{ height: 20}} />
+        <Button color= {colorFeedback[1]}
         title="Level 5"
-        onPress={playIncorrectSound}
+        onPress={playIncorrectFeedback}
       />
        <View style={{ height: 20 }} />
-      <Button
+      <Button color="#128CC1"
         title="Home"
         onPress={() => {
           navigation.navigate('Home')
