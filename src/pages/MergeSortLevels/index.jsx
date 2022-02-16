@@ -17,7 +17,7 @@ function MergeSortLevels({ navigation }) {
         <Button
         title="Level 2"
         onPress={() => {
-          navigation.navigate('SecondLevel')
+          navigation.navigate('Test')
         }}
       />
        <View style={{ height: 20 }} />
