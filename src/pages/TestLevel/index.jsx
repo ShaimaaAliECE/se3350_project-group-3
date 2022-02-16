@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import NumberInput from '../../components/NumberInput';
-
+import { Alert, Modal, StyleSheet, Pressable } from 'react-native';
+import { AccessModal } from '../Modal';
 
 
 const {generateArray, merge, splitArray} = require('../../Algorithms/MergeSort');
+const arr = new Array();
+  arr[0] = generateArray(10,20);
 
 function TestScreen({ route, navigation }) {
 
-  const arr = new Array();
-  arr[0] = generateArray(10,20);
-    
-
+  const [modalVisible, setModalVisible] = useState(false);
+  
   function split (array, step) {
     let object = new Array();
     let repeat = 0;
@@ -60,7 +61,13 @@ function TestScreen({ route, navigation }) {
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    
+
+
+      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>Check Answer!</Text>
+      </Pressable>
+
+    <AccessModal/>
       <View style={{ flexDirection: 'row' }}> 
         {arr[0].map((number) => {
           return (
@@ -357,6 +364,7 @@ function TestScreen({ route, navigation }) {
         title="Go to Home"
         onPress={() => navigation.navigate('Home')}
       />
+    
     </View>
   );
 }
