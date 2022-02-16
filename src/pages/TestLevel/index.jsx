@@ -1,67 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import NumberInput from '../../components/NumberInput';
-import '../../Algorithms/MergeSort'
-import { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Gesture, GestureHandlerRootView, GestureDetector } from 'react-native-gesture-handler';
-import { Animated } from 'react-native-web';
+
+
+
 const {generateArray, merge, splitArray} = require('../../Algorithms/MergeSort');
 
 function TestScreen({ route, navigation }) {
-
-    const isPressed = useSharedValue(false);
-    const offset = useSharedValue({ x: 0, y: 0 });
-
-    const animatedStyles = useAnimatedStyle(() => {
-        return {
-            transform: [
-                { translateX: offset.value.x },
-                { translateY: offset.value.y },
-                { scale: withSpring(isPressed.value ? 1.2 : 1) },
-            ],
-            backgroundColor: isPressed.value ? 'yellow' : 'blue',
-        };
-    });
-
-    //const start = useSharedValue({ x: 0, y: 0 });
-    // const gesture = Gesture.Pan()
-    // .onBegin(() => {
-    //     isPressed.value = true;
-    // })
-    // .onUpdate((e) => {
-    //     offset.value = {
-    //     x: e.translationX + start.value.x,
-    //     y: e.translationY + start.value.y,
-    //     };
-    // })
-    // .onEnd(() => {
-    //     start.value = {
-    //     x: offset.value.x,
-    //     y: offset.value.y,
-    //     };
-    // })
-    // .onFinalize(() => {
-    //     isPressed.value = false;
-    // });
-
-    const gesture = Gesture.Pan()
-    .onBegin(() => {
-      'worklet';
-      isPressed.value = true;
-    })
-    .onChange((e) => {
-      'worklet';
-      offset.value = {
-        x: e.changeX + offset.value.x,
-        y: e.changeY + offset.value.y,
-      };
-    })
-    .onFinalize(() => {
-      'worklet';
-      isPressed.value = false;
-    });
-
-  //const [step, setStep] = useState(1)
 
   const arr = new Array();
   arr[0] = generateArray(10,20);
@@ -113,7 +58,7 @@ function TestScreen({ route, navigation }) {
 
 
   return (
-    <GestureHandlerRootView>
+    
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     
       <View style={{ flexDirection: 'row' }}> 
@@ -128,8 +73,8 @@ function TestScreen({ route, navigation }) {
 
       {split(arr, 1)}
       
-      <GestureDetector gesture={gesture}>
-      <Animated.View style={[{ flexDirection: 'row' }, animatedStyles]}> 
+      
+      <View style={{ flexDirection: 'row' }}> 
         {arr[1][0].map((number) => {
           return (
             <NumberInput value={number} editable={false} />
@@ -141,8 +86,8 @@ function TestScreen({ route, navigation }) {
             <NumberInput value={number} editable={false} />
           )
         })}
-      </Animated.View>
-      </GestureDetector>
+      </View>
+      
       
 
       <View style={{ height: 20 }} />
@@ -413,7 +358,6 @@ function TestScreen({ route, navigation }) {
         onPress={() => navigation.navigate('Home')}
       />
     </View>
-    </GestureHandlerRootView>
   );
 }
 
