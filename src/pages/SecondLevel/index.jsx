@@ -1,100 +1,146 @@
-import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
-import NumberInput from '../../components/NumberInput';
-import '../../Algorithms/MergeSort'
+import React, { useEffect, useState } from "react";
+import { Button, Text, View } from "react-native";
+import NumberInput from "../../components/NumberInput";
+import "../../Algorithms/MergeSort";
 
-const {generateArray, merge, splitArray} = require('../../Algorithms/MergeSort');
+const {
+  generateArray,
+  merge,
+  splitArray,
+} = require("../../Algorithms/MergeSort");
+
+const arr = new Array();
+arr[0] = generateArray(10, 20);
 
 function SecondLevelScreen({ route, navigation }) {
+  const [step, setStep] = useState(1);
 
-  //const [step, setStep] = useState(1)
-
-  const arr = new Array();
-  arr[0] = generateArray(10,20);
-    
-
-  function split (array, step) {
+  function split(array, step) {
     let object = new Array();
     let repeat = 0;
-    switch(step){
-      case 2: repeat = 2; break;
-      case 3: repeat = 4; break;
-      case 4: repeat = 8; break;
-      default: repeat = 1;
+    switch (step) {
+      case 2:
+        repeat = 2;
+        break;
+      case 3:
+        repeat = 4;
+        break;
+      case 4:
+        repeat = 8;
+        break;
+      default:
+        repeat = 1;
     }
-  
-    for (let i=0; i<repeat; i++){
-      object[i] = splitArray(array[i])
+
+    for (let i = 0; i < repeat; i++) {
+      object[i] = splitArray(array[i]);
     }
-    
+
     arr[step] = object.flat();
-    
   }
-  
+
   function merged(array, step) {
     let object = new Array();
     let index = [];
     let length = 1;
-    let j=0;
+    let j = 0;
 
-      switch(step){
-        case 5: index = [0,4]; length=8; break;
-        case 6: index = [0,1,2,3]; length=4; break;
-        case 7: index = [0,1]; length = 2; break;
-        default: index = [0];
-      }
-
-       for(let i =0; i<length; i++){ 
-          if(index.includes(i)){
-            object[i] = merge(array[j],array[j+1])
-            j++
-          }else{
-            object[i] = array[j]
-          }
-          j++
+    switch (step) {
+      case 5:
+        index = [0, 4];
+        length = 8;
+        break;
+      case 6:
+        index = [0, 1, 2, 3];
+        length = 4;
+        break;
+      case 7:
+        index = [0, 1];
+        length = 2;
+        break;
+      default:
+        index = [0];
     }
 
-      arr[step] = object
+    for (let i = 0; i < length; i++) {
+      if (index.includes(i)) {
+        object[i] = merge(array[j], array[j + 1]);
+        j++;
+      } else {
+        object[i] = array[j];
+      }
+      j++;
+    }
+
+    arr[step] = object;
   }
 
-  function generateSplitAlgorithm(){
+  function generateSplitAlgorithm() {
+    let components = [];
 
-    for(let i = 1; i < 4; i++){
-      let numOfSegment = arr.length
-        if(i = 1){
-          split(arr, 1)
-        }
-        else{
-          split(arr[i-1], i)
-        }
-        for(let n = 0; n < numOfSegment; n++) {
-          return(
-            <View style={{ flexDirection: 'row' }}> 
-              {arr[i][i-1].map((number) => {
-                return (
-                  <NumberInput value={number} editable={false} />
-                )
-              })}
-            </View>
-          )
-        }  
+    split(arr, 1);
+
+    for (let i = 1; i < step; i++) {
+      if (i == 1) {
+        split(arr, 1);
+      } else {
+        split(arr[i - 1], i);
       }
     }
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    
-      <View style={{ flexDirection: 'row' }}> 
-        {arr[0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      <View style={{ width: 20 }} />
+    for (let j = 0; j < arr.length; j++) {
+      console.log(arr[j].length);
+      if (j == 0) {
+        components.push(
+          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+        );
+      } else {
+        components.push(
+          <View style={{ flexDirection: "row" }}>
+            {mapSegment(j, arr[j].length)}
+          </View>
+        );
+      }
+    }
+
+    return components;
+  }
+
+  function mapSegment(j, max) {
+    let components = [];
+
+    for (let k = 0; k < max; k++) {
+      components.push(
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ width: 20 }} />
+          {mapNumberInput(arr[j][k])}
+        </View>
+      );
+    }
+
+    return components;
+  }
+
+  function mapNumberInput(arr) {
+    return arr.map((number) => (
+      <View style={{ flexDirection: "row" }}>
+        <NumberInput value={number} editable={false} />
       </View>
+    ));
+  }
+
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      {/* <View style={{ flexDirection: "row" }}>
+        {arr[0].map((number) => {
+          return <NumberInput value={number} editable={false} />;
+        })}
+        <View style={{ width: 20 }} />
+      </View> */}
 
       <View style={{ height: 20 }} />
       {generateSplitAlgorithm()}
+      <div onClick={() => setStep(step + 1)}>next step</div>
       {/*}
       {split(arr, 1)}
       <View style={{ flexDirection: 'row' }}> 
@@ -372,14 +418,11 @@ function SecondLevelScreen({ route, navigation }) {
         })}
       </View> 
       {*/}
-        {console.log(arr)}
+      {console.log(arr)}
 
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
+      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
     </View>
   );
 }
 
-export default SecondLevelScreen
+export default SecondLevelScreen;
