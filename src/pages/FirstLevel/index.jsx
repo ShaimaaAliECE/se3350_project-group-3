@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import NumberInput from '../../components/NumberInput';
+import Data from '../../pages/Steps/steps.json';
 
 function FirstLevelScreen({ route, navigation }) {
   function generateRandomNumbers(level) {
@@ -153,7 +154,9 @@ function FirstLevelScreen({ route, navigation }) {
             (
               <>
                 <View style={{ height: 20 }} />
-                <Text style={{ width: '60%', textAlign: 'center' }}>Step 0: Randomly generate 10 numbers ranging from 1 to 20</Text>
+                <Text style={{ width: '60%', textAlign: 'center' }}>
+                  {Data.Level1["0"]}
+                </Text>
                 <View style={{ height: 20 }} />
                 <View style={{ flexDirection: 'row' }}>
                   {numbers.map((number) => {
@@ -170,7 +173,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 1 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 1: Split the list of numbers as evenly as possible (half). The two broken down arrays now have a length of 5</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["1"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {algorithm(2, numbers).left.map((number) => {
@@ -193,7 +198,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 2 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 2: Again, split the 2 splitted lists of numbers as evenly as possible. The broken down arrays are now of lengths 2 and 3</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["2"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {algorithm(3, numbers).left.left.map((number) => {
@@ -228,7 +235,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 3 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 3: Again, split the 4 splitted lists of numbers as evenly as possible. The broken down arrays are now of lengths 1 and 2</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["3"]}
+              </Text>
               <View style={{ height: 20 }} />
 
               <View style={{ flexDirection: 'row' }}>
@@ -288,7 +297,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 4 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 4: Take the broken down numbers and split them individually. All broken down arrays are broken to a length of 1 now, where each array consists of an individual value</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["4"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {numbers.map((number, index) => {
@@ -308,7 +319,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 5 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 5: Now the numbers are ready to be sorted, the array sizes in the next steps are going to accumulate until the length of the original array is reached. The arrays will build up in a reverse direction in which they were broken down above. Which makes the arrays for this step to be of lengths 1 and 2. Select the smallest value of the individually-broken-down numbers and place them in the left-most slot available of the new list of numbers.</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["5"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {algorithm(6, numbers).left.left.left.map((number) => {
@@ -367,7 +380,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 6 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 6: Working backwards, the array lengths for this step are going to be of lengths 2 and 3. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers.</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["6"]}
+              </Text>
               <View style={{ height: 20 }} />
 
               <View style={{ flexDirection: 'row' }}>
@@ -402,7 +417,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 7 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 7: Again backwards, the array lengths for this step are going to be two arrays of lengths of 5. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers.</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["7"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {algorithm(8, numbers).left.map((number) => {
@@ -425,7 +442,9 @@ function FirstLevelScreen({ route, navigation }) {
           step > 8 ? (
             <>
               <View style={{ height: 20 }} />
-              <Text style={{ width: '60%', textAlign: 'center' }}>Step 8: We have now worked backwards and reached the array size of the original array (length of 10). Finally, select the smallest value out of the current and place them in the left-most slot available in the final sorted array.</Text>
+              <Text style={{ width: '60%', textAlign: 'center' }}>
+              {Data.Level1["8"]}
+              </Text>
               <View style={{ height: 20 }} />
               <View style={{ flexDirection: 'row' }}>
                 {algorithm(9, numbers).map((number, index) => {

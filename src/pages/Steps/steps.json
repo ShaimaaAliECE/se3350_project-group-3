@@ -1,24 +1,30 @@
 {
     "Level1": { 
-    "1": "Split the following array as evenly as possible (half). The two broken down arrays now have a length of 5.",
-    
-    "2": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 2 and 3.",
-    
-    "3": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 1 and 2.",
-    
-    "4": "Take the broken down numbers and split them individually. All broken down arrays are broken to a length of 1 now, where each array consists of an individual value.",
-   
-    "5": "Now the numbers are ready to be sorted, the array sizes in the next steps are going to accumulate until the length of the original array is reached. The arrays will build up in a reverse direction in which they were broken down above. Which makes the arrays for this step to be of lengths 1 and 2. Select the smallest value of the individually-broken-down numbers and place them in the left-most slot available of the new list of numbers. ",
-    
-    "6": "Working backwards, the array lengths for this step are going to be of lengths 2 and 3. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers. ",
-    
-    "7": "Again backwards, the array lengths for this step are going to be two arrays of lengths of 5. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers. ",
+        
+        "0": "Randomly generate 10 numbers ranging from 1 to 20",
 
-    "8": "We have now worked backwards and reached the array size of the original array (length of 10). Finally, select the smallest value out of the current and place them in the left-most slot available in the final sorted array."
+        "1": "Split the following array as evenly as possible (half). The two broken down arrays now have a length of 5.",
+        
+        "2": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 2 and 3.",
+        
+        "3": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 1 and 2.",
+        
+        "4": "Take the broken down numbers and split them individually. All broken down arrays are broken to a length of 1 now, where each array consists of an individual value.",
+    
+        "5": "Now the numbers are ready to be sorted, the array sizes in the next steps are going to accumulate until the length of the original array is reached. The arrays will build up in a reverse direction in which they were broken down above. Which makes the arrays for this step to be of lengths 1 and 2. Select the smallest value of the individually-broken-down numbers and place them in the left-most slot available of the new list of numbers. ",
+        
+        "6": "Working backwards, the array lengths for this step are going to be of lengths 2 and 3. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers. ",
+        
+        "7": "Again backwards, the array lengths for this step are going to be two arrays of lengths of 5. Select the smallest value of the current arrays and place them in the left-most slot available of the new list of numbers. ",
+
+        "8": "We have now worked backwards and reached the array size of the original array (length of 10). Finally, select the smallest value out of the current and place them in the left-most slot available in the final sorted array."
 
     },
 
     "Level2": { 
+        
+        "0": "Randomly generate 10 numbers ranging from 1 to 20",
+
         "1": "Split the following array as evenly as possible (half). The two broken down arrays now have a length of 5.",
         
         "2": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 2 and 3.",
@@ -35,10 +41,13 @@
     
         "8": "We have now worked backwards and reached the array size of the original array (length of 10). Finally, select the smallest value out of the current and place them in the left-most slot available in the final sorted array."
     
-        },
+    },
 
 
-        "Level3": { 
+    "Level3": { 
+
+            "0": "Randomly generate 10 numbers ranging from 1 to 20",
+
             "1": "Split the following array as evenly as possible (half). The two broken down arrays now have a length of 5.",
             
             "2": "Again, split the 2 splitted list of numbers as evenly as possible. The broken down arrays are now of lengths 2 and 3.",
@@ -55,6 +64,6 @@
         
             "8": "We have now worked backwards and reached the array size of the original array (length of 10). Finally, select the smallest value out of the current and place them in the left-most slot available in the final sorted array."
         
-            }
+        }
 
 }
