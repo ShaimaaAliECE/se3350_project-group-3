@@ -1,77 +1,44 @@
-import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, Modal, Pressable} from 'react-native';
 import NumberInput from '../../components/NumberInput';
-import { Alert, Modal, StyleSheet, Pressable } from 'react-native';
+import { RadioButton } from 'react-native-paper';
 
 
-export function AccessModal(state){
-
-  const styles = StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 22,
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: 'white',
-      borderRadius: 20,
-      padding: 35,
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2,
-    },
-    buttonOpen: {
-      backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-      backgroundColor: '#2196F3',
-    },
-    textStyle: {
-      color: 'white',
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: 'center',
-    },
-  });
-      return (
+export function AccessModal(props){
+  const [checked, setChecked] = useState("")
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Modal transparent={true} visible={true}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
-        <Modal
-        transparent={true}
-        visible={state}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>How would you like to split this array?</Text>
-            <NumberInput value={0} editable={false}/>
-            <Pressable
-              style={[styles.button, styles.buttonClose]} > 
-              <Text style={styles.textStyle}>Close</Text>
-
+          <View style={{margin: 20, backgroundColor: 'white', borderRadius: 20, padding: 35, alignItems: 'center', shadowColor: '#000',
+            shadowOffset: {width: 0,height: 2,},shadowOpacity: 0.25,shadowRadius: 4,elevation: 5}}>
+            <Text style={{marginBottom: 15, textAlign: 'center'}}>How would you like to split this array?</Text>
+            <RadioButton
+              value="first"
+              label="Carto Base MAp"
+              status={checked === 'first' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked("first")}}
+            />
+            <RadioButton style={{left: -100}}
+              value="third"
+              label="Carto Base MAp"
+              status={checked === 'third' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked("third")}}
+            />
+            <RadioButton
+              value="second"
+              label="Carto Base MAp"
+              status={checked === 'second' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked("second")}}
+            />
+            <NumberInput value={""} editable={false}/>
+            <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
+              onPress={() => { props.close() }}> 
+              <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Close</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-      
     </View>
   )
 }

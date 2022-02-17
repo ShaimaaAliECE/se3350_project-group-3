@@ -11,49 +11,8 @@ const arr = new Array();
 
 function TestScreen({ route, navigation }) {
 
-  const styles = StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 22,
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: 'white',
-      borderRadius: 20,
-      padding: 35,
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2,
-    },
-    buttonOpen: {
-      backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-      backgroundColor: '#2196F3',
-    },
-    textStyle: {
-      color: 'white',
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: 'center',
-    },
-  });
+  const [step, setStep] = useState(0);
+  const [background, setBackground] = useState("transparent")
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -64,8 +23,17 @@ function TestScreen({ route, navigation }) {
       return false;
   }
 
-  function handleClose(){
-    setModalVisible(true)
+  const changeBackground =() => {
+    if (background=="transparent")
+      setBackground("yellow")
+    else  
+      setBackground("transparent")
+
+    return background
+  }
+
+  const closeModal = () => {
+    setModalVisible(false);
   }
   
   function split (array, step) {
@@ -112,28 +80,20 @@ function TestScreen({ route, navigation }) {
       arr[step] = object
   }
 
-
-
-
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      {isActive() ? 
-      <AccessModal state={modalVisible} />
-      :
-        null
-      }
       <View style={{ flexDirection: 'row' }}> 
-        {arr[0].map((number) => {
+        {arr[0].map((number, index) => {
           return (
-            <NumberInput value={number} editable={false} />
+            <NumberInput key={index} value={number} editable={false} onClick={() => { {console.log("clicked"+number)}changeBackground()}}/>
           )
         })}
       </View>
 
       <View style={{ height: 20 }} />
-
+      {}
       {split(arr, 1)}
       
       
@@ -414,14 +374,23 @@ function TestScreen({ route, navigation }) {
         })} 
       </View> */}
        
+       {isActive() ? 
+      <AccessModal close={closeModal} />
+      :
+        null
+      }
         {console.log(arr)}
 
       <Button
         title="Go to Home"
         onPress={() => navigation.navigate('Home')}
       />
-      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Check Answer!</Text>
+      <Button
+        title="Next"
+        onPress={() => navigation.navigate('Home')}
+      />
+      <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#F194FF'}]} onPress={() => setModalVisible(true)}>
+        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Check Answer!</Text>
       </Pressable>
       
     
