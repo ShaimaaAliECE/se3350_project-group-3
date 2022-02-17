@@ -73,10 +73,7 @@ export function AccessModal(state){
       </Modal>
       
     </View>
-      )
-
-      
-      
+  )
 }
 
 
