@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
+import Data from "../../config/steps.json";
 
 const {
   generateArray,
@@ -92,18 +93,24 @@ function SecondLevelScreen({ route, navigation }) {
       console.log(arr[j].length);
       if (j == 0) {
         components.push(
-          <View>
-            <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>Hello</Text>
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapNumberInput(arr[j])}
+            </View>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
           </View>
         );
       } else {
         components.push(
-          <View>
+          <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
+              {mapSegment(j, arr[j].length)}
             </View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>Again</Text>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
           </View>
         );
       }
@@ -112,24 +119,25 @@ function SecondLevelScreen({ route, navigation }) {
     return components;
   }
 
-  function generateMergeAlgorithm(){
+  function generateMergeAlgorithm() {
     let components = [];
 
-    for(let i = 5; i <= 8; i++){
+    for (let i = 5; i <= 8; i++) {
       merged(arr[i - 1], i);
     }
 
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
-        <View>
+        <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
-          {mapSegment(j, arr[j].length)}
+            {mapSegment(j, arr[j].length)}
           </View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>There</Text>
-          </View>
-        );
-      
+          <Text style={{ width: "60%", textAlign: "center" }}>
+            {Data.Level2[`${j}`]}
+          </Text>
+        </View>
+      );
     }
 
     return components;
@@ -169,7 +177,7 @@ function SecondLevelScreen({ route, navigation }) {
 
       {generateSplitAlgorithm()}
       {generateMergeAlgorithm()}
-     
+
       {/*}
       {split(arr, 1)}
       <View style={{ flexDirection: 'row' }}> 
