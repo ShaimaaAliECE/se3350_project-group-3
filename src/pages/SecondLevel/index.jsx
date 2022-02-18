@@ -80,16 +80,20 @@ function SecondLevelScreen({ route, navigation }) {
     let components = [];
 
     for (let i = 1; i < step; i++) {
-      if (i == 1) {
+      if(i > 5) {
+        break;
+      }
+      else if (i == 1) {
         split(arr, 1);
       } else {
         split(arr[i - 1], i);
       }
-      if(i > 5){break;}
     }
 
     for (let j = 0; j < arr.length; j++) {
-      console.log(arr[j].length);
+      if (j>4) {
+        break;
+      }
       if (j == 0) {
         components.push(
           <View style={{ alignItems: "center" }}>
@@ -121,7 +125,7 @@ function SecondLevelScreen({ route, navigation }) {
   function generateMergeAlgorithm() {
     let components = [];
     if(step > 5){
-      for (let i = 5; i <= step; i++) {
+      for (let i = 5; i <= step-1; i++) {
         merged(arr[i - 1], i);
       }
     }
@@ -171,7 +175,9 @@ function SecondLevelScreen({ route, navigation }) {
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 
       <Button onPress={()=>{
-        setStep(step + 1);
+        if (step<=8) {
+          setStep(step + 1);
+        }
       }}>
 
       </Button>
