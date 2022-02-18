@@ -78,30 +78,57 @@ function SecondLevelScreen({ route, navigation }) {
 
   function generateSplitAlgorithm() {
     let components = [];
-
-    for (let i = 1; i < step; i++) {
-      if (i == 1) {
-        split(arr, 1);
-      } else {
-        split(arr[i - 1], i);
+    
+    if(step <= 5){
+      for (let i = 1; i < step; i++) {
+        if (i == 1) {
+          split(arr, 1);
+        } else {
+          split(arr[i - 1], i);
+        }
+        if(i > 5){break;}
       }
-      if(i > 5){break;}
+    }
+      for (let j = 0; j < arr.length; j++) {
+        console.log(arr[j].length);
+        if (j == 0) {
+          components.push(
+            <View style={{ alignItems: "center" }}>
+              <View style={{ flexDirection: "row" }}>
+                {mapNumberInput(arr[j])}
+              </View>
+              <Text style={{ width: "60%", textAlign: "center" }}>
+                {Data.Level2[`${j}`]}
+              </Text>
+            </View>
+          );
+        } else {
+          components.push(
+            <View style={{ alignItems: "center" }}>
+              <View style={{ flexDirection: "row" }}>
+                {mapSegment(j, arr[j].length)}
+              </View>
+              <Text style={{ width: "60%", textAlign: "center" }}>
+                {Data.Level2[`${j}`]}
+              </Text>
+            </View>
+          );
+        }
+      }
+
+    return components;
+  }
+
+  function generateMergeAlgorithm() {
+    let components = [];
+    if(step > 5){
+      for (let i = 5; i <= step - 1; i++) {
+        merged(arr[i - 1], i);
+      }
     }
 
-    for (let j = 0; j < arr.length; j++) {
-      console.log(arr[j].length);
-      if (j == 0) {
-        components.push(
-          <View style={{ alignItems: "center" }}>
-            <View style={{ flexDirection: "row" }}>
-              {mapNumberInput(arr[j])}
-            </View>
-            <Text style={{ width: "60%", textAlign: "center" }}>
-              {Data.Level2[`${j}`]}
-            </Text>
-          </View>
-        );
-      } else {
+      for (let j = 5; j < arr.length; j++) {
+        console.log(arr[j].length);
         components.push(
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
@@ -113,32 +140,6 @@ function SecondLevelScreen({ route, navigation }) {
           </View>
         );
       }
-    }
-
-    return components;
-  }
-
-  function generateMergeAlgorithm() {
-    let components = [];
-    if(step > 5){
-      for (let i = 5; i <= step; i++) {
-        merged(arr[i - 1], i);
-      }
-    }
-  
-    for (let j = 5; j < arr.length; j++) {
-      console.log(arr[j].length);
-      components.push(
-        <View style={{ alignItems: "center" }}>
-          <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
-          </View>
-          <Text style={{ width: "60%", textAlign: "center" }}>
-            {Data.Level2[`${j}`]}
-          </Text>
-        </View>
-      );
-    }
 
     return components;
   }
