@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, ScrollView } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
+import Data from "../../config/steps.json";
 
 const {
   generateArray,
@@ -78,32 +79,37 @@ function SecondLevelScreen({ route, navigation }) {
   function generateSplitAlgorithm() {
     let components = [];
 
-    split(arr, 1);
-
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < step; i++) {
       if (i == 1) {
         split(arr, 1);
       } else {
         split(arr[i - 1], i);
       }
+      if(i > 5){break;}
     }
 
     for (let j = 0; j < arr.length; j++) {
       console.log(arr[j].length);
       if (j == 0) {
         components.push(
-          <View>
-            <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>Hello</Text>
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapNumberInput(arr[j])}
+            </View>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
           </View>
         );
       } else {
         components.push(
-          <View>
+          <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
+              {mapSegment(j, arr[j].length)}
             </View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>Again</Text>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
           </View>
         );
       }
@@ -112,24 +118,26 @@ function SecondLevelScreen({ route, navigation }) {
     return components;
   }
 
-  function generateMergeAlgorithm(){
+  function generateMergeAlgorithm() {
     let components = [];
-
-    for(let i = 5; i <= 8; i++){
-      merged(arr[i - 1], i);
+    if(step > 5){
+      for (let i = 5; i <= step; i++) {
+        merged(arr[i - 1], i);
+      }
     }
-
+  
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
-        <View>
+        <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
-          {mapSegment(j, arr[j].length)}
+            {mapSegment(j, arr[j].length)}
           </View>
-            <Text style={{ width: '60%', textAlign: 'center' }}>There</Text>
-          </View>
-        );
-      
+          <Text style={{ width: "60%", textAlign: "center" }}>
+            {Data.Level2[`${j}`]}
+          </Text>
+        </View>
+      );
     }
 
     return components;
@@ -159,302 +167,22 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   return (
+    <ScrollView style ={{flex: 1}}>
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      {/* <View style={{ flexDirection: "row" }}>
-        {arr[0].map((number) => {
-          return <NumberInput value={number} editable={false} />;
-        })}
-        <View style={{ width: 20 }} />
-      </View> */}
 
+      <Button onPress={()=>{
+        setStep(step + 1);
+      }}>
+
+      </Button>
       {generateSplitAlgorithm()}
       {generateMergeAlgorithm()}
-     
-      {/*}
-      {split(arr, 1)}
-      <View style={{ flexDirection: 'row' }}> 
-        {arr[1][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[1][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
 
-      <View style={{ height: 20 }} />
-
-      {split(arr[1], 2)}
-      <View style={{ flexDirection: 'row' }}> 
-        {arr[2][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[2][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[2][2].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[2][3].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} />
-
-      {split(arr[2], 3)}
-      <View style={{ flexDirection: 'row' }}> 
-        {arr[3][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][2].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][3].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][4].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][5].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][6].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[3][7].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} />
-
-      {split(arr[3], 4)}
-      <View style={{ flexDirection: 'row' }}> 
-        {arr[4][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][2].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][3].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][4].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][5].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][6].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][7].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][8].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[4][9].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} />
-
-
-<-------------------------------------------------------------------------------------------- Merge Part ------------------------------------------------------------------------------------->
-
-
-      {merged(arr[4], 5)}
-       <View style={{ flexDirection: 'row' }}> 
-        {arr[5][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][2].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][3].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][4].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][5].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][6].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[5][7].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} /> 
-
-      {merged(arr[5], 6)}
-       <View style={{ flexDirection: 'row' }}> 
-        {arr[6][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[6][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[6][2].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[6][3].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} /> 
-
-       {merged(arr[6], 7)} 
-
-
-       <View style={{ flexDirection: 'row' }}> 
-        {arr[7][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-        <View style={{ width: 20 }} />
-        {arr[7][1].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View>
-
-      <View style={{ height: 20 }} /> 
-
-       {merged(arr[7], 8)} 
-
-
-       <View style={{ flexDirection: 'row' }}> 
-        {arr[8][0].map((number) => {
-          return (
-            <NumberInput value={number} editable={false} />
-          )
-        })}
-      </View> 
-      {*/}
       {console.log(arr)}
 
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
     </View>
+    </ScrollView>
   );
 }
 
