@@ -6,6 +6,20 @@ import { RadioButton } from 'react-native-paper';
 
 export function AccessModal(props){
   const [checked, setChecked] = useState("")
+  let arr =new Array();
+  console.log(props.option)
+  
+
+  function pause(index, num){
+    if (index==num)
+      return true;
+    else
+      return false;
+  }
+
+  
+  console.log(arr)
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Modal transparent={true} visible={true}>
@@ -13,19 +27,26 @@ export function AccessModal(props){
           <View style={{margin: 20, backgroundColor: 'white', borderRadius: 20, padding: 35, alignItems: 'center', shadowColor: '#000',
             shadowOffset: {width: 0,height: 2,},shadowOpacity: 0.25,shadowRadius: 4,elevation: 5}}>
             <Text style={{marginBottom: 15, textAlign: 'center'}}>How would you like to split this array?</Text>
-            <RadioButton
-              value="first"
+            {props.options.map((number, index) => {
+              return(
+                <>
+              <RadioButton
+              value={index+1}
               label="Carto Base MAp"
-              status={checked === 'first' ? 'checked' : 'unchecked'}
-              onPress={() => { setChecked("first")}}
+              status={checked === index+1 ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked(index+1)}}
             />
-            <RadioButton style={{left: -100}}
-              value="third"
-              label="Carto Base MAp"
-              status={checked === 'third' ? 'checked' : 'unchecked'}
-              onPress={() => { setChecked("third")}}
-            />
-            <NumberInput value={""} editable={false}/>
+            <NumberInput key={index} value={""} editable={false}/>
+
+            {pause(index, number) ? 
+            <View style={{ width: 20 }} />
+            : null}
+            </>
+              )
+            
+       
+            })}
+
             <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
               onPress={() => { props.close() }}> 
               <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Close</Text>

@@ -3,7 +3,6 @@ import { Button, Text, View, Alert, Modal, StyleSheet, Pressable } from "react-n
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import { AccessModal } from '../Modal';
-import { DisplayModal } from '../Modal/displayModal'
 
 const {
   generateArray,
@@ -15,22 +14,16 @@ const arr = new Array();
 arr[0] = generateArray(10, 20);
 
 function SecondLevelScreen({ route, navigation }) {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
+  const [background, setBackground] = useState("transparent")
   const [selectedIndex, setSelectedIndex] = useState({});
-  const [whichModal, setWhichModal] = useState(1);
-  let displayNumbers = true;
-  let [option, setOption] = useState([]);
+  const [whatStep, setWhatStep] = useState(1)
+  const [option, setOption] = useState([])
+
 
   function isActive() {
     if(modalVisible)
-      return true;
-    else
-      return false;
-  }
-
-  function whichDisplay(){
-    if(whichModal==1)
       return true;
     else
       return false;
@@ -43,6 +36,7 @@ function SecondLevelScreen({ route, navigation }) {
   function select(j, k , i) {
     if(selectedIndex.j == j && selectedIndex.index == i){
       setSelectedIndex(null)
+      
     }else{
       console.log("hi")
       setSelectedIndex({j, k, i})
@@ -130,11 +124,6 @@ function SecondLevelScreen({ route, navigation }) {
           <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
         );
       } else {
-        if(j==(step-1))
-          displayNumbers = false;
-        else
-          displayNumbers = true
-    
         components.push(
           <View style={{ flexDirection: "row" }}>
             {mapSegment(j, arr[j].length)}
@@ -148,7 +137,7 @@ function SecondLevelScreen({ route, navigation }) {
 
   function mapSegment(j, max) {
     let components = [];
-    console.log(displayNumbers)
+
     for (let k = 0; k < max; k++) {
       components.push(
         <View style={{ flexDirection: "row" }}>
@@ -162,42 +151,56 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function mapNumberInput(arr, j, k) {
+    console.log(j+" k "+k)
     return arr.map((number, index) => (
       <View style={{ flexDirection: "row" }}>
-        {displayNumbers ?
-        <NumberInput key={index} value={number} editable={false} isSelected={index==selectedIndex.index && j==selectedIndex.j && k==selectedIndex.k} onClick={() => { setSelectedIndex({j,k,index})}}/>
-        :
-        <NumberInput key={index} value={""} editable={false} isSelected={index==selectedIndex.index && j==selectedIndex.j && k==selectedIndex.k} onClick={() => { setSelectedIndex({j,k,index})}}/>
-        }
+        <NumberInput key={index} value={number} editable={false} isSelected={index==selectedIndex.index && j==selectedIndex.j && k==selectedIndex.k} onClick={() => { setSelectedIndex({j,k,index}); options(step, j,k)} }/>
       </View>
     ));
   }
 
-  function next(){
-    setStep(step + 1);
-    setOption(options());
+  function options(step,j, k){
 
-    setModalVisible(true)
-  }
+    function setChoice(correctL, correctR){
+      let left, right =0;
+      let choose, option1, option2, option3;
+      let max=correctL+correctR
+      for(let i=0; i<3; i++){
+        if(i==3){
+          left = correctL;
+          right = correctR;
+        }else{
+          do{
+            left = Math.floor(Math.random() * max+1);
+            right = max-left
+          }while(left==correctL && right==correctR)
+        }
+       choose = Math.floor(Math.random() * 3+1);
 
-  function options() {
-    let object1=[5,5]
-    let object2=[3,7]
-    let object3=[2,8]
-    return [object1,object2,object3]
-  }
+        if(choose == 1 && option1 == null)
+          option1=[left, right]
+        else if(choose == 2 && option2 == null)
+          option2=[left, right]
+        else if(choose == 3 && option3 == null)
+          option3=[left, right]
 
-  function setArray(array){
-    console.log(array[0][0])
-    const tempArray=new Array()
-    for(let i=0;i<array.length;i++){
-      for(let j=0;j<array[i].length;j++){
-        
-        tempArray[i][j]=(" ");
       }
+        setOption([option1, option2, option3])
+      
     }
+    switch(step){
+      
+      case 1: 
+      setOption(setChoice(5, 5));
+      break;
+      case 2: 
+          split=[3,2]
+      break;
+      case 3: break;
+      case 4: break;
 
-    return tempArray
+
+    }
   }
 
   return (
@@ -205,20 +208,18 @@ function SecondLevelScreen({ route, navigation }) {
 
       <View style={{ height: 20 }} />
       {generateSplitAlgorithm()}
-      <Button title={"NEXT"} onPress={() => next() }/>
+      <Button title={"NEXT"} onPress={() => setStep(step + 1)}/>
       
+
       {isActive() ? 
-        whichDisplay() ?
-          <AccessModal close={closeModal} options={option}  />
-        :
-          <DisplayModal close={closeModal} />
+      <AccessModal close={closeModal} options={option} />
       :
         null
       }
 
       {console.log(arr)}
       <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#F194FF'}]} onPress={() => setModalVisible(true)}>
-        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Check Answer!</Text>
+        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Next</Text>
       </Pressable>
 
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
@@ -227,3 +228,32 @@ function SecondLevelScreen({ route, navigation }) {
 }
 
 export default SecondLevelScreen;
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+
+
+function NumberInput({ value, setValue, editable, onClick, isSelected} ) {
+
+
+
+
+  return (
+    <TextInput style={{width: 40,height: 40,borderRadius: 20,borderWidth: 1,borderColor: 'black', textAlign: 'center', backgroundColor: isSelected ? '#F194FF' : 'transparent'}} 
+      onClick={onClick}  
+      value={value.toString()}
+      onChangeText={setValue}
+      editable={editable}
+    />
+  )
+}
+
+export default NumberInput;
