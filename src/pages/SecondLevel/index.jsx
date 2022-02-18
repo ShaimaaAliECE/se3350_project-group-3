@@ -80,12 +80,37 @@ function SecondLevelScreen({ route, navigation }) {
 
     split(arr, 1);
 
-    for (let i = 1; i < step; i++) {
+    for (let i = 1; i < 5; i++) {
       if (i == 1) {
         split(arr, 1);
       } else {
         split(arr[i - 1], i);
       }
+    }
+
+    for (let j = 0; j < arr.length; j++) {
+      console.log(arr[j].length);
+      if (j == 0) {
+        components.push(
+          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+        );
+      } else {
+        components.push(
+          <View style={{ flexDirection: "row" }}>
+            {mapSegment(j, arr[j].length)}
+          </View>
+        );
+      }
+    }
+
+    return components;
+  }
+
+  function generateMergeAlgorithm(){
+    let components = [];
+
+    for(let i = 5; i <= 8; i++){
+      merged(arr[i - 1], i);
     }
 
     for (let j = 0; j < arr.length; j++) {
@@ -138,9 +163,9 @@ function SecondLevelScreen({ route, navigation }) {
         <View style={{ width: 20 }} />
       </View> */}
 
-      <View style={{ height: 20 }} />
       {generateSplitAlgorithm()}
-      <div onClick={() => setStep(step + 1)}>next step</div>
+      {generateMergeAlgorithm()}
+     
       {/*}
       {split(arr, 1)}
       <View style={{ flexDirection: 'row' }}> 
@@ -305,6 +330,10 @@ function SecondLevelScreen({ route, navigation }) {
       </View>
 
       <View style={{ height: 20 }} />
+
+
+<-------------------------------------------------------------------------------------------- Merge Part ------------------------------------------------------------------------------------->
+
 
       {merged(arr[4], 5)}
        <View style={{ flexDirection: 'row' }}> 
