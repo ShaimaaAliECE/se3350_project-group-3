@@ -114,34 +114,10 @@ function SecondLevelScreen({ route, navigation }) {
   function generateSplitAlgorithm() {
     let components = [];
 
-    for (let j = 0; j < arr.length; j++) {
-      if (j > 4) {
-        break;
-      }
-      if (j == 0) {
-        components.push(
-          <View style={{ alignItems: "center" }}>
-            <View style={{ flexDirection: "row" }}>
-              {mapNumberInput(arr[j], j, 0)}
             </View>
-            <Text style={{ width: "60%", textAlign: "center" }}>
-              {Data.Level2[`${j}`]}
-            </Text>
-          </View>
-        );
-      } else {
-        components.push(
-          <View style={{ alignItems: "center" }}>
-            <View style={{ flexDirection: "row" }}>
-              {mapSegment(j, blankArr[j].length)}
-            </View>
-            <Text style={{ width: "60%", textAlign: "center" }}>
-              {Data.Level2[`${j}`]}
-            </Text>
-          </View>
-        );
+          );
+        }
       }
-    }
 
     return components;
   }
@@ -149,19 +125,9 @@ function SecondLevelScreen({ route, navigation }) {
   function generateMergeAlgorithm() {
     let components = [];
 
-    for (let j = 5; j < arr.length; j++) {
-      console.log(arr[j].length);
-      components.push(
-        <View style={{ alignItems: "center" }}>
-          <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, blankArr[j].length)}
           </View>
-          <Text style={{ width: "60%", textAlign: "center" }}>
-            {Data.Level2[`${j}`]}
-          </Text>
-        </View>
-      );
-    }
+        );
+      }
 
     return components;
   }
