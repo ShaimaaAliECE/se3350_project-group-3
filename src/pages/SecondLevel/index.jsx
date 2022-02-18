@@ -15,25 +15,33 @@ let arr = new Array();
 arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
 
   useEffect(() => {
+    console.log(step);
     for (let i = 1; i < step; i++) {
       if (i > 5) {
         break;
       } else if (i == 1) {
         arr[1] = split(arr, 1);
-        blankArr[1] = split(blankArr, 1);
+
+        let newArr = [...blankArr];
+        newArr[1] = split(newArr, 1);
+        setBlankArr([...newArr]);
       } else {
         arr[i] = split(arr[i - 1], i);
-        blankArr[i] = split(blankArr[i - 1], i);
+        let newArr = [...blankArr];
+        newArr[i] = split(newArr[i - 1], i).map((a) => null);
+        setBlankArr([...newArr]);
       }
     }
 
     if (step > 5) {
       for (let i = 5; i <= step - 1; i++) {
         arr[i] = merged(arr[i - 1], i);
-        blankArr[i] = merged(blankArr[i - 1], i);
+        let newArr = [...blankArr];
+        newArr[i] = merged(newArr[i - 1], i).map((a) => null);
+        setBlankArr([...newArr]);
       }
     }
   }, [step]);
