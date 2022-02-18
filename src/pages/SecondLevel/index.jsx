@@ -10,7 +10,7 @@ const {
 } = require("../../Algorithms/MergeSort");
 
 const arr = new Array();
-arr[0] = generateArray(10, 20);
+arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);

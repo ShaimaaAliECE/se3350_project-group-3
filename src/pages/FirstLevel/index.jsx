@@ -1,36 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import NumberInput from '../../components/NumberInput';
+import "../../Algorithms/MergeSort";
+
+const { generateArray } = require("../../Algorithms/MergeSort");
 
 function FirstLevelScreen({ route, navigation }) {
-  function generateRandomNumbers(level) {
-    var arr = [];
-
-    if (level == 1 || level == 2 || level == 3) {
-      while (arr.length < 10) {
-        var r = Math.floor(Math.random() * 20) + 1;
-        if (arr.indexOf(r) === -1) arr.push(r);
-      }
-    }
-    else if (level == 4) {
-      while (arr.length < 20) {
-        var r = Math.floor(Math.random() * 50) + 1;
-        if (arr.indexOf(r) === -1) arr.push(r);
-      }
-    }
-    else if (level == 5) {
-      while (arr.length < 50) {
-        var r = Math.floor(Math.random() * 100) + 1;
-        if (arr.indexOf(r) === -1) arr.push(r);
-      }
-    }
-    return arr;
-  }
-
+  
   const [numbers, setNumbers] = useState([]);
 
   useEffect(() => {
-    setNumbers(generateRandomNumbers(1));
+    setNumbers(generateArray(1));
   }, []);
 
   const [step, setStep] = useState(0);
