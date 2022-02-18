@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
+import Data from "../../config/steps.json";
 
 const {
   generateArray,
@@ -10,7 +11,7 @@ const {
 } = require("../../Algorithms/MergeSort");
 
 const arr = new Array();
-arr[0] = generateArray(10, 20);
+arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
@@ -92,12 +93,24 @@ function SecondLevelScreen({ route, navigation }) {
       console.log(arr[j].length);
       if (j == 0) {
         components.push(
-          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapNumberInput(arr[j])}
+            </View>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
+          </View>
         );
       } else {
         components.push(
-          <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapSegment(j, arr[j].length)}
+            </View>
+            <Text style={{ width: "60%", textAlign: "center" }}>
+              {Data.Level2[`${j}`]}
+            </Text>
           </View>
         );
       }
@@ -106,26 +119,25 @@ function SecondLevelScreen({ route, navigation }) {
     return components;
   }
 
-  function generateMergeAlgorithm(){
+  function generateMergeAlgorithm() {
     let components = [];
 
-    for(let i = 5; i <= 8; i++){
+    for (let i = 5; i <= 8; i++) {
       merged(arr[i - 1], i);
     }
 
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
-      if (j == 0) {
-        components.push(
-          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
-        );
-      } else {
-        components.push(
+      components.push(
+        <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
             {mapSegment(j, arr[j].length)}
           </View>
-        );
-      }
+          <Text style={{ width: "60%", textAlign: "center" }}>
+            {Data.Level2[`${j}`]}
+          </Text>
+        </View>
+      );
     }
 
     return components;
@@ -164,7 +176,7 @@ function SecondLevelScreen({ route, navigation }) {
       </Button>
       {generateSplitAlgorithm()}
       {generateMergeAlgorithm()}
-     
+
       {console.log(arr)}
 
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
