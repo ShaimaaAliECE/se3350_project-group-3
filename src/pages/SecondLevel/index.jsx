@@ -186,7 +186,7 @@ function SecondLevelScreen({ route, navigation }) {
 
       {console.log(arr)}
 
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+      <Button title="Go to Home" onPress={() => location.reload()} />
     </View>
     </ScrollView>
   );
