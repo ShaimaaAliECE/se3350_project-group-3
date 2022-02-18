@@ -92,12 +92,18 @@ function SecondLevelScreen({ route, navigation }) {
       console.log(arr[j].length);
       if (j == 0) {
         components.push(
-          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+          <View>
+            <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+            <Text style={{ width: '60%', textAlign: 'center' }}>Hello</Text>
+          </View>
         );
       } else {
         components.push(
-          <View style={{ flexDirection: "row" }}>
+          <View>
+            <View style={{ flexDirection: "row" }}>
             {mapSegment(j, arr[j].length)}
+            </View>
+            <Text style={{ width: '60%', textAlign: 'center' }}>Again</Text>
           </View>
         );
       }
@@ -115,17 +121,15 @@ function SecondLevelScreen({ route, navigation }) {
 
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
-      if (j == 0) {
-        components.push(
-          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
-        );
-      } else {
-        components.push(
+      components.push(
+        <View>
           <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
+          {mapSegment(j, arr[j].length)}
+          </View>
+            <Text style={{ width: '60%', textAlign: 'center' }}>There</Text>
           </View>
         );
-      }
+      
     }
 
     return components;
