@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, ScrollView, Text, View } from "react-native";
-import { generateArray, splitArray } from "../../Algorithms/MergeSort";
 import NumberInput from "../../components/NumberInput";
+import "../../Algorithms/MergeSort";
 
-const arr = new Array();
-arr[0] = generateArray(10, 20);
+const { generateArray } = require("../../Algorithms/MergeSort");
 
 function FirstLevelScreen({ route, navigation }) {
   const [numbers, setNumbers] = useState([]);
 
   useEffect(() => {
-    setNumbers(arr);
+    setNumbers(generateArray(1));
   }, []);
 
   const [step, setStep] = useState(0);
