@@ -113,7 +113,7 @@ function SecondLevelScreen({ route, navigation }) {
       merged(arr[i - 1], i);
     }
 
-    for (let j = 0; j < arr.length; j++) {
+    for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
       if (j == 0) {
         components.push(
