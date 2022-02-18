@@ -7,15 +7,29 @@ import { RadioButton } from 'react-native-paper';
 export function AccessModal(props){
   const [checked, setChecked] = useState("")
   let arr =new Array();
+  let result =[]
   console.log(props.option)
   
 
-  function pause(index, num){
-    if (index==num)
+  function pause(arr, num){
+    if (arr[0]==num)
       return true;
     else
       return false;
   }
+
+  function loop(num){
+    result =[]
+    for(let i=0; i<props.number; i++){
+      if(i==num)
+        result.push(<View style={{ width: 20 }} />)
+      result.push(<NumberInput value={""} editable={false}/>)
+    }
+    return result;
+  }
+  
+
+  
 
   
   console.log(arr)
@@ -36,11 +50,10 @@ export function AccessModal(props){
               status={checked === index+1 ? 'checked' : 'unchecked'}
               onPress={() => { setChecked(index+1)}}
             />
-            <NumberInput key={index} value={""} editable={false}/>
-
-            {pause(index, number) ? 
-            <View style={{ width: 20 }} />
-            : null}
+            <View style={{ flexDirection: 'row' }}>
+            {loop(number[0])}
+            </View>
+              
             </>
               )
             
@@ -49,7 +62,7 @@ export function AccessModal(props){
 
             <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
               onPress={() => { props.close() }}> 
-              <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Close</Text>
+              <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Check</Text>
             </Pressable>
           </View>
         </View>

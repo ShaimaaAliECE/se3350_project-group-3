@@ -14,7 +14,7 @@ const {
 const arr = new Array();
 arr[0] = generateArray(10, 20);
 
-function SecondLevelScreen({ route, navigation }) {
+function ThirdLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(2);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState({});
@@ -228,4 +228,4 @@ function SecondLevelScreen({ route, navigation }) {
   );
 }
 
-export default SecondLevelScreen;
+export default ThirdLevelScreen;
