@@ -3,12 +3,14 @@ import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
 
-let colorFeedback = ["#128CC1", "#128CC1"];
+let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
+let correct = 2;
+
 function MergeSortLevels({ navigation }) {
   const [sound, setSound] = React.useState();
 
   async function playCorrectFeedback() {
-    colorFeedback[0] = "#25C112";
+    correct = 0;
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/correct.mp3')
     );
@@ -17,12 +19,16 @@ function MergeSortLevels({ navigation }) {
   }
 
   async function playIncorrectFeedback() {
-    colorFeedback[1] = "#C22A25";
+    correct = 1;
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/incorrect.mp3')
     );
     setSound(sound);
     await sound.playAsync(); 
+  }
+
+  function returnToBlue() {
+    correct = 2;
   }
 
   React.useEffect(() => {
@@ -58,20 +64,31 @@ function MergeSortLevels({ navigation }) {
         }}
       />
        <View style={{ height: 20 }} />
-        <Button color= {colorFeedback[0]}
+        <Button 
         title="Level 4"
-        onPress={playCorrectFeedback}
+        onPress={async() => {
+          if (correct == 1 || correct == 2) {
+            playCorrectFeedback()
+          }
+          else if (correct == 0) {
+            playIncorrectFeedback()
+          }}}
+        color= {colorFeedback[correct]}
       />
        <View style={{ height: 20}} />
-        <Button color= {colorFeedback[1]}
+        <Button
         title="Level 5"
-        onPress={playIncorrectFeedback}
+        onPress={() => {
+          navigation.navigate('FifthLevel')
+        }}
+        
       />
        <View style={{ height: 20 }} />
       <Button color="#128CC1"
         title="Home"
         onPress={() => {
-          navigation.navigate('Home')
+          returnToBlue();
+          navigation.navigate('Home');
         }}
       />
        <View style={{ height: 20 }} />

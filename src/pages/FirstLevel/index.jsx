@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, ScrollView, Text, View } from "react-native";
 import NumberInput from "../../components/NumberInput";
+import Data from "../../config/steps.json"
 
 const { generateArray } = require("../../Algorithms/MergeSort");
 
@@ -444,9 +445,7 @@ function FirstLevelScreen({ route, navigation }) {
         <Button
           title="Next Level"
           onPress={() => {
-            navigation.navigate("SecondLevel", {
-              numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            });
+            navigation.navigate("SecondLevel");
           }}
         />
       </View>

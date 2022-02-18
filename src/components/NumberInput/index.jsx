@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, TextInput } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -7,20 +7,23 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'black',
-    textAlign: 'center'
-  }
+    borderColor: "black",
+    textAlign: "center",
+  },
 });
 
-function NumberInput({ value, setValue, editable }) {
+function NumberInput({ value, setValue, editable, isSelected }) {
   return (
-    <TextInput 
-      style={styles.container} 
-      value={value.toString()}
+    <TextInput
+      style={[
+        styles.container,
+        { backgroundColor: isSelected ? "yellow" : "white" },
+      ]}
+      value={value ? value.toString() : ""}
       onChangeText={setValue}
       editable={editable}
     />
-  )
+  );
 }
 
 export default NumberInput;
