@@ -25,12 +25,6 @@ export function AccessModal(props){
               status={checked === 'third' ? 'checked' : 'unchecked'}
               onPress={() => { setChecked("third")}}
             />
-            <RadioButton
-              value="second"
-              label="Carto Base MAp"
-              status={checked === 'second' ? 'checked' : 'unchecked'}
-              onPress={() => { setChecked("second")}}
-            />
             <NumberInput value={""} editable={false}/>
             <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
               onPress={() => { props.close() }}> 

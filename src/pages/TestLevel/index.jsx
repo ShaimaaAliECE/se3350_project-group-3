@@ -87,7 +87,7 @@ function TestScreen({ route, navigation }) {
       <View style={{ flexDirection: 'row' }}> 
         {arr[0].map((number, index) => {
           return (
-            <NumberInput key={index} value={number} editable={false} onClick={() => { {console.log("clicked"+number)}changeBackground()}}/>
+            <NumberInput key={index} value={number} editable={false} onClick={() => { {console.log("clicked"+number)}}}/>
           )
         })}
       </View>
