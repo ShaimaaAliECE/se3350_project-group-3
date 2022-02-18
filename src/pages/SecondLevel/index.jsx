@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, ScrollView } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import Data from "../../config/steps.json";
@@ -79,14 +79,13 @@ function SecondLevelScreen({ route, navigation }) {
   function generateSplitAlgorithm() {
     let components = [];
 
-    split(arr, 1);
-
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < step; i++) {
       if (i == 1) {
         split(arr, 1);
       } else {
         split(arr[i - 1], i);
       }
+      if(i > 5){break;}
     }
 
     for (let j = 0; j < arr.length; j++) {
@@ -121,11 +120,12 @@ function SecondLevelScreen({ route, navigation }) {
 
   function generateMergeAlgorithm() {
     let components = [];
-
-    for (let i = 5; i <= 8; i++) {
-      merged(arr[i - 1], i);
+    if(step > 5){
+      for (let i = 5; i <= step; i++) {
+        merged(arr[i - 1], i);
+      }
     }
-
+  
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
@@ -167,10 +167,11 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   return (
+    <ScrollView style ={{flex: 1}}>
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 
       <Button onPress={()=>{
-        //step++;
+        setStep(step + 1);
       }}>
 
       </Button>
@@ -181,6 +182,7 @@ function SecondLevelScreen({ route, navigation }) {
 
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
     </View>
+    </ScrollView>
   );
 }
 
