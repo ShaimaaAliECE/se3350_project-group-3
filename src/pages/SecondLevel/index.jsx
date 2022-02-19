@@ -4,6 +4,7 @@ import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import Data from "../../config/steps.json";
 import { TouchableOpacity } from "react-native-web";
+import { Audio } from "expo-av";
 
 const {
   generateArray,
@@ -16,6 +17,16 @@ arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
+  const [feedback, setFeedback] = useState("Neutral");
+  const [sound, setSound] = React.useState();
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
   const [modalVisible, setModalVisible] = useState(false);
   const [whichModal, setWhichModal] = useState(1);
   const [levelMax, setLevelMax] = useState(10);
@@ -139,7 +150,7 @@ function SecondLevelScreen({ route, navigation }) {
         object[i] = merge(array[j], array[j + 1], isBlank);
         j++;
       } else {
-        object[i] = [...array[j]];
+        object[i] = isBlank ? [null] : [...array[j]];
       }
       j++;
     }
@@ -266,20 +277,73 @@ function SecondLevelScreen({ route, navigation }) {
     }
   }
 
+  function checkAnswer() {
+    let count = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+      let stepArr = arr[i];
+
+      for (let j = 0; j < stepArr.length; j++) {
+        let segmentArr = stepArr[j];
+
+        for (let k = 0; k < segmentArr.length; k++) {
+          let number = segmentArr[k];
+
+          if (blankArr[i][j][k] == number) {
+            count += 1;
+          }
+        }
+      }
+    }
+
+    console.log("count: ", count);
+
+    if (step != 1 && count == 10 * (step - 1)) {
+      setFeedback("Correct");
+      playCorrectFeedback();
+    } else {
+      setFeedback("Wrong");
+      playIncorrectFeedback();
+    }
+  }
+
+  async function playCorrectFeedback() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/correct.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  async function playIncorrectFeedback() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/incorrect.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
   return (
     <ScrollView style={{ flex: 1 }}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View style={{ height: 20 }} />
+        {generateSplitAlgorithm()}
+        {generateMergeAlgorithm()}
+        <View style={{ height: 20 }} />
         <Button
           onPress={() => {
             if (step <= 8) {
               setStep(step + 1);
             }
           }}
-        ></Button>
-        <View style={{ height: 20 }} />
-        {generateSplitAlgorithm()}
-        {generateMergeAlgorithm()}
-        <View style={{ height: 20 }} />
+        />
+        <Button
+          onPress={() => {
+            checkAnswer();
+          }}
+          title="Check Answer"
+        />
+        <Text>Your answer is {feedback}</Text>
         <Button title="Go to Home" onPress={() => location.reload()} />
       </View>
     </ScrollView>
