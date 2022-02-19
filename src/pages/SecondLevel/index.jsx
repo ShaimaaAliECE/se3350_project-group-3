@@ -16,6 +16,34 @@ arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [whichModal, setWhichModal] = useState(1);
+  const [levelMax, setLevelMax] = useState(10);
+  let displayNumbers = true;
+  const [option, setOption] = useState([]);
+
+  function isActive() {
+    if (modalVisible) return true;
+    else return false;
+  }
+
+  function whichDisplay() {
+    if (whichModal == 1) return true;
+    else return false;
+  }
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  function select(j, k, i) {
+    if (selectedIndex.j == j && selectedIndex.index == i) {
+      setSelectedIndex(null);
+    } else {
+      console.log("hi");
+      setSelectedIndex({ j, k, i });
+    }
+  }
 
   useEffect(() => {
     console.log(step);
@@ -111,7 +139,7 @@ function SecondLevelScreen({ route, navigation }) {
         object[i] = merge(array[j], array[j + 1], isBlank);
         j++;
       } else {
-        object[i] = array[j];
+        object[i] = [...array[j]];
       }
       j++;
     }
@@ -138,6 +166,9 @@ function SecondLevelScreen({ route, navigation }) {
           </View>
         );
       } else {
+        if (j == step - 1) displayNumbers = false;
+        else displayNumbers = true;
+
         components.push(
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
@@ -176,7 +207,7 @@ function SecondLevelScreen({ route, navigation }) {
 
   function mapSegment(j, max) {
     let components = [];
-
+    console.log(displayNumbers);
     for (let k = 0; k < max; k++) {
       components.push(
         <View style={{ flexDirection: "row" }}>
