@@ -209,7 +209,7 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function onPressNumberInput(j, k, i) {
-    console.log(blankArr);
+    console.log(j, k, i);
 
     if (Object.keys(selectedIndex).length != 0) {
       let sJ = selectedIndex.j;

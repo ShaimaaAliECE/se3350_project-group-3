@@ -22,7 +22,7 @@ module.exports = {
   },
 
   splitArray: (array, isBlank) => {
-    if (array.length < 2) return [array];
+    if (array.length < 2) return [[...array]];
 
     let left = array.slice(0, array.length / 2 + 0.5);
     let right = array.slice(array.length / 2 + 0.5, array.length);
