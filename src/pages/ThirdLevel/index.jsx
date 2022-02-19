@@ -21,6 +21,7 @@ function ThirdLevelScreen({ route, navigation }) {
   const [whichModal, setWhichModal] = useState(1);
   const [levelMax, setLevelMax] = useState(10)
   let displayNumbers = true;
+  const [correctAnswer,setCorrectAnswer] = useState();
   const [option, setOption] = useState([]);
 
   function isActive() {
@@ -175,31 +176,42 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   function next(){
-    //setStep(step + 1);
     setOption(options());
-
     setModalVisible(true)
   }
 
-  function options() {
-    let object1=[5,5]
-    let object2=[3,7]
-    let object3=[2,8]
-    return [object1,object2,object3]
+  function stepp(){
+    setStep(step + 1);
   }
 
-  function setArray(array){
-    console.log(array[0][0])
-    const tempArray =[...array]
+  function options() {
+    
+    let object1, object2, object3 = 0;
 
-    for(let i=0;i<array.length;i++){
-      for(let j=0;j<array[i].length;j++){
-        
-        tempArray[i][j]= " ";
-      }
+    function lR (){
+      let left = Math.floor(Math.random() * levelMax + 1)
+      let right = levelMax-left
+      let a =[]
+      return [left,right]
     }
-
-    return tempArray
+    
+    let which =  Math.floor(Math.random() * 3 + 1)
+    if(which == 1){
+      object1=[5,5]
+      object2=lR()
+      object3=lR()
+    }
+    else if(which == 2){
+      object2=[5,5]
+      object1=lR()
+      object3=lR()
+    }else if(which == 3){
+      object3=[5,5]
+      object1=lR()
+      object2=lR()
+    }
+    setCorrectAnswer(which);
+    return [object1,object2,object3]
   }
 
   return (
@@ -211,7 +223,7 @@ function ThirdLevelScreen({ route, navigation }) {
       
       {isActive() ? 
         whichDisplay() ?
-          <AccessModal close={closeModal} options={option} number={levelMax} />
+          <AccessModal close={closeModal} options={option} number={levelMax} correct={correctAnswer} stepp={stepp}/>
         :
           <DisplayModal close={closeModal} />
       :
