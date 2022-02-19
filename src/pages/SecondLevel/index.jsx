@@ -26,12 +26,12 @@ function SecondLevelScreen({ route, navigation }) {
         arr[1] = split(arr, 1);
 
         let newArr = [...blankArr];
-        newArr[1] = split(newArr, 1);
+        newArr[1] = split(newArr, 1, true);
         setBlankArr([...newArr]);
       } else {
         arr[i] = split(arr[i - 1], i);
         let newArr = [...blankArr];
-        newArr[i] = split(newArr[i - 1], i).map((a) => null);
+        newArr[i] = split(newArr[i - 1], i, true);
         setBlankArr([...newArr]);
       }
     }
@@ -40,7 +40,7 @@ function SecondLevelScreen({ route, navigation }) {
       for (let i = 5; i <= step - 1; i++) {
         arr[i] = merged(arr[i - 1], i);
         let newArr = [...blankArr];
-        newArr[i] = merged(newArr[i - 1], i).map((a) => null);
+        newArr[i] = merged(newArr[i - 1], i, true);
         setBlankArr([...newArr]);
       }
     }
@@ -58,7 +58,7 @@ function SecondLevelScreen({ route, navigation }) {
 
   const [selectedIndex, setSelectedIndex] = useState({});
 
-  function split(array, step) {
+  function split(array, step, isBlank) {
     let object = new Array();
     let repeat = 0;
 
@@ -77,13 +77,13 @@ function SecondLevelScreen({ route, navigation }) {
     }
 
     for (let i = 0; i < repeat; i++) {
-      object[i] = splitArray(array[i]);
+      object[i] = splitArray(array[i], isBlank);
     }
 
     return object.flat();
   }
 
-  function merged(array, step) {
+  function merged(array, step, isBlank) {
     let object = new Array();
     let index = [];
     let length = 1;
@@ -108,7 +108,7 @@ function SecondLevelScreen({ route, navigation }) {
 
     for (let i = 0; i < length; i++) {
       if (index.includes(i)) {
-        object[i] = merge(array[j], array[j + 1]);
+        object[i] = merge(array[j], array[j + 1], isBlank);
         j++;
       } else {
         object[i] = array[j];
