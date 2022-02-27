@@ -330,20 +330,28 @@ function SecondLevelScreen({ route, navigation }) {
         {generateSplitAlgorithm()}
         {generateMergeAlgorithm()}
         <View style={{ height: 20 }} />
+        <Text>Aside from the first step where there are no numbers to fill in, you may not go to the next question unless your answer has been marked correct!</Text>
+        <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step <= 8) {
-              setStep(step + 1);
-            }
-          }}
-        />
-        <Button
-          onPress={() => {
+            if (step > 1 && step<=9)
             checkAnswer();
           }}
           title="Check Answer"
         />
         <Text>Your answer is {feedback}</Text>
+        <Button
+          onPress={() => {
+            if (step <= 8 && step > 1 && feedback == "Correct") {
+              setStep(step + 1);
+              setFeedback("Neutral")
+            }
+            else if (step==1) {
+              setStep(step + 1);
+            }
+          }}
+          title="Next Question"
+        />
         <Button title="Go to Home" onPress={() => location.reload()} />
       </View>
     </ScrollView>
