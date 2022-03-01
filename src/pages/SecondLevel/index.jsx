@@ -212,7 +212,7 @@ function SecondLevelScreen({ route, navigation }) {
       components.push(
         <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, blankArr[j].length)}
+            {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
           </View>
           <Text style={{ width: "60%", textAlign: "center" }}>
             {Data.Level2[`${j}`]}
