@@ -19,6 +19,13 @@ function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [feedback, setFeedback] = useState("Neutral");
   const [sound, setSound] = React.useState();
+
+  useEffect(() => {
+    setStep(1);
+    arr = new Array();
+    arr[0] = generateArray(2);
+  }, []);
+
   React.useEffect(() => {
     return sound
       ? () => {
@@ -27,6 +34,7 @@ function SecondLevelScreen({ route, navigation }) {
         }
       : undefined;
   }, [sound]);
+  
   const [modalVisible, setModalVisible] = useState(false);
   const [whichModal, setWhichModal] = useState(1);
   const [levelMax, setLevelMax] = useState(10);
@@ -183,7 +191,7 @@ function SecondLevelScreen({ route, navigation }) {
         components.push(
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
-              {mapSegment(j, blankArr[j].length)}
+              {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
             </View>
             <Text style={{ width: "60%", textAlign: "center" }}>
               {Data.Level2[`${j}`]}
