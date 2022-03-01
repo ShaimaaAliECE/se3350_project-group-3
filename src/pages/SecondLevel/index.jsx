@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View, ScrollView } from "react-native";
+import { Button, Text, View, ScrollView, Image} from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import Data from "../../config/steps.json";
 import { TouchableOpacity } from "react-native-web";
 import { Audio } from "expo-av";
+import { StepModal } from "../Modal/stepModal";
+import Question from "../../Images/question.png"
 
 const {
   generateArray,
@@ -19,6 +21,7 @@ function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [feedback, setFeedback] = useState("Neutral");
   const [sound, setSound] = React.useState();
+  
 
   useEffect(() => {
     setStep(1);
@@ -36,33 +39,19 @@ function SecondLevelScreen({ route, navigation }) {
   }, [sound]);
   
   const [modalVisible, setModalVisible] = useState(false);
-  const [whichModal, setWhichModal] = useState(1);
-  const [levelMax, setLevelMax] = useState(10);
   let displayNumbers = true;
-  const [option, setOption] = useState([]);
-
-  function isActive() {
-    if (modalVisible) return true;
-    else return false;
-  }
-
-  function whichDisplay() {
-    if (whichModal == 1) return true;
-    else return false;
-  }
 
   const closeModal = () => {
     setModalVisible(false);
-  };
-
-  function select(j, k, i) {
-    if (selectedIndex.j == j && selectedIndex.index == i) {
-      setSelectedIndex(null);
-    } else {
-      console.log("hi");
-      setSelectedIndex({ j, k, i });
-    }
   }
+
+  function isActive() {
+    if(modalVisible)
+      return true;
+    else
+      return false;
+  }
+
 
   useEffect(() => {
     console.log(step);
@@ -168,20 +157,18 @@ function SecondLevelScreen({ route, navigation }) {
 
   function generateSplitAlgorithm() {
     let components = [];
-
     for (let j = 0; j < arr.length; j++) {
       if (j > 4) {
         break;
       }
+      
       if (j == 0) {
         components.push(
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
               {mapNumberInput(arr[j], j, 0)}
             </View>
-            <Text style={{ width: "60%", textAlign: "center" }}>
-              {Data.Level2[`${j}`]}
-            </Text>
+            
           </View>
         );
       } else {
@@ -192,10 +179,7 @@ function SecondLevelScreen({ route, navigation }) {
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
               {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
-            </View>
-            <Text style={{ width: "60%", textAlign: "center" }}>
-              {Data.Level2[`${j}`]}
-            </Text>
+            </View>  
           </View>
         );
       }
@@ -206,7 +190,7 @@ function SecondLevelScreen({ route, navigation }) {
 
   function generateMergeAlgorithm() {
     let components = [];
-
+    
     for (let j = 5; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
@@ -214,9 +198,6 @@ function SecondLevelScreen({ route, navigation }) {
           <View style={{ flexDirection: "row" }}>
             {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
           </View>
-          <Text style={{ width: "60%", textAlign: "center" }}>
-            {Data.Level2[`${j}`]}
-          </Text>
         </View>
       );
     }
@@ -228,6 +209,7 @@ function SecondLevelScreen({ route, navigation }) {
     let components = [];
     console.log(displayNumbers);
     for (let k = 0; k < max; k++) {
+      
       components.push(
         <View style={{ flexDirection: "row" }}>
           <View style={{ width: 20 }} />
@@ -347,20 +329,36 @@ function SecondLevelScreen({ route, navigation }) {
           }}
           title="Check Answer"
         />
+        {isActive() ?
+              <StepModal close={closeModal} data={Data.Level2[`${step-1}`]}/>
+              :
+              null
+        }
         <Text>Your answer is {feedback}</Text>
         <Button
           onPress={() => {
             if (step <= 8 && step > 1 && feedback == "Correct") {
               setStep(step + 1);
+              setModalVisible(true)
               setFeedback("Neutral")
             }
             else if (step==1) {
               setStep(step + 1);
+              setModalVisible(true)
             }
           }}
           title="Next Question"
         />
-        <Button title="Go to Home" onPress={() => location.reload()} />
+        <Button title="Go to Home"  onPress={() => location.reload()}/>
+        <Image
+            style={{width: 25, height: 25}}
+            source={{
+            uri: Question,
+            }}
+            onClick={() => setModalVisible(true)}
+        />
+        <Button onPress={() => location.reload()}>
+        </Button>
       </View>
     </ScrollView>
   );
