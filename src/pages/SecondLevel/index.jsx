@@ -182,7 +182,6 @@ function SecondLevelScreen({ route, navigation }) {
             <View style={{ flexDirection: "row" }}>
               {mapNumberInput(arr[j], j, 0)}
             </View>
-            
           </View>
         );
       } else {

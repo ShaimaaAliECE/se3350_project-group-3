@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-function NumberInput({ value, setValue, editable, onClick, isSelected }) {
+function NumberInput({ value, setValue, editable, onClick, isSelected, style }) {
   return (
     <TextInput
       style={{
@@ -12,6 +12,7 @@ function NumberInput({ value, setValue, editable, onClick, isSelected }) {
         borderColor: "black",
         textAlign: "center",
         backgroundColor: isSelected ? "yellow" : "transparent",
+        ...style
       }}
       onClick={onClick}
       value={value ? value.toString() : ""}
