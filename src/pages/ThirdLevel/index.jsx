@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View, Alert, Modal, StyleSheet, Pressable } from "react-native";
+import { Button, Text, View, ScrollView, Image} from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
-import { AccessModal } from '../Modal';
-import { DisplayModal } from '../Modal/displayModal'
+import Data from "../../config/steps.json";
+import { TouchableOpacity } from "react-native-web";
+import { Audio } from "expo-av";
+import { StepModal } from "../Modal/stepModal";
+import Question from "../../Images/question.png"
+import { Verification } from "../Modal/verification";
+import { AccessModal } from "../Modal";
 
 const {
   generateArray,
@@ -11,18 +16,47 @@ const {
   splitArray,
 } = require("../../Algorithms/MergeSort");
 
-const arr = new Array();
-arr[0] = generateArray(10, 20);
+let arr = new Array();
+arr[0] = generateArray(2);
 
 function ThirdLevelScreen({ route, navigation }) {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
+  const [sound, setSound] = React.useState();
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [nextQuestion, setNextQuestion] = useState(true)
+  
+
+  useEffect(() => {
+    setStep(1);
+    arr = new Array();
+    arr[0] = generateArray(2);
+  }, []);
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+  
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState({});
-  const [whichModal, setWhichModal] = useState(1);
-  const [levelMax, setLevelMax] = useState(10)
+  const [accessModalVisible, setAccessModalVisible] = useState(false);
+  const [checkAnswerVisible, setCheckAnswerVisible] = useState(false)
   let displayNumbers = true;
-  const [correctAnswer,setCorrectAnswer] = useState();
-  const [option, setOption] = useState([]);
+
+  const closeModal = () => {
+    setModalVisible(false);
+  }
+
+  const closeCheckAnswer = () => {
+    setCheckAnswerVisible(false)
+  }
+
+  const closeAccessModal = () => {
+    setAccessModalVisible(false)
+  }
 
   function isActive() {
     if(modalVisible)
@@ -31,30 +65,67 @@ function ThirdLevelScreen({ route, navigation }) {
       return false;
   }
 
-  function whichDisplay(){
-    if(whichModal==1)
+  function displayCheck(){
+    if(checkAnswerVisible)
       return true;
     else
       return false;
   }
 
-  const closeModal = () => {
-    setModalVisible(false);
+  function selectChoices() {
+    if(accessModalVisible)
+      return true;
+    else
+      return false;
   }
+  
 
-  function select(j, k , i) {
-    if(selectedIndex.j == j && selectedIndex.index == i){
-      setSelectedIndex(null)
-    }else{
-      console.log("hi")
-      setSelectedIndex({j, k, i})
+
+  useEffect(() => {
+    console.log(step);
+    for (let i = 1; i < step; i++) {
+      if (i > 5) {
+        break;
+      } else if (i == 1) {
+        arr[1] = split(arr, 1);
+
+        let newArr = [...blankArr];
+        newArr[1] = split(newArr, 1, true);
+        setBlankArr([...newArr]);
+      } else {
+        arr[i] = split(arr[i - 1], i);
+        let newArr = [...blankArr];
+        newArr[i] = split(newArr[i - 1], i, true);
+        setBlankArr([...newArr]);
+      }
     }
-    
-  }
 
-  function split(array, step) {
+    if (step > 5) {
+      for (let i = 5; i <= step - 1; i++) {
+        arr[i] = merged(arr[i - 1], i);
+        let newArr = [...blankArr];
+        newArr[i] = merged(newArr[i - 1], i, true);
+        setBlankArr([...newArr]);
+      }
+    }
+  }, [step]);
+
+  const [blankArr, setBlankArr] = useState([]);
+
+  useEffect(() => {
+    setBlankArr((prev) => {
+      let newArr = [...prev];
+      newArr[0] = arr[0].map((a) => null);
+      return newArr;
+    });
+  }, []);
+
+  const [selectedIndex, setSelectedIndex] = useState({});
+
+  function split(array, step, isBlank) {
     let object = new Array();
     let repeat = 0;
+
     switch (step) {
       case 2:
         repeat = 2;
@@ -70,13 +141,13 @@ function ThirdLevelScreen({ route, navigation }) {
     }
 
     for (let i = 0; i < repeat; i++) {
-      object[i] = splitArray(array[i]);
+      object[i] = splitArray(array[i], isBlank);
     }
 
-    arr[step] = object.flat();
+    return object.flat();
   }
 
-  function merged(array, step) {
+  function merged(array, step, isBlank) {
     let object = new Array();
     let index = [];
     let length = 1;
@@ -101,45 +172,42 @@ function ThirdLevelScreen({ route, navigation }) {
 
     for (let i = 0; i < length; i++) {
       if (index.includes(i)) {
-        object[i] = merge(array[j], array[j + 1]);
+        object[i] = merge(array[j], array[j + 1], isBlank);
         j++;
       } else {
-        object[i] = array[j];
+        object[i] = isBlank ? [null] : [...array[j]];
       }
       j++;
     }
 
-    arr[step] = object;
+    return object;
   }
 
   function generateSplitAlgorithm() {
     let components = [];
-
-    split(arr, 1);
-
-    for (let i = 1; i < step; i++) {
-      if (i == 1) {
-        split(arr, 1);
-      } else {
-        split(arr[i - 1], i);
-      }
-    }
-
     for (let j = 0; j < arr.length; j++) {
-      console.log(arr[j].length);
+      if (j > 4) {
+        break;
+      }
+      
       if (j == 0) {
         components.push(
-          <View style={{ flexDirection: "row" }}>{mapNumberInput(arr[j])}</View>
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapNumberInput(arr[j], j, 0)}
+            </View>
+            
+          </View>
         );
       } else {
-        if(j==(step-1))
-          displayNumbers = false;
-        else
-          displayNumbers = true
-    
+        if (j == step - 1) displayNumbers = false;
+        else displayNumbers = true;
+
         components.push(
-          <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, arr[j].length)}
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
+              {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
+            </View>  
           </View>
         );
       }
@@ -148,14 +216,32 @@ function ThirdLevelScreen({ route, navigation }) {
     return components;
   }
 
+  function generateMergeAlgorithm() {
+    let components = [];
+    
+    for (let j = 5; j < arr.length; j++) {
+      console.log(arr[j].length);
+      components.push(
+        <View style={{ alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
+            {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
+          </View>
+        </View>
+      );
+    }
+
+    return components;
+  }
+
   function mapSegment(j, max) {
     let components = [];
-    console.log(displayNumbers)
+    console.log(displayNumbers);
     for (let k = 0; k < max; k++) {
+      
       components.push(
         <View style={{ flexDirection: "row" }}>
           <View style={{ width: 20 }} />
-          {mapNumberInput(arr[j][k], j, k)}
+          {mapNumberInput(blankArr[j][k], j, k)}
         </View>
       );
     }
@@ -164,79 +250,158 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   function mapNumberInput(arr, j, k) {
+    console.log(arr);
     return arr.map((number, index) => (
-      <View style={{ flexDirection: "row" }}>
-        {displayNumbers ?
-        <NumberInput key={index} value={number} editable={false} isSelected={index==selectedIndex.index && j==selectedIndex.j && k==selectedIndex.k} onClick={() => { setSelectedIndex({j,k,index})}}/>
-        :
-        <NumberInput key={index} value={""} editable={false} isSelected={index==selectedIndex.index && j==selectedIndex.j && k==selectedIndex.k} onClick={() => { setSelectedIndex({j,k,index})}}/>
-        }
-      </View>
+      <TouchableOpacity onPress={() => onPressNumberInput(j, k, index)}>
+        <View style={{ flexDirection: "row" }}>
+          <NumberInput
+            value={number}
+            editable={false}
+            isSelected={
+              j == selectedIndex.j &&
+              k == selectedIndex.k &&
+              index == selectedIndex.i
+            }
+          />
+        </View>
+      </TouchableOpacity>
     ));
   }
 
-  function next(){
-    setOption(options());
-    setModalVisible(true)
+  function onPressNumberInput(j, k, i) {
+    console.log(j, k, i);
+
+    if (Object.keys(selectedIndex).length != 0) {
+      let sJ = selectedIndex.j;
+      let sK = selectedIndex.k;
+      let sI = selectedIndex.i;
+
+      let selectedNumber;
+
+      if (j == 0) {
+        selectedNumber = arr[j][i];
+      } else {
+        selectedNumber = blankArr[j][k][i];
+      }
+
+      setBlankArr((prev) => {
+        let newArr = [...prev];
+        newArr[sJ][sK][sI] = selectedNumber;
+        return newArr;
+      });
+      setSelectedIndex({});
+    } else {
+      setSelectedIndex({ j, k, i });
+    }
   }
 
-  function stepp(){
-    setStep(step + 1);
+  function checkAnswer() {
+    let count = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+      let stepArr = arr[i];
+
+      for (let j = 0; j < stepArr.length; j++) {
+        let segmentArr = stepArr[j];
+
+        for (let k = 0; k < segmentArr.length; k++) {
+          let number = segmentArr[k];
+
+          if (blankArr[i][j][k] == number) {
+            count += 1;
+          }
+        }
+      }
+    }
+
+    console.log("count: ", count);
+
+    if (step != 1 && count == 10 * (step - 1)) {
+      setIsCorrect(true)
+      playCorrectFeedback();
+    } else {
+      setIsCorrect(false)
+      playIncorrectFeedback();
+    }
   }
 
-  function options() {
-    
-    let object1, object2, object3 = 0;
+  async function playCorrectFeedback() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/correct.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
 
-    function lR (){
-      let left = Math.floor(Math.random() * levelMax + 1)
-      let right = levelMax-left
-      let a =[]
-      return [left,right]
-    }
-    
-    let which =  Math.floor(Math.random() * 3 + 1)
-    if(which == 1){
-      object1=[5,5]
-      object2=lR()
-      object3=lR()
-    }
-    else if(which == 2){
-      object2=[5,5]
-      object1=lR()
-      object3=lR()
-    }else if(which == 3){
-      object3=[5,5]
-      object1=lR()
-      object2=lR()
-    }
-    setCorrectAnswer(which);
-    return [object1,object2,object3]
+  async function playIncorrectFeedback() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/incorrect.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-
-      <View style={{ height: 20 }} />
-      {generateSplitAlgorithm()}
-      <Button title={"NEXT"} onPress={() => next() }/>
-      
-      {isActive() ? 
-        whichDisplay() ?
-          <AccessModal close={closeModal} options={option} number={levelMax} correct={correctAnswer} stepp={stepp}/>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View style={{ height: 20 }} />
+        {generateSplitAlgorithm()}
+        {generateMergeAlgorithm()}
+        <View style={{ height: 20 }} />
+        <Text>Aside from the first step where there are no numbers to fill in, you may not go to the next question unless your answer has been marked correct!</Text>
+        <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
+        <Button
+          onPress={() => {
+            if (step > 1 && step<=9){
+            checkAnswer();
+            setCheckAnswerVisible(true)
+            }
+          }}
+          title="Check Answer"
+        />
+        {selectChoices() ?
+          <AccessModal close={closeAccessModal} options={null} number={null} correct={null} stepp={null}/>
         :
-          <DisplayModal close={closeModal} />
-      :
         null
-      }
+        }
 
-      {console.log(arr)}
-      <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#F194FF'}]} onPress={() => setModalVisible(true)}>
-        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Check Answer!</Text>
-      </Pressable>
+        {displayCheck() ?
+          <Verification close={closeCheckAnswer} success={isCorrect} />
+        :
+          null
+        }
 
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
-    </View>
+        {isActive() ?
+              <StepModal close={closeModal} data={Data.Level2[`${step-1}`]}/>
+              :
+              null
+        }
+
+        <Button
+          onPress={() => {
+          if(nextQuestion){
+            if (step <= 8 && step > 1 && isCorrect || step ==1) {
+              setStep(step + 1);
+              setNextQuestion(false)
+            }
+          }else{
+           setNextQuestion(true)
+           setAccessModalVisible(true)
+          }
+          }}
+          title="Next Question"
+        />
+        <Button title="Go to Home"  onPress={() => location.reload()}/>
+        <Image
+            style={{width: 25, height: 25}}
+            source={{
+            uri: Question,
+            }}
+            onClick={() => setModalVisible(true)}
+        />
+        
+      </View>
+    </ScrollView>
   );
 }
 

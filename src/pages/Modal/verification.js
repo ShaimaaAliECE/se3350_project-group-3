@@ -11,8 +11,8 @@ export function Verification(props){
   useEffect(() => {
     if(props.success){
       setMessage("Correct!")
-      props.stepp()
-      props.closeSelf()
+      //props.stepp()
+      //props.closeSelf()
     }else
       setMessage("Wrong!")
       
@@ -24,7 +24,7 @@ export function Verification(props){
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={{margin: 20, backgroundColor: 'white', borderRadius: 20, padding: 35, alignItems: 'center', shadowColor: '#000',
             shadowOffset: {width: 0,height: 2,},shadowOpacity: 0.25,shadowRadius: 4,elevation: 5}}>
-            <Text style={{marginBottom: 15, textAlign: 'center'}}>{message}</Text>
+            <Text style={{marginBottom: 15, textAlign: 'center'}}>Your Answer is: {message}</Text>
             <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
               onPress={() => { props.close() }}> 
               <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Close</Text>
