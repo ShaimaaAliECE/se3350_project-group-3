@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native-web";
 import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
+import { Verification } from "../Modal/verification";
 
 const {
   generateArray,
@@ -19,8 +20,8 @@ arr[0] = generateArray(2);
 
 function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
-  const [feedback, setFeedback] = useState("Neutral");
   const [sound, setSound] = React.useState();
+  const [isCorrect, setIsCorrect] = useState(false)
   
 
   useEffect(() => {
@@ -39,10 +40,15 @@ function SecondLevelScreen({ route, navigation }) {
   }, [sound]);
   
   const [modalVisible, setModalVisible] = useState(false);
+  const [checkAnswerVisible, setCheckAnswerVisible] = useState(false)
   let displayNumbers = true;
 
   const closeModal = () => {
     setModalVisible(false);
+  }
+
+  const closeCheckAnswer = () => {
+    setCheckAnswerVisible(false)
   }
 
   function isActive() {
@@ -51,6 +57,14 @@ function SecondLevelScreen({ route, navigation }) {
     else
       return false;
   }
+
+  function displayCheck(){
+    if(checkAnswerVisible)
+      return true;
+    else
+      return false;
+  }
+  
 
 
   useEffect(() => {
@@ -289,10 +303,10 @@ function SecondLevelScreen({ route, navigation }) {
     console.log("count: ", count);
 
     if (step != 1 && count == 10 * (step - 1)) {
-      setFeedback("Correct");
+      setIsCorrect(true)
       playCorrectFeedback();
     } else {
-      setFeedback("Wrong");
+      setIsCorrect(false)
       playIncorrectFeedback();
     }
   }
@@ -324,23 +338,30 @@ function SecondLevelScreen({ route, navigation }) {
         <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step > 1 && step<=9)
+            if (step > 1 && step<=9){
             checkAnswer();
+            setCheckAnswerVisible(true)
+            }
           }}
           title="Check Answer"
         />
+        {displayCheck() ?
+          <Verification close={closeCheckAnswer} success={isCorrect} />
+        :
+          null
+        }
+
         {isActive() ?
               <StepModal close={closeModal} data={Data.Level2[`${step-1}`]}/>
               :
               null
         }
-        <Text>Your answer is {feedback}</Text>
+
         <Button
           onPress={() => {
-            if (step <= 8 && step > 1 && feedback == "Correct") {
+            if (step <= 8 && step > 1 && isCorrect) {
               setStep(step + 1);
               setModalVisible(true)
-              setFeedback("Neutral")
             }
             else if (step==1) {
               setStep(step + 1);
@@ -357,8 +378,7 @@ function SecondLevelScreen({ route, navigation }) {
             }}
             onClick={() => setModalVisible(true)}
         />
-        <Button onPress={() => location.reload()}>
-        </Button>
+        
       </View>
     </ScrollView>
   );
