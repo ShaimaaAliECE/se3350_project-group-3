@@ -32,7 +32,7 @@ function ThirdLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
-
+  const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
 
   useEffect(() => {
     setStep(1);
@@ -59,6 +59,9 @@ function ThirdLevelScreen({ route, navigation }) {
 
   const closeCheckAnswer = () => {
     setCheckAnswerVisible(false)
+    if (isBubbleCorrect) {
+      setShowBubble(false);
+    }
   }
 
   function isActive() {
@@ -104,6 +107,9 @@ function ThirdLevelScreen({ route, navigation }) {
         setBlankArr([...newArr]);
       }
     }
+
+    setIsCorrect(false);
+    setIsBubbleCorrect(false);
   }, [step]);
 
   const [blankArr, setBlankArr] = useState([]);
@@ -382,28 +388,27 @@ function ThirdLevelScreen({ route, navigation }) {
 
     // console.log(scantron);
 
-    let isCorrect = true;
+    let tmpIsCorrect = true;
 
     // console.log(arr[step - 1]);
 
     if (arr[step - 1].length !== scantron.length) {
-      isCorrect = false;
+      tmpIsCorrect = false;
     } else {
       for (let i = 0; i < arr[step - 1].length; i++) {
         if (arr[step - 1][i].length !== scantron[i].length) {
-          isCorrect = false;
+          tmpIsCorrect = false;
         }
       }
     }
 
-    console.log(isCorrect);
+    console.log(tmpIsCorrect);
 
-    if (isCorrect) {
-      setIsCorrect(true)
-      setShowBubble(false);
+    if (tmpIsCorrect) {
+      setIsBubbleCorrect(true)
       playCorrectFeedback();
     } else {
-      setIsCorrect(false)
+      setIsBubbleCorrect(false)
       playIncorrectFeedback();
     }
   }
@@ -444,7 +449,7 @@ function ThirdLevelScreen({ route, navigation }) {
           title={showBubble ? "Check Split/Merge Answer" : "Check Value Answer"}
         />
         {displayCheck() ?
-          <Verification close={closeCheckAnswer} success={isCorrect} />
+          <Verification close={closeCheckAnswer} success={showBubble ? isBubbleCorrect : isCorrect} />
           :
           null
         }
@@ -469,13 +474,13 @@ function ThirdLevelScreen({ route, navigation }) {
           title="Next Question"
         />
         <Button title="Go to Home" onPress={() => location.reload()} />
-        <Image
+        {/* <Image
           style={{ width: 25, height: 25 }}
           source={{
             uri: Question,
           }}
           onClick={() => setModalVisible(true)}
-        />
+        /> */}
 
       </View>
     </ScrollView>
