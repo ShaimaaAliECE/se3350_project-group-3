@@ -13,8 +13,8 @@ se3350_project-group-3 created by GitHub Classroom
  How To Test the Sort-Of Application (Release 1)
  1. Once the Application is open the main menu should appear. From here select Merge Sort Algorithm.
  2. A list of levels should appear. The levels avaliable to test include levels 1, 2 and 3. Please note levels 4 and 5 are unavaliable for this release.
- 3. On the level page a couple options are avaliable. The first level only has two menu options one to return to the home page and another to go to level 2.
- 4. The second level has the same options as level 1 except the user is to enter the values for the next step in the algorithm. 
+ 3. On the level 1 page a couple options are avaliable. The first level only has two menu options one to return to the home page and another to go to level 2. No input is required to run the automation in the level.
+ 4. The second level has the same options as level 1 except the user is to enter the values for the next step in the algorithm by selecting an empty circle followed by a circle above it with a value.
     Additionally 2 more menu options are avaliable, one to check for feedback on the answer and another depicted as a question mark which repeats the instructions for the current step.
- 5. The third level has different options from the previous two. Here the user is required to fill in the empty circles to show how the list is split or merged.
-    A space of any length between circles indicates a split in the array. The number selection is similar to that of level 2. As for the menu options the check answer button is used to check both the split/merge as well as the number inputs.
+ 5. The third level has different options from the previous two. Here the user is also required to fill in the empty circles to show how the list is split or merged before entering values.
+    A space of any number of dotted circles between solid circles indicates a split in the array. The number selection is similar to that of level 2. As for the menu options the check answer button is used to check both the split/merge as well as the number inputs.
