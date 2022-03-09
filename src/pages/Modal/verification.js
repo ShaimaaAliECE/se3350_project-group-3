@@ -12,7 +12,9 @@ export function Verification(props){
     if(props.success){
       setMessage("Correct!")
       //props.stepp()
-      //props.closeSelf()
+      if(props.closeSelf){
+        props.closeSelf()
+      }
     }else
       setMessage("Wrong!")
       
