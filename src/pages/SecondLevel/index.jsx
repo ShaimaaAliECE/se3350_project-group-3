@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Text, View, ScrollView, Image} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { Button, Text, View, ScrollView, Image, PanResponder} from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import Data from "../../config/steps.json";
@@ -22,13 +22,83 @@ function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
-  
+
+  const [mins, setMins] = useState(0)
+  const [secs, setSecs] = useState(0)
+
+  const [isComplete, setIsComplete] = useState(false); 
+
+  const [idleTime, setIdleTime] = useState(20000);
+  let idleTimeout;
+
+  const setTimeouts = () => {
+    idleTimeout = setTimeout(home,idleTime);
+  };
+
+  const clearTimeouts = () => {
+    if (idleTimeout) {
+      clearTimeout(idleTimeout);
+    }
+  };
+
+  const home = () => {
+    navigation.navigate("Home")
+  }
+
+  useEffect(() => {
+
+    const events = [
+        'load',
+        'mousemove',
+        'mousedown',
+        'click',
+        'scroll',
+        'keypress'
+    ];
+
+    const resetTimeout = () => {
+        clearTimeouts();
+        setTimeouts();
+    };
+
+    for (let i in events) {
+        window.addEventListener(events[i], resetTimeout);
+    }
+
+    setTimeouts();
+    return () => {
+        for(let i in events){
+            window.removeEventListener(events[i], resetTimeout);
+            clearTimeouts();
+        }
+    }
+  },[]);
 
   useEffect(() => {
     setStep(1);
     arr = new Array();
     arr[0] = generateArray(2);
   }, []);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+    if (!isComplete) {
+      if (secs == 59) {
+        setMins(m => m  + 1)
+        setSecs(0)
+      }
+      else {
+        setSecs(s => s + 1)
+      }
+    }
+    else {
+      setMins(m => m);
+      setSecs(s => s);
+    }
+    }, 1000)
+    return () => clearInterval(timerId);
+  }, [secs, mins])
+
 
   React.useEffect(() => {
     return sound
@@ -68,7 +138,6 @@ function SecondLevelScreen({ route, navigation }) {
 
 
   useEffect(() => {
-    console.log(step);
     for (let i = 1; i < step; i++) {
       if (i > 5) {
         break;
@@ -205,7 +274,6 @@ function SecondLevelScreen({ route, navigation }) {
     let components = [];
     
     for (let j = 5; j < arr.length; j++) {
-      console.log(arr[j].length);
       components.push(
         <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
@@ -220,7 +288,6 @@ function SecondLevelScreen({ route, navigation }) {
 
   function mapSegment(j, max) {
     let components = [];
-    console.log(displayNumbers);
     for (let k = 0; k < max; k++) {
       
       components.push(
@@ -235,7 +302,6 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function mapNumberInput(arr, j, k) {
-    console.log(arr);
     return arr.map((number, index) => (
       <TouchableOpacity onPress={() => onPressNumberInput(j, k, index)}>
         <View style={{ flexDirection: "row" }}>
@@ -254,7 +320,6 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function onPressNumberInput(j, k, i) {
-    console.log(j, k, i);
 
     if (Object.keys(selectedIndex).length != 0) {
       let sJ = selectedIndex.j;
@@ -299,14 +364,18 @@ function SecondLevelScreen({ route, navigation }) {
       }
     }
 
-    console.log("count: ", count);
-
-    if (step != 1 && count == 10 * (step - 1)) {
-      setIsCorrect(true)
-      playCorrectFeedback();
-    } else {
-      setIsCorrect(false)
-      playIncorrectFeedback();
+    if (!isComplete) {
+      if (step != 1 && count == 10 * (step - 1)) {
+        if (step >=9) {
+          setIsComplete(true);
+        }
+        setIsCorrect(true)
+        playCorrectFeedback();
+      } 
+      else {
+        setIsCorrect(false)
+         playIncorrectFeedback();
+      }
     }
   }
 
@@ -359,6 +428,7 @@ function SecondLevelScreen({ route, navigation }) {
         <Button
           onPress={() => {
             if (step <= 8 && step > 1 && isCorrect) {
+              setIsCorrect(false);
               setStep(step + 1);
               setModalVisible(true)
             }
@@ -377,7 +447,9 @@ function SecondLevelScreen({ route, navigation }) {
             }}
             onClick={() => setModalVisible(true)}
         />
-        
+        <Text style={{ fontSize: 40 }}>
+        {mins}:{secs < 10 && 0}{secs}
+      </Text>
       </View>
     </ScrollView>
   );
