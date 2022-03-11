@@ -8,6 +8,7 @@ import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
+import {Reset} from '../Modal/resetModal'
 
 const {
   generateArray,
@@ -22,9 +23,10 @@ function SecondLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
-
+  const [resetModalVisible, setResetModalVisble] = useState(false)
   const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false); 
+  const [attempt, setAttempt] = useState(0)
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -42,6 +44,14 @@ function SecondLevelScreen({ route, navigation }) {
   const home = () => {
     navigation.navigate("Home")
   }
+
+  useEffect(() => {
+    if (attempt >=3){
+      setResetModalVisble(true)
+      setAttempt(0)
+    }
+      
+  }, [attempt]);
 
   useEffect(() => {
 
@@ -102,6 +112,18 @@ function SecondLevelScreen({ route, navigation }) {
   const [checkAnswerVisible, setCheckAnswerVisible] = useState(false)
   let displayNumbers = true;
 
+  function resetStates() {
+    setStep(1)
+    setAttempt(0)
+    setBlankArr([])
+    setSelectedIndex({})
+    setCheckAnswerVisible(false)
+    setSecs(0)
+    arr = new Array();
+    arr[0] = generateArray(2);
+    console.log("Array is"+arr[0])
+  }
+
   const closeModal = () => {
     setModalVisible(false);
   }
@@ -117,8 +139,23 @@ function SecondLevelScreen({ route, navigation }) {
       return false;
   }
 
+  function isResetModalActive() {
+    if(resetModalVisible)
+      return true;
+    else 
+      return false;
+  }
+
+  function reset(choice){
+    setResetModalVisble(false)
+    switch(choice){
+      case 1: resetStates(); break;
+      case 2: navigation.navigate('MergeSortLevels'); break;
+      case 3: location.reload();      }
+  }
+
   function displayCheck(){
-    if(checkAnswerVisible)
+    if(checkAnswerVisible && attempt!=3)
       return true;
     else
       return false;
@@ -361,7 +398,9 @@ function SecondLevelScreen({ route, navigation }) {
       } 
       else {
         setIsCorrect(false)
-         playIncorrectFeedback();
+        let num  = attempt
+        setAttempt(num+1)
+        playIncorrectFeedback();
       }
     }
   }
@@ -410,6 +449,12 @@ function SecondLevelScreen({ route, navigation }) {
               <StepModal close={closeModal} data={Data.Level2[`${step-1}`]}/>
               :
               null
+        }
+
+        {isResetModalActive() ?
+          <Reset reset={reset}/>
+          :
+          null
         }
 
         <Button
