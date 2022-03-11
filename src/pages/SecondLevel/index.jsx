@@ -23,12 +23,10 @@ function SecondLevelScreen({ route, navigation }) {
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
 
-  const [mins, setMins] = useState(0)
-  const [secs, setSecs] = useState(0)
-
+  const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false); 
 
-  const [idleTime, setIdleTime] = useState(20000);
+  const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
 
   const setTimeouts = () => {
@@ -75,29 +73,20 @@ function SecondLevelScreen({ route, navigation }) {
   },[]);
 
   useEffect(() => {
+    const timerId = setInterval(() => {
+    if (!isComplete) 
+      setSecs(s => s + 1)
+    else 
+      setSecs(s => s);
+    }, 1000)
+    return () => clearInterval(timerId);
+  }, []);
+
+  useEffect(() => {
     setStep(1);
     arr = new Array();
     arr[0] = generateArray(2);
   }, []);
-
-  useEffect(() => {
-    const timerId = setInterval(() => {
-    if (!isComplete) {
-      if (secs == 59) {
-        setMins(m => m  + 1)
-        setSecs(0)
-      }
-      else {
-        setSecs(s => s + 1)
-      }
-    }
-    else {
-      setMins(m => m);
-      setSecs(s => s);
-    }
-    }, 1000)
-    return () => clearInterval(timerId);
-  }, [secs, mins])
 
 
   React.useEffect(() => {
@@ -135,8 +124,6 @@ function SecondLevelScreen({ route, navigation }) {
       return false;
   }
   
-
-
   useEffect(() => {
     for (let i = 1; i < step; i++) {
       if (i > 5) {
@@ -448,7 +435,7 @@ function SecondLevelScreen({ route, navigation }) {
             onClick={() => setModalVisible(true)}
         />
         <Text style={{ fontSize: 40 }}>
-        {mins}:{secs < 10 && 0}{secs}
+        {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
       </Text>
       </View>
     </ScrollView>
