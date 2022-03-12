@@ -34,6 +34,65 @@ function ThirdLevelScreen({ route, navigation }) {
   const [isCorrect, setIsCorrect] = useState(false)
   const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
 
+  const [secs, setSecs] = useState(0);
+  const [isComplete, setIsComplete] = useState(false); 
+
+  const [idleTime, setIdleTime] = useState(300000);
+  let idleTimeout;
+
+  const setTimeouts = () => {
+    idleTimeout = setTimeout(home,idleTime);
+  };
+
+  const clearTimeouts = () => {
+    if (idleTimeout) {
+      clearTimeout(idleTimeout);
+    }
+  };
+
+  const home = () => {
+    navigation.navigate("Home")
+  }
+
+  useEffect(() => {
+
+    const events = [
+        'load',
+        'mousemove',
+        'mousedown',
+        'click',
+        'scroll',
+        'keypress'
+    ];
+
+    const resetTimeout = () => {
+        clearTimeouts();
+        setTimeouts();
+    };
+
+    for (let i in events) {
+        window.addEventListener(events[i], resetTimeout);
+    }
+
+    setTimeouts();
+    return () => {
+        for(let i in events){
+            window.removeEventListener(events[i], resetTimeout);
+            clearTimeouts();
+        }
+    }
+  },[]);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+    if (!isComplete) 
+      setSecs(s => s + 1)
+    else 
+      setSecs(s => s);
+    }, 1000)
+    return () => clearInterval(timerId);
+  }, []);
+
   useEffect(() => {
     setStep(1);
     arr = new Array();
@@ -474,13 +533,9 @@ function ThirdLevelScreen({ route, navigation }) {
           title="Next Question"
         />
         <Button title="Go to Home" onPress={() => location.reload()} />
-        {/* <Image
-          style={{ width: 25, height: 25 }}
-          source={{
-            uri: Question,
-          }}
-          onClick={() => setModalVisible(true)}
-        /> */}
+        <Text style={{ fontSize: 40 }}>
+        {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
+      </Text>
 
       </View>
     </ScrollView>
