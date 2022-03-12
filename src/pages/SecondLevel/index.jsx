@@ -35,7 +35,7 @@ function SecondLevelScreen({ route, navigation }) {
   const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  const [idleTime, setIdleTime] = useState(300000);
+  const [idleTime, setIdleTime] = useState(20000);
   let idleTimeout;
 
   const setTimeouts = () => {
