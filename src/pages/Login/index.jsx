@@ -30,6 +30,15 @@ function LoginScreen({ navigation }) {
         }       
     }
       />
+
+    <Button
+        title="Sign Up"
+        onPress={() => {
+
+           navigation.navigate("SignUp")
+        }       
+    }
+      />
         </View>
     );
 }
