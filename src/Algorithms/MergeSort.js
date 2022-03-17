@@ -1,7 +1,7 @@
 module.exports = {
   generateArray: (level) => {
     var arr = [];
-
+    console.log(level)
     if (level == 1 || level == 2 || level == 3) {
       while (arr.length < 10) {
         var r = Math.floor(Math.random() * 20) + 1;

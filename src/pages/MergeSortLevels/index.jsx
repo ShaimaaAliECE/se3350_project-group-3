@@ -66,14 +66,17 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20 }} />
         <Button 
         title="Level 4"
-        onPress={async() => {
-          if (correct == 1 || correct == 2) {
-            playCorrectFeedback()
-          }
-          else if (correct == 0) {
-            playIncorrectFeedback()
-          }}}
-        color= {colorFeedback[correct]}
+        onPress={() => {
+          navigation.navigate('FourthLevel')
+        }}
+        // onPress={async() => {
+        //   if (correct == 1 || correct == 2) {
+        //     playCorrectFeedback()
+        //   }
+        //   else if (correct == 0) {
+        //     playIncorrectFeedback()
+        //   }}}
+        // color= {colorFeedback[correct]}
       />
        <View style={{ height: 20}} />
         <Button
