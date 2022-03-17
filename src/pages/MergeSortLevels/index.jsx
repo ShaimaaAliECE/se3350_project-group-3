@@ -8,6 +8,22 @@ let correct = 2;
 
 function MergeSortLevels({ navigation }) {
   const [sound, setSound] = React.useState();
+  const [levelTwo, setLevelTwo] = useState(true)
+  const [levelThree, setLevelThree] = useState(true)
+  const [levelFour, setLevelFour] = useState(true)
+
+  const [levelSelect, setLevelSelect] = useState (1)
+  
+
+    setLevelSelect(props.level) 
+    
+  function setDisabled(levelSelect){
+    switch(levelSelect){
+      case 2: setLevelTwo(false); break;
+      case 3: setLevelTwo(false); setLevelThree(false); break;
+      case 4: setLevelTwo(false); setLevelThree(false); setLevelFour(false); break;
+    }
+  }
 
   async function playCorrectFeedback() {
     correct = 0;
@@ -43,6 +59,7 @@ function MergeSortLevels({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Merge Sort Levels</Text>
       <View style={{ height: 20 }} />
+      {setDisabled()}
       <Button 
         title="Level 1"
         onPress={() => {
@@ -52,6 +69,7 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20 }} />
         <Button 
         title="Level 2"
+        disabled={levelTwo}
         onPress={() => {
           navigation.navigate('SecondLevel')
         }}

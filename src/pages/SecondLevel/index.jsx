@@ -16,6 +16,7 @@ import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png";
 import { Verification } from "../Modal/verification";
 import { Reset } from "../Modal/resetModal";
+import MergeSortLevels from '../MergeSortLevels'
 
 const {
   generateArray,
@@ -26,7 +27,7 @@ const {
 let arr = new Array();
 arr[0] = generateArray(2);
 
-function SecondLevelScreen({ route, navigation }) {
+function SecondLevelScreen({ route, navigation }, props) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false);
@@ -398,6 +399,9 @@ function SecondLevelScreen({ route, navigation }) {
       if (step != 1 && count == 10 * (step - 1)) {
         if (step >= 9) {
           setIsComplete(true);
+          return(
+          <MergeSortLevels level={1}/>
+          )
         }
         setIsCorrect(true);
         playCorrectFeedback();
