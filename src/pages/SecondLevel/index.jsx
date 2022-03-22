@@ -30,7 +30,7 @@ function SecondLevelScreen({ route, navigation }) {
     setModalVisible(false);
   }
 
-  consr changeBackground() {
+  function changeBackground() {
     setBackground("yellow")
   }
 

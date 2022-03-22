@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button } from 'react-native-web';
-
+import SignUp from './src/pages/Login/signUp';
 import HomeScreen from './src/pages/Home';
 import FirstLevelScreen from './src/pages/FirstLevel';
 import MergeSortLevels from './src/pages/mergeSortLevels';
@@ -18,13 +18,14 @@ function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"
+      <Stack.Navigator initialRouteName="SignUp"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#800080',
         },
         headerTintColor: '#fff'
       }}>
+        <Stack.Screen name="SignUp" component={SignUp}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="FirstLevel" component={FirstLevelScreen}/>
         <Stack.Screen name="SecondLevel" component={SecondLevelScreen} />
