@@ -35,7 +35,7 @@ function SecondLevelScreen({ route, navigation }) {
   const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  const [idleTime, setIdleTime] = useState(20000);
+  const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
 
   const setTimeouts = () => {
@@ -89,8 +89,8 @@ function SecondLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      if (!isComplete) setSecs((s) => s + 1);
-      else setSecs((s) => s);
+      if (!isComplete) setSecs(s => s + 1);
+      else setSecs(s => s);
     }, 1000);
     return () => clearInterval(timerId);
   }, []);
@@ -155,10 +155,13 @@ function SecondLevelScreen({ route, navigation }) {
         resetStates();
         break;
       case 2:
-        navigation.navigate("MergeSortLevels");
+        navigation.navigate("MergeSortLevels", {
+          levelThree: (!isComplete), 
+          levelFour: true, 
+          levelFive: true });
         break;
       case 3:
-        location.reload();
+        navigation.navigate("Home")
     }
   }
 
@@ -476,7 +479,10 @@ function SecondLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Home" onPress={() => location.reload()} />
+        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", {
+           levelThree: (!isComplete), 
+           levelFour: true, 
+           levelFive: true })} />
         <Image
           style={{ width: 25, height: 25 }}
           source={{

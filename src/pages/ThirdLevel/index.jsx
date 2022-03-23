@@ -532,7 +532,9 @@ function ThirdLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Home" onPress={() => location.reload()} />
+        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
+           levelFour: (!isComplete), 
+           levelFive: true })} />
         <Text style={{ fontSize: 40 }}>
         {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
       </Text>

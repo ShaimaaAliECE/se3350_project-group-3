@@ -438,8 +438,13 @@ function FirstLevelScreen({ route, navigation }) {
           </>
         ) : null}
         <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate("Home")}
+          title="Go to Level Select"
+          onPress={() => navigation.navigate("MergeSortLevels", {
+            levelTwo: false,
+            levelThree: true,
+            levelFour: true,
+            levelFive: true
+          })}
         />
 
         <Button
