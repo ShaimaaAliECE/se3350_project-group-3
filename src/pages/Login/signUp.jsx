@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 const setUser = async (username, password) => {
     let value = {username, password}
     try {
@@ -12,7 +10,6 @@ const setUser = async (username, password) => {
     } catch(e) {
       // save error
     }
-  
     console.log('Done.')
     console.log(value)
   }

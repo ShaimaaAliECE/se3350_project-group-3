@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Button } from 'react-native';
+import { GlobalContext } from '../../../App';
 
 
 function HomeScreen({ navigation }) {
+  const { user, levels } = useContext(GlobalContext);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', padding: 200}}>
@@ -22,7 +24,12 @@ function HomeScreen({ navigation }) {
         <Button
           title="Merge Sort Algorithm"
           onPress={() => {
-            navigation.navigate('MergeSortLevels')
+            navigation.navigate('MergeSortLevels',{
+              levelTwo: true,
+              levelThree:true,
+              levelFour: true,
+              levelFive:true,
+            })
           }}
         />
         <View style={{ width: 30 }} />

@@ -1,19 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import {
-  Button,
-  Text,
-  View,
-  ScrollView,
-  Image,
-  PanResponder,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button, Text, View, ScrollView, Image } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
 import Data from "../../config/steps.json";
 import { TouchableOpacity } from "react-native-web";
 import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
-import Question from "../../Images/question.png";
+import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
 import { Reset } from "../Modal/resetModal";
 
@@ -26,20 +19,32 @@ const {
 let arr = new Array();
 arr[0] = generateArray(2);
 
-function SecondLevelScreen({ route, navigation }) {
+function generateEmptyArray(length) {
+  let array = [];
+
+  for (let i = 0; i < length; i++) {
+    array.push(null);
+  }
+
+  return array;
+}
+
+function ThirdLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
   const [resetModalVisible, setResetModalVisble] = useState(false);
+
   const [secs, setSecs] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(false); 
   const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
 
   const setTimeouts = () => {
-    idleTimeout = setTimeout(home, idleTime);
+    idleTimeout = setTimeout(home,idleTime);
   };
 
   const clearTimeouts = () => {
@@ -49,8 +54,8 @@ function SecondLevelScreen({ route, navigation }) {
   };
 
   const home = () => {
-    navigation.navigate("Home");
-  };
+    navigation.navigate("Home")
+  }
 
   useEffect(() => {
     if (attempt >= 3) {
@@ -61,37 +66,39 @@ function SecondLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const events = [
-      "load",
-      "mousemove",
-      "mousedown",
-      "click",
-      "scroll",
-      "keypress",
+        'load',
+        'mousemove',
+        'mousedown',
+        'click',
+        'scroll',
+        'keypress'
     ];
 
     const resetTimeout = () => {
-      clearTimeouts();
-      setTimeouts();
+        clearTimeouts();
+        setTimeouts();
     };
 
     for (let i in events) {
-      window.addEventListener(events[i], resetTimeout);
+        window.addEventListener(events[i], resetTimeout);
     }
 
     setTimeouts();
     return () => {
-      for (let i in events) {
-        window.removeEventListener(events[i], resetTimeout);
-        clearTimeouts();
-      }
-    };
-  }, []);
+        for(let i in events){
+            window.removeEventListener(events[i], resetTimeout);
+            clearTimeouts();
+        }
+    }
+  },[]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      if (!isComplete) setSecs(s => s + 1);
-      else setSecs(s => s);
-    }, 1000);
+    if (!isComplete) 
+      setSecs(s => s + 1)
+    else 
+      setSecs(s => s);
+    }, 1000)
     return () => clearInterval(timerId);
   }, [isComplete]);
 
@@ -104,14 +111,14 @@ function SecondLevelScreen({ route, navigation }) {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
+        console.log("Unloading Sound");
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [checkAnswerVisible, setCheckAnswerVisible] = useState(false);
+  const [checkAnswerVisible, setCheckAnswerVisible] = useState(false)
   let displayNumbers = true;
 
   function resetStates() {
@@ -132,15 +139,20 @@ function SecondLevelScreen({ route, navigation }) {
 
   const closeModal = () => {
     setModalVisible(false);
-  };
+  }
 
   const closeCheckAnswer = () => {
-    setCheckAnswerVisible(false);
-  };
+    setCheckAnswerVisible(false)
+    if (isBubbleCorrect) {
+      setShowBubble(false);
+    }
+  }
 
   function isActive() {
-    if (modalVisible) return true;
-    else return false;
+    if (modalVisible)
+      return true;
+    else
+      return false;
   }
 
   function isResetModalActive() {
@@ -155,9 +167,8 @@ function SecondLevelScreen({ route, navigation }) {
         resetStates();
         break;
       case 2:
-        navigation.navigate("MergeSortLevels", {
-          levelThree: (!isComplete), 
-          levelFour: true, 
+        navigation.navigate("MergeSortLevels", { 
+          levelFour: (!isComplete), 
           levelFive: true });
         break;
       case 3:
@@ -171,13 +182,12 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   useEffect(() => {
+    console.log(step);
     for (let i = 1; i < step; i++) {
       if (i > 5) {
         break;
       } else if (i == 1) {
         arr[1] = split(arr, 1);
-
-        console.log(blankArr);
 
         let newArr = [...blankArr];
         newArr[1] = split(newArr, 1, true);
@@ -198,9 +208,14 @@ function SecondLevelScreen({ route, navigation }) {
         setBlankArr([...newArr]);
       }
     }
+
+    setIsCorrect(false);
+    setIsBubbleCorrect(false);
   }, [step]);
 
   const [blankArr, setBlankArr] = useState([]);
+  const [showBubble, setShowBubble] = useState(true);
+  const [selectableBubbles, setSelectableBubles] = useState(generateEmptyArray(20));
 
   useEffect(() => {
     setBlankArr((prev) => {
@@ -286,6 +301,7 @@ function SecondLevelScreen({ route, navigation }) {
             <View style={{ flexDirection: "row" }}>
               {mapNumberInput(arr[j], j, 0)}
             </View>
+
           </View>
         );
       } else {
@@ -295,7 +311,19 @@ function SecondLevelScreen({ route, navigation }) {
         components.push(
           <View style={{ alignItems: "center" }}>
             <View style={{ flexDirection: "row" }}>
-              {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
+              {showBubble && j >= step - 1
+                ? selectableBubbles.map((sBubble, index) => (
+                  <TouchableOpacity onPress={() => onPressEmptyBubble(index)}>
+                    <View style={{ flexDirection: "row" }}>
+                      <NumberInput
+                        value={""}
+                        editable={false}
+                        isSelected={false}
+                        style={{ borderStyle: sBubble ? 'solid' : 'dashed' }}
+                      />
+                    </View>
+                  </TouchableOpacity>))
+                : mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
             </View>
           </View>
         );
@@ -305,14 +333,41 @@ function SecondLevelScreen({ route, navigation }) {
     return components;
   }
 
+  function onPressEmptyBubble(i) {
+    setSelectableBubles(prev => {
+      const newArr = [...prev];
+      if (newArr[i] == 1) {
+        newArr[i] = null;
+      } else {
+        newArr[i] = 1;
+
+      }
+      return newArr;
+    });
+  }
+
   function generateMergeAlgorithm() {
     let components = [];
 
     for (let j = 5; j < arr.length; j++) {
+      console.log(arr[j].length);
       components.push(
         <View style={{ alignItems: "center" }}>
           <View style={{ flexDirection: "row" }}>
-            {mapSegment(j, blankArr[j] ? blankArr[j].length : 0)}
+            {showBubble && j >= step - 1
+              ? selectableBubbles.map((sBubble, index) => (
+                <TouchableOpacity onPress={() => onPressEmptyBubble(index)}>
+                  <View style={{ flexDirection: "row" }}>
+                    <NumberInput
+                      value={""}
+                      editable={false}
+                      isSelected={false}
+                      style={{ borderStyle: sBubble ? 'solid' : 'dashed' }}
+                    />
+                  </View>
+                </TouchableOpacity>))
+              : mapSegment(j, blankArr[j] ? blankArr[j].length : 0)
+            }
           </View>
         </View>
       );
@@ -323,7 +378,9 @@ function SecondLevelScreen({ route, navigation }) {
 
   function mapSegment(j, max) {
     let components = [];
+    console.log(displayNumbers);
     for (let k = 0; k < max; k++) {
+
       components.push(
         <View style={{ flexDirection: "row" }}>
           <View style={{ width: 20 }} />
@@ -336,6 +393,7 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function mapNumberInput(arr, j, k) {
+    console.log(arr);
     return arr.map((number, index) => (
       <TouchableOpacity onPress={() => onPressNumberInput(j, k, index)}>
         <View style={{ flexDirection: "row" }}>
@@ -354,6 +412,8 @@ function SecondLevelScreen({ route, navigation }) {
   }
 
   function onPressNumberInput(j, k, i) {
+    console.log(j, k, i);
+
     if (Object.keys(selectedIndex).length != 0) {
       let sJ = selectedIndex.j;
       let sK = selectedIndex.k;
@@ -397,6 +457,8 @@ function SecondLevelScreen({ route, navigation }) {
       }
     }
 
+    console.log("count: ", count);
+
     if (!isComplete) {
       if (step != 1 && count == 10 * (step - 1)) {
         if (step >= 9) {
@@ -410,6 +472,52 @@ function SecondLevelScreen({ route, navigation }) {
         setAttempt(num + 1);
         playIncorrectFeedback();
       }
+    }
+  }
+
+  function checkSplitMergeAnswer() {
+    let scantron = [];
+    let segment = [];
+
+    for (let i = 0; i < selectableBubbles.length; i++) {
+      if (selectableBubbles[i]) {
+        segment.push(selectableBubbles[i]);
+
+        if (i == selectableBubbles.length - 1) {
+          scantron.push(segment);
+        }
+      } else {
+        if (segment.length) {
+          scantron.push(segment);
+          segment = [];
+        }
+      }
+    }
+
+    // console.log(scantron);
+
+    let tmpIsCorrect = true;
+
+    // console.log(arr[step - 1]);
+
+    if (arr[step - 1].length !== scantron.length) {
+      tmpIsCorrect = false;
+    } else {
+      for (let i = 0; i < arr[step - 1].length; i++) {
+        if (arr[step - 1][i].length !== scantron[i].length) {
+          tmpIsCorrect = false;
+        }
+      }
+    }
+
+    console.log(tmpIsCorrect);
+
+    if (tmpIsCorrect) {
+      setIsBubbleCorrect(true)
+      playCorrectFeedback();
+    } else {
+      setIsBubbleCorrect(false)
+      playIncorrectFeedback();
     }
   }
 
@@ -436,67 +544,55 @@ function SecondLevelScreen({ route, navigation }) {
         {generateSplitAlgorithm()}
         {generateMergeAlgorithm()}
         <View style={{ height: 20 }} />
-        <Text>
-          Aside from the first step where there are no numbers to fill in, you
-          may not go to the next question unless your answer has been marked
-          correct!
-        </Text>
-        <Text>
-          After getting an answer correct, DO NOT try to change the numbers and
-          then go to the next question. You will still see the next question,
-          but will not be able to go to the question after until all errors are
-          fixed!!!
-        </Text>
+        <Text>Aside from the first step where there are no numbers to fill in, you may not go to the next question unless your answer has been marked correct!</Text>
+        <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
             if (step > 1 && step <= 9) {
               checkAnswer();
-              setCheckAnswerVisible(true);
+              if (showBubble) checkSplitMergeAnswer();
+              setCheckAnswerVisible(true)
             }
           }}
-          title="Check Answer"
+          title={showBubble ? "Check Split/Merge Answer" : "Check Value Answer"}
         />
-        {displayCheck() ? (
-          <Verification close={closeCheckAnswer} success={isCorrect} />
-        ) : null}
+        {displayCheck() ?
+          <Verification close={closeCheckAnswer} success={showBubble ? isBubbleCorrect : isCorrect} />
+          :
+          null
+        }
 
-        {isActive() ? (
+        {isActive() ?
           <StepModal close={closeModal} data={Data.Level2[`${step - 1}`]} />
-        ) : null}
+          :
+          null
+        }
 
         {isResetModalActive() ? <Reset reset={reset} /> : null}
 
         <Button
           onPress={() => {
             if (step <= 8 && step > 1 && isCorrect) {
-              setIsCorrect(false);
               setStep(step + 1);
-              setModalVisible(true);
-            } else if (step == 1) {
+              setSelectableBubles(generateEmptyArray(20));
+              setShowBubble(true);
+            }
+            else if (step == 1) {
               setStep(step + 1);
-              setModalVisible(true);
             }
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", {
-           levelThree: (!isComplete), 
-           levelFour: true, 
+        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
+           levelFour: (!isComplete), 
            levelFive: true })} />
-        <Image
-          style={{ width: 25, height: 25 }}
-          source={{
-            uri: Question,
-          }}
-          onClick={() => setModalVisible(true)}
-        />
         <Text style={{ fontSize: 40 }}>
-          {Math.floor(secs / 60)}:{secs % 60 < 10 && 0}
-          {Math.floor(secs % 60)}
-        </Text>
+        {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
+      </Text>
+
       </View>
     </ScrollView>
   );
 }
 
-export default SecondLevelScreen;
+export default ThirdLevelScreen;

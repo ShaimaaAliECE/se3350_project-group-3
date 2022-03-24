@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
+import { GlobalContext } from '../../../App';
 
-let colorFeedback = ["#128CC1", "#128CC1"];
-function MergeSortLevels({ navigation }) {
+let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
+let correct = 2;
+
+//change to true to actually account for the moving along
+let permanentLevel2 = false;
+let permanentLevel3 = false;
+let permanentLevel4 = false;
+let permanentLevel5 = false;
+
+function MergeSortLevels({ route, navigation }) {
+  const {levelTwo, levelThree, levelFour, levelFive} = route.params;
+
+  if (levelTwo != true) {
+    permanentLevel2=false;
+  }
+  if (levelThree != true) {
+    permanentLevel3=false;
+  }
+  if (levelFour != true) {
+    permanentLevel4=false;
+  }
+  if (levelFive != true) {
+    permanentLevel5=false;
+  }
   const [sound, setSound] = React.useState();
 
   async function playCorrectFeedback() {
-    colorFeedback[0] = "#25C112";
+    correct = 0;
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/correct.mp3')
     );
@@ -17,12 +40,16 @@ function MergeSortLevels({ navigation }) {
   }
 
   async function playIncorrectFeedback() {
-    colorFeedback[1] = "#C22A25";
+    correct = 1;
     const { sound } = await Audio.Sound.createAsync(
        require('../../../assets/incorrect.mp3')
     );
     setSound(sound);
     await sound.playAsync(); 
+  }
+
+  function returnToBlue() {
+    correct = 2;
   }
 
   React.useEffect(() => {
@@ -32,7 +59,9 @@ function MergeSortLevels({ navigation }) {
           sound.unloadAsync(); }
       : undefined;
   }, [sound]);
-  
+
+  const { user, levels } = useContext(GlobalContext);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Merge Sort Levels</Text>
@@ -53,25 +82,39 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20 }} />
         <Button
         title="Level 3"
+        disabled={permanentLevel3}
         onPress={() => {
           navigation.navigate('ThirdLevel')
         }}
       />
        <View style={{ height: 20 }} />
-        <Button color= {colorFeedback[0]}
+        <Button 
         title="Level 4"
-        onPress={playCorrectFeedback}
+        disabled={permanentLevel4}
+        onPress={async() => {
+          if (correct == 1 || correct == 2) {
+            playCorrectFeedback()
+          }
+          else if (correct == 0) {
+            playIncorrectFeedback()
+          }}}
+        color= {colorFeedback[correct]}
       />
        <View style={{ height: 20}} />
-        <Button color= {colorFeedback[1]}
+        <Button
         title="Level 5"
-        onPress={playIncorrectFeedback}
+        disabled={permanentLevel5}
+        onPress={() => {
+          navigation.navigate('FifthLevel')
+        }}
+        
       />
        <View style={{ height: 20 }} />
       <Button color="#128CC1"
         title="Home"
         onPress={() => {
-          navigation.navigate('Home')
+          returnToBlue();
+          navigation.navigate('Home');
         }}
       />
        <View style={{ height: 20 }} />
