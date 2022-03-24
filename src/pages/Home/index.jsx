@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Button } from 'react-native';
+import { GlobalContext } from '../../../App';
 
 
 function HomeScreen({ navigation }) {
+  const { user, levels } = useContext(GlobalContext);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', padding: 200}}>

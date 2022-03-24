@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
+import { GlobalContext } from '../../../App';
 
 let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
 let correct = 2;
@@ -38,7 +39,9 @@ function MergeSortLevels({ navigation }) {
           sound.unloadAsync(); }
       : undefined;
   }, [sound]);
-  
+
+  const { user, levels } = useContext(GlobalContext);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Merge Sort Levels</Text>
