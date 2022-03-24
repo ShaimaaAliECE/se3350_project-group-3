@@ -6,7 +6,7 @@ import { Audio } from 'expo-av';
 let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
 let correct = 2;
 
-//change to true to actaully account for the moving along
+//change to true to actually account for the moving along
 let permanentLevel2 = false;
 let permanentLevel3 = false;
 let permanentLevel4 = false;

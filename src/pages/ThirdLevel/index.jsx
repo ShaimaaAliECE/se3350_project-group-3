@@ -8,6 +8,7 @@ import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
+import { Reset } from "../Modal/resetModal";
 
 const {
   generateArray,
@@ -33,9 +34,11 @@ function ThirdLevelScreen({ route, navigation }) {
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
   const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
+  const [resetModalVisible, setResetModalVisble] = useState(false);
 
   const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false); 
+  const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -55,7 +58,13 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   useEffect(() => {
+    if (attempt >= 3) {
+      setResetModalVisble(true);
+      setAttempt(0);
+    }
+  }, [attempt]);
 
+  useEffect(() => {
     const events = [
         'load',
         'mousemove',
@@ -91,7 +100,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setSecs(s => s);
     }, 1000)
     return () => clearInterval(timerId);
-  }, []);
+  }, [isComplete]);
 
   useEffect(() => {
     setStep(1);
@@ -112,6 +121,22 @@ function ThirdLevelScreen({ route, navigation }) {
   const [checkAnswerVisible, setCheckAnswerVisible] = useState(false)
   let displayNumbers = true;
 
+  function resetStates() {
+    setAttempt(0);
+    setBlankArr((prev) => {
+      let newArr = [...prev];
+      newArr[0] = arr[0].map((a) => null);
+      return newArr;
+    });
+    setStep(1);
+    setSelectedIndex({});
+    setCheckAnswerVisible(false);
+    setSecs(0);
+    arr = new Array();
+    arr[0] = generateArray(2);
+    console.log("Array is" + arr[0]);
+  }
+
   const closeModal = () => {
     setModalVisible(false);
   }
@@ -130,14 +155,31 @@ function ThirdLevelScreen({ route, navigation }) {
       return false;
   }
 
-  function displayCheck() {
-    if (checkAnswerVisible)
-      return true;
-    else
-      return false;
+  function isResetModalActive() {
+    if (resetModalVisible) return true;
+    else return false;
   }
 
+  function reset(choice) {
+    setResetModalVisble(false);
+    switch (choice) {
+      case 1:
+        resetStates();
+        break;
+      case 2:
+        navigation.navigate("MergeSortLevels", { 
+          levelFour: (!isComplete), 
+          levelFive: true });
+        break;
+      case 3:
+        navigation.navigate("Home")
+    }
+  }
 
+  function displayCheck() {
+    if (checkAnswerVisible && attempt != 3) return true;
+    else return false;
+  }
 
   useEffect(() => {
     console.log(step);
@@ -417,12 +459,19 @@ function ThirdLevelScreen({ route, navigation }) {
 
     console.log("count: ", count);
 
-    if (step != 1 && count == 10 * (step - 1)) {
-      setIsCorrect(true)
-      playCorrectFeedback();
-    } else {
-      setIsCorrect(false)
-      playIncorrectFeedback();
+    if (!isComplete) {
+      if (step != 1 && count == 10 * (step - 1)) {
+        if (step >= 9) {
+          setIsComplete(true);
+        }
+        setIsCorrect(true);
+        playCorrectFeedback();
+      } else {
+        setIsCorrect(false);
+        let num = attempt;
+        setAttempt(num + 1);
+        playIncorrectFeedback();
+      }
     }
   }
 
@@ -518,6 +567,8 @@ function ThirdLevelScreen({ route, navigation }) {
           :
           null
         }
+
+        {isResetModalActive() ? <Reset reset={reset} /> : null}
 
         <Button
           onPress={() => {

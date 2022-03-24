@@ -93,7 +93,7 @@ function SecondLevelScreen({ route, navigation }) {
       else setSecs(s => s);
     }, 1000);
     return () => clearInterval(timerId);
-  }, []);
+  }, [isComplete]);
 
   useEffect(() => {
     setStep(1);
