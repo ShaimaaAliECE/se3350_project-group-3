@@ -10,13 +10,12 @@ function FirstLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [substep, setSubstep] = useState(1);
   const [subLength, setSubLength] = useState(2);
-  const [subCount, setSubCount] = useState(2)
+  const [nxtBtn , setNxtBtn] = useState(false);
 
   useEffect(() => {
     setStep(1);
     setSubstep(0);
     setSubLength(2);
-    setSubCount(0);
     setNumbers(generateArray(1));
   }, []);
  
@@ -26,15 +25,54 @@ function FirstLevelScreen({ route, navigation }) {
     if (substep < subLength) {
       const timeout = setTimeout(() => {
         setSubstep(substep + 1);
-      }, 2000); 
+      }, 1000); 
     } else {
       clearTimeout(timeout);
+      setNxtBtn(false);
     }
 
     return clearTimeout(timeout);
   }, [substep]);
 
   let maxCount = 10;
+
+  function setAnimationConstraints(){
+    switch(step){
+      case 0:
+        setSubLength(1);
+        break;
+      case 1:
+        setSubLength(3);
+        setSubstep(0);
+        break;
+      case 2:
+        setSubLength(8);
+        setSubstep(2);
+        break;
+      case 3:
+        setSubLength(16);
+        setSubstep(7);
+        break;
+      case 4:
+        setSubLength(26);
+        setSubstep(15);
+        break;
+      case 5:
+        setSubLength(35);
+        setSubstep(25);
+        break;
+      case 6:
+        setSubLength(39);
+        setSubstep(34);
+        break;
+      case 7:
+        setSubLength(41);
+        setSubstep(38);
+        break;
+      default:
+        break;
+    }
+  }
 
   function split(array, step) {
     let object = new Array();
@@ -247,7 +285,6 @@ function FirstLevelScreen({ route, navigation }) {
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
               {substep > 0 ? algorithm(2, numbers).left.map((number) => {
-                
                 return <NumberInput value={number} editable={false} />;
                 }): null }
 
@@ -267,21 +304,21 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {algorithm(3, numbers).left.left.map((number) => {
+              {substep > 3 ? algorithm(3, numbers).left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(3, numbers).left.right.map((number) => {
+              {substep > 4 ? algorithm(3, numbers).left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(3, numbers).right.left.map((number) => {
+              {substep > 5 ? algorithm(3, numbers).right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(3, numbers).right.right.map((number) => {
+              {substep > 6 ? algorithm(3, numbers).right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
             </View>
           </>
         ) : null}
@@ -294,37 +331,37 @@ function FirstLevelScreen({ route, navigation }) {
             <View style={{ height: 20 }} />
 
             <View style={{ flexDirection: "row" }}>
-              {algorithm(4, numbers).left.left.left.map((number) => {
+              {substep > 8 ? algorithm(4, numbers).left.left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).left.left.right.map((number) => {
+              {substep > 9 ? algorithm(4, numbers).left.left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).left.right.left.map((number) => {
+              {substep > 10 ? algorithm(4, numbers).left.right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).left.right.right.map((number) => {
+              {substep > 11 ? algorithm(4, numbers).left.right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).right.left.left.map((number) => {
+              {substep > 12 ? algorithm(4, numbers).right.left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).right.left.right.map((number) => {
+              {substep > 13 ? algorithm(4, numbers).right.left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).right.right.left.map((number) => {
+              {substep > 14 ? algorithm(4, numbers).right.right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(4, numbers).right.right.right.map((number) => {
+              {substep > 15 ? algorithm(4, numbers).right.right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
             </View>
           </>
         ) : null}
@@ -336,9 +373,10 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {numbers.map((number, index) => {
+              {numbers.slice(0, substep - 15).map((number, index) => {
                 return (
                   <>
+                  
                     <View style={{ width: index == 0 ? 0 : 20 }} />
                     <NumberInput value={number} editable={false} />
                   </>
@@ -355,37 +393,37 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {algorithm(6, numbers).left.left.left.map((number) => {
+              {substep > 26 ? algorithm(6, numbers).left.left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).left.left.right.map((number) => {
+              {substep > 27 ? algorithm(6, numbers).left.left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).left.right.left.map((number) => {
+              {substep > 28 ? algorithm(6, numbers).left.right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).left.right.right.map((number) => {
+              {substep > 29 ? algorithm(6, numbers).left.right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).right.left.left.map((number) => {
+              {substep > 30 ? algorithm(6, numbers).right.left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).right.left.right.map((number) => {
+              {substep > 31 ? algorithm(6, numbers).right.left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).right.right.left.map((number) => {
+              {substep > 32 ? algorithm(6, numbers).right.right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
               <View style={{ width: 20 }} />
-              {algorithm(6, numbers).right.right.right.map((number) => {
+              {substep > 33 ? algorithm(6, numbers).right.right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null}
             </View>
           </>
         ) : null}
@@ -398,21 +436,21 @@ function FirstLevelScreen({ route, navigation }) {
             <View style={{ height: 20 }} />
 
             <View style={{ flexDirection: "row" }}>
-              {algorithm(7, numbers).left.left.map((number) => {
+              {substep > 34 ? algorithm(7, numbers).left.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(7, numbers).left.right.map((number) => {
+              {substep > 35 ? algorithm(7, numbers).left.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(7, numbers).right.left.map((number) => {
+              {substep > 36 ? algorithm(7, numbers).right.left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(7, numbers).right.right.map((number) => {
+              {substep > 37 ? algorithm(7, numbers).right.right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
             </View>
           </>
         ) : null}
@@ -424,13 +462,13 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {algorithm(8, numbers).left.map((number) => {
+              {substep > 39 ? algorithm(8, numbers).left.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
               <View style={{ width: 20 }} />
-              {algorithm(8, numbers).right.map((number) => {
+              {substep > 40 ? algorithm(8, numbers).right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
             </View>
           </>
         ) : null}
@@ -453,11 +491,13 @@ function FirstLevelScreen({ route, navigation }) {
           onPress={() => navigation.navigate("Home")}
         />
 
-        <Button
+        <Button 
+          disabled = {nxtBtn}
           title="Next Step"
           onPress={() => {
-            setStep(step + 1)
-            setSubstep(subCount);
+            setNxtBtn(true);
+            setStep(step + 1);
+            setAnimationConstraints();
             }}
         />
 
