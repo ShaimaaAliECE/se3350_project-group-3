@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
@@ -7,7 +7,27 @@ import { GlobalContext } from '../../../App';
 let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
 let correct = 2;
 
-function MergeSortLevels({ navigation }) {
+//change to true to actually account for the moving along
+let permanentLevel2 = false;
+let permanentLevel3 = false;
+let permanentLevel4 = false;
+let permanentLevel5 = false;
+
+function MergeSortLevels({ route, navigation }) {
+  const {levelTwo, levelThree, levelFour, levelFive} = route.params;
+
+  if (levelTwo != true) {
+    permanentLevel2=false;
+  }
+  if (levelThree != true) {
+    permanentLevel3=false;
+  }
+  if (levelFour != true) {
+    permanentLevel4=false;
+  }
+  if (levelFive != true) {
+    permanentLevel5=false;
+  }
   const [sound, setSound] = React.useState();
 
   async function playCorrectFeedback() {
@@ -62,6 +82,7 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20 }} />
         <Button
         title="Level 3"
+        disabled={permanentLevel3}
         onPress={() => {
           navigation.navigate('ThirdLevel')
         }}
@@ -69,6 +90,7 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20 }} />
         <Button 
         title="Level 4"
+        disabled={permanentLevel4}
         onPress={async() => {
           if (correct == 1 || correct == 2) {
             playCorrectFeedback()
@@ -81,6 +103,7 @@ function MergeSortLevels({ navigation }) {
        <View style={{ height: 20}} />
         <Button
         title="Level 5"
+        disabled={permanentLevel5}
         onPress={() => {
           navigation.navigate('FifthLevel')
         }}

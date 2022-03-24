@@ -26,41 +26,110 @@ function App() {
         enabled: true,
         timeSpent: 0,
         numOfMistakes: 0,
-        numOfAttemps: 0
+        numOfAttempts: 0
       },
       {
         level: 2,
         enabled: true,
         timeSpent: 0,
         numOfMistakes: 0,
-        numOfAttemps: 0
+        numOfAttempts: 0
       },
       {
         level: 3,
         enabled: true,
         timeSpent: 0,
         numOfMistakes: 0,
-        numOfAttemps: 0
+        numOfAttempts: 0
       },
       {
         level: 4,
         enabled: true,
         timeSpent: 0,
         numOfMistakes: 0,
-        numOfAttemps: 0
+        numOfAttempts: 0
       },
       {
         level: 5,
         enabled: true,
         timeSpent: 0,
         numOfMistakes: 0,
-        numOfAttemps: 0
+        numOfAttempts: 0
       }
     ]
   );
 
+  const configureLevel = (level, enabled) => {
+    setLevels(
+      prev => {
+        const newLevels = [...prev];
+        const index = newLevels.findIndex((n) => n.level == level);
+
+        if (index !== -1) {
+          newLevels[index].enabled = enabled;
+        }
+
+        return newLevels;
+      }
+    )
+  }
+
+  const addTime = (level, time) => {
+    setLevels(
+      prev => {
+        const newLevels = [...prev];
+        const index = newLevels.findIndex((n) => n.level == level);
+
+        if (index !== -1) {
+          newLevels[index].timeSpent += time;
+        }
+
+        return newLevels;
+      }
+    )
+  }
+
+  const addMistake = (level) => {
+    setLevels(
+      prev => {
+        const newLevels = [...prev];
+        const index = newLevels.findIndex((n) => n.level == level);
+
+        if (index !== -1) {
+          newLevels[index].numOfMistakes += 1;
+        }
+
+        return newLevels;
+      }
+    )
+  }
+
+  const addAttempt = (level) => {
+    setLevels(
+      prev => {
+        const newLevels = [...prev];
+        const index = newLevels.findIndex((n) => n.level == level);
+
+        if (index !== -1) {
+          newLevels[index].numOfAttempts += 1;
+        }
+
+        return newLevels;
+      }
+    )
+  }
+
   return (
-    <GlobalContext.Provider value={{ user, levels }}>
+    <GlobalContext.Provider
+      value={{
+        user,
+        levels,
+        configureLevel,
+        addTime,
+        addMistake,
+        addAttempt
+      }}
+    >
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"
           screenOptions={{

@@ -24,7 +24,12 @@ function HomeScreen({ navigation }) {
         <Button
           title="Merge Sort Algorithm"
           onPress={() => {
-            navigation.navigate('MergeSortLevels')
+            navigation.navigate('MergeSortLevels',{
+              levelTwo: true,
+              levelThree:true,
+              levelFour: true,
+              levelFive:true,
+            })
           }}
         />
         <View style={{ width: 30 }} />
