@@ -1,10 +1,12 @@
-import react, {useState} from "react";
+import react, {useState, useContext} from "react";
 import {View, Text, Picker} from 'react-native'
+import { GlobalContext } from '../../../App';
 
 
 export default function UserData() {
 
     const [selectedValue, setSelectedValue] = useState("2");
+    const { user, levels } = useContext(GlobalContext);
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', padding: 200}}>
@@ -13,7 +15,7 @@ export default function UserData() {
       <View style={{ height: 120 }} />
 
       <View style={{ flexDirection: 'row' }}>
-       
+       <h1>{user}</h1>
         <Picker
         selectedValue={selectedValue}
         style={{ height: 50, width: 150 }}

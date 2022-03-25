@@ -1,21 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { GlobalContext } from '../../../App';
 
 
 function HomeScreen({ navigation }) {
-  const { user, levels } = useContext(GlobalContext);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', padding: 200}}>
-          <View style={{ flexDirection: 'row' }}>
-          <View style={{ width: 1000 }} />
-          <View style={{ height: 40, }} />
-          <Button
-            title="Login Here"
-            onPress={() => navigation.navigate('Login')}
-          />
-        </View>
+          
       <Text style={{ fontSize: 25 }}>Please select an algorithm</Text>
       <View style={{ height: 120 }} />
 
@@ -24,12 +15,7 @@ function HomeScreen({ navigation }) {
         <Button
           title="Merge Sort Algorithm"
           onPress={() => {
-            navigation.navigate('MergeSortLevels',{
-              levelTwo: true,
-              levelThree:true,
-              levelFour: true,
-              levelFive:true,
-            })
+            navigation.navigate('MergeSortLevels')
           }}
         />
         <View style={{ width: 30 }} />
@@ -37,6 +23,12 @@ function HomeScreen({ navigation }) {
           title="Quick Sort Algorithm"
           onPress={() => {
             navigation.navigate('QuickSortLevels')
+          }}
+        />
+        <Button
+          title="User Data"
+          onPress={() => {
+            navigation.navigate('UserData')
           }}
         />
         

@@ -12,6 +12,7 @@ import QuickSortLevels from './src/pages/QuickSortLevels';
 import LoginScreen from './src/pages/Login';
 import SecondLevelScreen from './src/pages/SecondLevel';
 import ThirdLevelScreen from './src/pages/ThirdLevel';
+import UserData from './src/pages/Analytics/userData';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,10 @@ function App() {
       }
     ]
   );
+
+  const addUser = (username) => {
+    setUser(username)
+  }
 
   const configureLevel = (level, enabled) => {
     setLevels(
@@ -127,11 +132,12 @@ function App() {
         configureLevel,
         addTime,
         addMistake,
-        addAttempt
+        addAttempt,
+        addUser
       }}
     >
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home"
+        <Stack.Navigator initialRouteName="SignUp"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#800080',
@@ -147,6 +153,8 @@ function App() {
           <Stack.Screen name="MergeSortLevels" component={MergeSortLevels} />
           <Stack.Screen name="QuickSortLevels" component={QuickSortLevels} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUp}/>
+          <Stack.Screen name="UserData" component={UserData}/>
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalContext.Provider>
