@@ -36,7 +36,7 @@ function SecondLevelScreen({ route, navigation }) {
   const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  const { user, levels, enableLevel } = useContext(GlobalContext);
+  const { user, levels, enableLevel, addTime, addMistake, addAttempt } = useContext(GlobalContext);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -54,6 +54,10 @@ function SecondLevelScreen({ route, navigation }) {
   const home = () => {
     navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    addAttempt(2, 1);
+  }, []);
 
   useEffect(() => {
     if (attempt >= 3) {
@@ -92,8 +96,13 @@ function SecondLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      if (!isComplete) setSecs(s => s + 1);
-      else setSecs(s => s);
+      if (!isComplete) {
+        setSecs(s => s + 1);
+        addTime(2, 1);
+      }
+      else {
+        setSecs(s => s);
+      }
     }, 1000);
     return () => clearInterval(timerId);
   }, [isComplete]);
@@ -118,6 +127,7 @@ function SecondLevelScreen({ route, navigation }) {
   let displayNumbers = true;
 
   function resetStates() {
+    addAttempt(2, 1);
     setAttempt(0);
     setBlankArr((prev) => {
       let newArr = [...prev];
@@ -128,6 +138,7 @@ function SecondLevelScreen({ route, navigation }) {
     setSelectedIndex({});
     setCheckAnswerVisible(false);
     setSecs(0);
+    addAttempt(1);
     arr = new Array();
     arr[0] = generateArray(2);
     console.log("Array is" + arr[0]);
@@ -412,6 +423,7 @@ function SecondLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
+        addMistake(2, 1);
         playIncorrectFeedback();
       }
     }

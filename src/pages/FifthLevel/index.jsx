@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, Text, View, ScrollView, Image } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
@@ -9,6 +9,7 @@ import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
 import { Reset } from "../Modal/resetModal";
+import { GlobalContext } from "../../../App";
 
 const {
   generateArray,
@@ -30,6 +31,8 @@ function generateEmptyArray(length) {
 }
 
 function FifthLevelScreen({ route, navigation }) {
+  const { addTime, addAttempt, addMistake } = useContext(GlobalContext);
+
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
@@ -42,6 +45,10 @@ function FifthLevelScreen({ route, navigation }) {
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
+
+  useEffect(() => {
+    addAttempt(5, 1);
+  }, []);
 
   const setTimeouts = () => {
     idleTimeout = setTimeout(home,idleTime);
@@ -94,10 +101,12 @@ function FifthLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const timerId = setInterval(() => {
-    if (!isComplete) 
+    if (!isComplete) {
       setSecs(s => s + 1)
-    else 
+      addTime(1);
+    } else {
       setSecs(s => s);
+    }
     }, 1000)
     return () => clearInterval(timerId);
   }, [isComplete]);
@@ -134,6 +143,7 @@ function FifthLevelScreen({ route, navigation }) {
     setSecs(0);
     setShowBubble(true);
     setSelectableBubles(generateEmptyArray(100));
+    addAttempt(5, 1);
     arr = new Array();
     arr[0] = generateArray(5);
     console.log("Array is" + arr[0]);
@@ -485,6 +495,7 @@ function FifthLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
+        addMistake(5, 1);
         playIncorrectFeedback();
       }
     }
@@ -534,6 +545,7 @@ function FifthLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false);
       let num = attempt;
       setAttempt(num + 1);
+      addMistake(5, 1);
       playIncorrectFeedback();
     }
   }

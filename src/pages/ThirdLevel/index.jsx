@@ -30,7 +30,7 @@ function generateEmptyArray(length) {
 }
 
 function ThirdLevelScreen({ route, navigation }) {
-  const { enableLevel } = useContext(GlobalContext);
+  const { enableLevel, addTime, addAttempt, addMistake } = useContext(GlobalContext);
   
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
@@ -56,6 +56,10 @@ function ThirdLevelScreen({ route, navigation }) {
   const home = () => {
     navigation.navigate("Home")
   }
+
+  useEffect(() => {
+    addAttempt(3, 1);
+  }, []);
 
   useEffect(() => {
 
@@ -88,10 +92,12 @@ function ThirdLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      if (!isComplete)
+      if (!isComplete) {
         setSecs(s => s + 1)
-      else
+        addTime(1);
+      } else {
         setSecs(s => s);
+      }
     }, 1000)
     return () => clearInterval(timerId);
   }, []);
@@ -128,6 +134,7 @@ function ThirdLevelScreen({ route, navigation }) {
     setSecs(0);
     setShowBubble(true);
     setSelectableBubles(generateEmptyArray(20));
+    addAttempt(1);
     arr = new Array();
     arr[0] = generateArray(2);
     console.log("Array is" + arr[0]);
@@ -449,6 +456,7 @@ function ThirdLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
+        addMistake(1);
         playIncorrectFeedback();
       }
     }
@@ -498,6 +506,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false)
       let num = attempt;
       setAttempt(num + 1);
+      addAttempt(1);
       playIncorrectFeedback();
     }
   }

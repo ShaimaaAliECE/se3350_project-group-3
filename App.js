@@ -126,6 +126,24 @@ function App() {
     )
   }
 
+  const getLevelInfo = (level) => {
+    const index = levels.findIndex((l) => l.level == level);
+
+    if (index !== -1) {
+      return {
+        timeSpent: levels[index].timeSpent,
+        numOfAttempts: levels[index].numOfAttempts,
+        numOfMistakes: levels[index].numOfMistakes
+      }
+    }
+
+    return {
+      timeSpent: 0,
+      numOfAttempts: 0,
+      numOfMistakes: 0
+    }
+  }
+
   const getLevelDisabled = (level) => {
     const index = levels.findIndex((l) => l.level == level);
 
@@ -164,7 +182,8 @@ function App() {
         addAttempt,
         addUser,
         getLevelDisabled,
-        enableLevel
+        enableLevel,
+        getLevelInfo
       }}
     >
       <NavigationContainer>

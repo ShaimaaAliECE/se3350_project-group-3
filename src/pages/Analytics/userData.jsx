@@ -6,7 +6,7 @@ import { GlobalContext } from '../../../App';
 export default function UserData() {
 
     const [selectedValue, setSelectedValue] = useState("2");
-    const { user, levels } = useContext(GlobalContext);
+    const { user, levels, getLevelInfo } = useContext(GlobalContext);
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', padding: 200}}>
@@ -27,9 +27,9 @@ export default function UserData() {
         <Picker.Item label="Level 5" value="5"/>
       </Picker>
       <View style={{ flexDirection: 'column' }}>
-        <Text>Time Spent On Each Level</Text>
-        <Text>Number of Mistakes made for each level</Text>
-        <Text>Number of Attempts per level</Text>
+        <Text>Time Spent On Each Level: {getLevelInfo(parseInt(selectedValue)).timeSpent}</Text>
+        <Text>Number of Mistakes made for each level: {getLevelInfo(parseInt(selectedValue)).numOfMistakes}</Text>
+        <Text>Number of Attempts per level: {getLevelInfo(parseInt(selectedValue)).numOfAttempts}</Text>
         </View>
         
       </View>
