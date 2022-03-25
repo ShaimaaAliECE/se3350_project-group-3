@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   Button,
   Text,
@@ -16,6 +16,7 @@ import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png";
 import { Verification } from "../Modal/verification";
 import { Reset } from "../Modal/resetModal";
+import { GlobalContext } from '../../../App';
 
 const {
   generateArray,
@@ -34,6 +35,8 @@ function SecondLevelScreen({ route, navigation }) {
   const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
+
+  const { user, levels } = useContext(GlobalContext);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;

@@ -8,7 +8,6 @@ import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
-import { Reset } from "../Modal/resetModal";
 
 const {
   generateArray,
@@ -34,11 +33,9 @@ function ThirdLevelScreen({ route, navigation }) {
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
   const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
-  const [resetModalVisible, setResetModalVisble] = useState(false);
 
   const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false); 
-  const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -58,13 +55,7 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   useEffect(() => {
-    if (attempt >= 3) {
-      setResetModalVisble(true);
-      setAttempt(0);
-    }
-  }, [attempt]);
 
-  useEffect(() => {
     const events = [
         'load',
         'mousemove',
@@ -100,7 +91,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setSecs(s => s);
     }, 1000)
     return () => clearInterval(timerId);
-  }, [isComplete]);
+  }, []);
 
   useEffect(() => {
     setStep(1);
@@ -157,31 +148,14 @@ function ThirdLevelScreen({ route, navigation }) {
       return false;
   }
 
-  function isResetModalActive() {
-    if (resetModalVisible) return true;
-    else return false;
-  }
-
-  function reset(choice) {
-    setResetModalVisble(false);
-    switch (choice) {
-      case 1:
-        resetStates();
-        break;
-      case 2:
-        navigation.navigate("MergeSortLevels", { 
-          levelFour: (!isComplete), 
-          levelFive: true });
-        break;
-      case 3:
-        navigation.navigate("Home")
-    }
-  }
-
   function displayCheck() {
-    if (checkAnswerVisible && attempt != 3) return true;
-    else return false;
+    if (checkAnswerVisible)
+      return true;
+    else
+      return false;
   }
+
+
 
   useEffect(() => {
     console.log(step);
@@ -573,8 +547,6 @@ function ThirdLevelScreen({ route, navigation }) {
           null
         }
 
-        {isResetModalActive() ? <Reset reset={reset} /> : null}
-
         <Button
           onPress={() => {
             if (step <= 8 && step > 1 && isCorrect) {
@@ -588,9 +560,7 @@ function ThirdLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
-           levelFour: (!isComplete), 
-           levelFive: true })} />
+        <Button title="Go to Home" onPress={() => location.reload()} />
         <Text style={{ fontSize: 40 }}>
         {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
       </Text>
