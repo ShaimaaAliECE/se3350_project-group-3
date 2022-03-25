@@ -33,28 +33,28 @@ function App() {
       },
       {
         level: 2,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 3,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 4,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 5,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
@@ -126,6 +126,33 @@ function App() {
     )
   }
 
+  const getLevelDisabled = (level) => {
+    const index = levels.findIndex((l) => l.level == level);
+
+    if (index !== -1) {
+      return !levels[index].enabled
+    }
+
+    return true;
+  }
+
+  const enableLevel = (level) => {
+    if (level !== 1) {
+      setLevels(
+        prev => {
+          const newLevels = [...prev];
+          const index = newLevels.findIndex((n) => n.level == level);
+
+          if (index !== -1) {
+            newLevels[index].enabled = true;
+          }
+
+          return newLevels;
+        }
+      )
+    }
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -135,7 +162,9 @@ function App() {
         addTime,
         addMistake,
         addAttempt,
-        addUser
+        addUser,
+        getLevelDisabled,
+        enableLevel
       }}
     >
       <NavigationContainer>

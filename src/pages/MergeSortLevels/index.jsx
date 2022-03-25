@@ -69,7 +69,7 @@ function MergeSortLevels({ route, navigation }) {
       : undefined;
   }, [sound]);
 
-  const { user, levels } = useContext(GlobalContext);
+  const { user, levels, getLevelDisabled } = useContext(GlobalContext);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -77,6 +77,7 @@ function MergeSortLevels({ route, navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 1"
+        disabled={getLevelDisabled(1)}
         onPress={() => {
           navigation.navigate('FirstLevel')
         }}
@@ -84,6 +85,7 @@ function MergeSortLevels({ route, navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 2"
+        disabled={getLevelDisabled(2)}
         onPress={() => {
           navigation.navigate('SecondLevel')
         }}
@@ -91,7 +93,7 @@ function MergeSortLevels({ route, navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 3"
-        disabled={permanentLevel3}
+        disabled={getLevelDisabled(3)}
         onPress={() => {
           navigation.navigate('ThirdLevel')
         }}
@@ -99,7 +101,7 @@ function MergeSortLevels({ route, navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 4"
-        disabled={permanentLevel4}
+        disabled={getLevelDisabled(4)}
         onPress={() => {
           navigation.navigate('FourthLevel')
         }}
@@ -107,7 +109,7 @@ function MergeSortLevels({ route, navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 5"
-        disabled={permanentLevel5}
+        disabled={getLevelDisabled(5)}
         onPress={() => {
           navigation.navigate('FifthLevel')
         }}

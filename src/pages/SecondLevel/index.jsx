@@ -36,7 +36,7 @@ function SecondLevelScreen({ route, navigation }) {
   const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  const { user, levels } = useContext(GlobalContext);
+  const { user, levels, enableLevel } = useContext(GlobalContext);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -107,9 +107,9 @@ function SecondLevelScreen({ route, navigation }) {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
+        console.log("Unloading Sound");
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
 
@@ -159,9 +159,10 @@ function SecondLevelScreen({ route, navigation }) {
         break;
       case 2:
         navigation.navigate("MergeSortLevels", {
-          levelThree: (!isComplete), 
-          levelFour: true, 
-          levelFive: true });
+          levelThree: (!isComplete),
+          levelFour: true,
+          levelFive: true
+        });
         break;
       case 3:
         navigation.navigate("Home")
@@ -482,10 +483,11 @@ function SecondLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", {
-           levelThree: (!isComplete), 
-           levelFour: true, 
-           levelFive: true })} />
+        <Button title="Go to Level Select"
+          onPress={() => {
+            if (isComplete) enableLevel(3);
+            navigation.navigate("MergeSortLevels")
+          }} />
         <Image
           style={{ width: 25, height: 25 }}
           source={{

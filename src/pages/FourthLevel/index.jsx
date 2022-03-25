@@ -9,6 +9,7 @@ import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
 import { Reset } from "../Modal/resetModal";
+import { GlobalContext } from "../../../App";
 
 const {
   generateArray,
@@ -30,6 +31,8 @@ function generateEmptyArray(length) {
 }
 
 function FourthLevelScreen({ route, navigation }) {
+  const { enableLevel } = useContext(GlobalContext);
+
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
@@ -37,14 +40,14 @@ function FourthLevelScreen({ route, navigation }) {
   const [resetModalVisible, setResetModalVisble] = useState(false);
 
   const [secs, setSecs] = useState(0);
-  const [isComplete, setIsComplete] = useState(false); 
+  const [isComplete, setIsComplete] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
 
   const setTimeouts = () => {
-    idleTimeout = setTimeout(home,idleTime);
+    idleTimeout = setTimeout(home, idleTime);
   };
 
   const clearTimeouts = () => {
@@ -66,38 +69,38 @@ function FourthLevelScreen({ route, navigation }) {
 
   useEffect(() => {
     const events = [
-        'load',
-        'mousemove',
-        'mousedown',
-        'click',
-        'scroll',
-        'keypress'
+      'load',
+      'mousemove',
+      'mousedown',
+      'click',
+      'scroll',
+      'keypress'
     ];
 
     const resetTimeout = () => {
-        clearTimeouts();
-        setTimeouts();
+      clearTimeouts();
+      setTimeouts();
     };
 
     for (let i in events) {
-        window.addEventListener(events[i], resetTimeout);
+      window.addEventListener(events[i], resetTimeout);
     }
 
     setTimeouts();
     return () => {
-        for(let i in events){
-            window.removeEventListener(events[i], resetTimeout);
-            clearTimeouts();
-        }
+      for (let i in events) {
+        window.removeEventListener(events[i], resetTimeout);
+        clearTimeouts();
+      }
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-    if (!isComplete) 
-      setSecs(s => s + 1)
-    else 
-      setSecs(s => s);
+      if (!isComplete)
+        setSecs(s => s + 1)
+      else
+        setSecs(s => s);
     }, 1000)
     return () => clearInterval(timerId);
   }, [isComplete]);
@@ -169,8 +172,9 @@ function FourthLevelScreen({ route, navigation }) {
         resetStates();
         break;
       case 2:
-        navigation.navigate("MergeSortLevels", {  
-          levelFive: (!isComplete)});
+        navigation.navigate("MergeSortLevels", {
+          levelFive: (!isComplete)
+        });
         break;
       case 3:
         navigation.navigate("Home")
@@ -238,7 +242,7 @@ function FourthLevelScreen({ route, navigation }) {
         break;
       case 3:
         repeat = 4;
-        break; 
+        break;
       case 4:
         repeat = 8;
         break;
@@ -558,12 +562,12 @@ function FourthLevelScreen({ route, navigation }) {
         <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step > 1 && step <= 11 ) {
-                if (!showBubble)
+            if (step > 1 && step <= 11) {
+              if (!showBubble)
                 checkAnswer();
-                if (showBubble) checkSplitMergeAnswer();
-                setCheckAnswerVisible(true)
-              }
+              if (showBubble) checkSplitMergeAnswer();
+              setCheckAnswerVisible(true)
+            }
           }}
           title={showBubble ? "Check Split/Merge Answer" : "Check Value Answer"}
         />
@@ -594,11 +598,13 @@ function FourthLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", {  
-           levelFive: (!isComplete) })} />
+        <Button title="Go to Level Select" onPress={() => {
+          if (isComplete) enableLevel(5);
+          navigation.navigate("MergeSortLevels")
+        }} />
         <Text style={{ fontSize: 40 }}>
-        {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
-      </Text>
+          {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs % 60)}
+        </Text>
 
       </View>
     </ScrollView>
