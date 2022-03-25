@@ -7,24 +7,32 @@ const { generateArray } = require("../../Algorithms/MergeSort");
 
 function FirstLevelScreen({ route, navigation }) {
   const [numbers, setNumbers] = useState([]);
+  const [step, setStep] = useState(1);
+  const [substep, setSubstep] = useState(1);
+  const [subLength, setSubLength] = useState(2);
+  const [subCount, setSubCount] = useState(2)
 
   useEffect(() => {
+    setStep(1);
+    setSubstep(0);
+    setSubLength(2);
+    setSubCount(0);
     setNumbers(generateArray(1));
   }, []);
-
-  const [step, setStep] = useState(0);
-
+ 
   useEffect(() => {
     let timeout;
 
-    if (step < 10) {
+    if (substep < subLength) {
       const timeout = setTimeout(() => {
-        setStep(step + 1);
-      }, 2000);
+        setSubstep(substep + 1);
+      }, 2000); 
+    } else {
+      clearTimeout(timeout);
     }
 
     return clearTimeout(timeout);
-  }, [step]);
+  }, [substep]);
 
   let maxCount = 10;
 
@@ -238,13 +246,16 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {algorithm(2, numbers).left.map((number) => {
+              {substep > 0 ? algorithm(2, numbers).left.map((number) => {
+                
                 return <NumberInput value={number} editable={false} />;
-              })}
+                }): null }
+
               <View style={{ width: 20 }} />
-              {algorithm(2, numbers).right.map((number) => {
+              {substep > 1 ? algorithm(2, numbers).right.map((number) => {
                 return <NumberInput value={number} editable={false} />;
-              })}
+              }): null }
+
             </View>
           </>
         ) : null}
@@ -438,8 +449,21 @@ function FirstLevelScreen({ route, navigation }) {
           </>
         ) : null}
         <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate("Home")}
+          title="Go to Level Select"
+          onPress={() => navigation.navigate("MergeSortLevels", {
+            levelTwo: false,
+            levelThree: true,
+            levelFour: true,
+            levelFive: true
+          })}
+        />
+
+        <Button
+          title="Next Step"
+          onPress={() => {
+            setStep(step + 1)
+            setSubstep(subCount);
+            }}
         />
 
         <Button
