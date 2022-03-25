@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Text, View, ScrollView, Image } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
@@ -8,7 +8,7 @@ import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
-import { GlobalContext } from "../../../App";
+import { Reset } from "../Modal/resetModal";
 
 const {
   generateArray,
@@ -17,7 +17,7 @@ const {
 } = require("../../Algorithms/MergeSort");
 
 let arr = new Array();
-arr[0] = generateArray(2);
+arr[0] = generateArray(5);
 
 function generateEmptyArray(length) {
   let array = [];
@@ -29,22 +29,22 @@ function generateEmptyArray(length) {
   return array;
 }
 
-function ThirdLevelScreen({ route, navigation }) {
-  const { enableLevel } = useContext(GlobalContext);
-  
+function FifthLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
   const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
+  const [resetModalVisible, setResetModalVisble] = useState(false);
 
   const [secs, setSecs] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(false); 
+  const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
 
   const setTimeouts = () => {
-    idleTimeout = setTimeout(home, idleTime);
+    idleTimeout = setTimeout(home,idleTime);
   };
 
   const clearTimeouts = () => {
@@ -58,48 +58,54 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   useEffect(() => {
+    if (attempt >= 3) {
+      setResetModalVisble(true);
+      setAttempt(0);
+    }
+  }, [attempt]);
 
+  useEffect(() => {
     const events = [
-      'load',
-      'mousemove',
-      'mousedown',
-      'click',
-      'scroll',
-      'keypress'
+        'load',
+        'mousemove',
+        'mousedown',
+        'click',
+        'scroll',
+        'keypress'
     ];
 
     const resetTimeout = () => {
-      clearTimeouts();
-      setTimeouts();
+        clearTimeouts();
+        setTimeouts();
     };
 
     for (let i in events) {
-      window.addEventListener(events[i], resetTimeout);
+        window.addEventListener(events[i], resetTimeout);
     }
 
     setTimeouts();
     return () => {
-      for (let i in events) {
-        window.removeEventListener(events[i], resetTimeout);
-        clearTimeouts();
-      }
+        for(let i in events){
+            window.removeEventListener(events[i], resetTimeout);
+            clearTimeouts();
+        }
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      if (!isComplete)
-        setSecs(s => s + 1)
-      else
-        setSecs(s => s);
+    if (!isComplete) 
+      setSecs(s => s + 1)
+    else 
+      setSecs(s => s);
     }, 1000)
     return () => clearInterval(timerId);
-  }, []);
+  }, [isComplete]);
 
   useEffect(() => {
     setStep(1);
     arr = new Array();
-    arr[0] = generateArray(2);
+    arr[0] = generateArray(5);
   }, []);
 
   React.useEffect(() => {
@@ -127,9 +133,9 @@ function ThirdLevelScreen({ route, navigation }) {
     setCheckAnswerVisible(false);
     setSecs(0);
     setShowBubble(true);
-    setSelectableBubles(generateEmptyArray(20));
+    setSelectableBubles(generateEmptyArray(100));
     arr = new Array();
-    arr[0] = generateArray(2);
+    arr[0] = generateArray(5);
     console.log("Array is" + arr[0]);
   }
 
@@ -151,19 +157,35 @@ function ThirdLevelScreen({ route, navigation }) {
       return false;
   }
 
-  function displayCheck() {
-    if (checkAnswerVisible)
-      return true;
-    else
-      return false;
+  function isResetModalActive() {
+    if (resetModalVisible) return true;
+    else return false;
   }
 
+  function reset(choice) {
+    setResetModalVisble(false);
+    switch (choice) {
+      case 1:
+        resetStates();
+        break;
+      case 2:
+        navigation.navigate("MergeSortLevels", { 
+          });
+        break;
+      case 3:
+        navigation.navigate("Home")
+    }
+  }
 
+  function displayCheck() {
+    if (checkAnswerVisible && attempt != 3) return true;
+    else return false;
+  }
 
   useEffect(() => {
     console.log(step);
     for (let i = 1; i < step; i++) {
-      if (i > 5) {
+      if (i > 7) {
         break;
       } else if (i == 1) {
         arr[1] = split(arr, 1);
@@ -179,8 +201,8 @@ function ThirdLevelScreen({ route, navigation }) {
       }
     }
 
-    if (step > 5) {
-      for (let i = 5; i <= step - 1; i++) {
+    if (step > 7) {
+      for (let i = 7; i <= step - 1; i++) {
         arr[i] = merged(arr[i - 1], i);
         let newArr = [...blankArr];
         newArr[i] = merged(newArr[i - 1], i, true);
@@ -194,7 +216,7 @@ function ThirdLevelScreen({ route, navigation }) {
 
   const [blankArr, setBlankArr] = useState([]);
   const [showBubble, setShowBubble] = useState(true);
-  const [selectableBubbles, setSelectableBubles] = useState(generateEmptyArray(20));
+  const [selectableBubbles, setSelectableBubles] = useState(generateEmptyArray(100));
 
   useEffect(() => {
     setBlankArr((prev) => {
@@ -220,6 +242,12 @@ function ThirdLevelScreen({ route, navigation }) {
       case 4:
         repeat = 8;
         break;
+      case 5:
+        repeat = 16;
+        break;
+      case 6:
+        repeat = 32;
+        break;
       default:
         repeat = 1;
     }
@@ -238,15 +266,23 @@ function ThirdLevelScreen({ route, navigation }) {
     let j = 0;
 
     switch (step) {
-      case 5:
-        index = [0, 4];
+      case 7:
+        index = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 17, 18, 20, 22, 24, 26, 28, 30];
+        length = 32;
+        break;
+      case 8:
+        index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        length = 16;
+        break;
+      case 9:
+        index = [0, 1, 2, 3, 4, 5, 6, 7];
         length = 8;
         break;
-      case 6:
+      case 10:
         index = [0, 1, 2, 3];
         length = 4;
         break;
-      case 7:
+      case 11:
         index = [0, 1];
         length = 2;
         break;
@@ -270,7 +306,7 @@ function ThirdLevelScreen({ route, navigation }) {
   function generateSplitAlgorithm() {
     let components = [];
     for (let j = 0; j < arr.length; j++) {
-      if (j > 4) {
+      if (j > 6) {
         break;
       }
 
@@ -328,7 +364,7 @@ function ThirdLevelScreen({ route, navigation }) {
   function generateMergeAlgorithm() {
     let components = [];
 
-    for (let j = 5; j < arr.length; j++) {
+    for (let j = 7; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
         <View style={{ alignItems: "center" }}>
@@ -439,8 +475,8 @@ function ThirdLevelScreen({ route, navigation }) {
     console.log("count: ", count);
 
     if (!isComplete) {
-      if ((step != 1 && count == 10 * (step - 1))) {
-        if (step >= 9) {
+      if (step != 1 && count == 50 * (step - 1)) {
+        if (step >= 13) {
           setIsComplete(true);
         }
         setIsCorrect(true);
@@ -495,7 +531,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(true)
       playCorrectFeedback();
     } else {
-      setIsBubbleCorrect(false)
+      setIsBubbleCorrect(false);
       let num = attempt;
       setAttempt(num + 1);
       playIncorrectFeedback();
@@ -519,7 +555,7 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}horizontal={true}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <View style={{ height: 20 }} />
         {generateSplitAlgorithm()}
@@ -529,9 +565,9 @@ function ThirdLevelScreen({ route, navigation }) {
         <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step > 1 && step <= 9) {
+            if (step > 1 && step <= 13) {
               if (!showBubble)
-                checkAnswer();
+              checkAnswer();
               if (showBubble) checkSplitMergeAnswer();
               setCheckAnswerVisible(true)
             }
@@ -550,11 +586,13 @@ function ThirdLevelScreen({ route, navigation }) {
           null
         }
 
+        {isResetModalActive() ? <Reset reset={reset} /> : null}
+
         <Button
           onPress={() => {
-            if (step <= 8 && step > 1 && isCorrect) {
+            if (step <= 12 && step > 1 && isCorrect) {
               setStep(step + 1);
-              setSelectableBubles(generateEmptyArray(20));
+              setSelectableBubles(generateEmptyArray(100));
               setShowBubble(true);
             }
             else if (step == 1) {
@@ -563,18 +601,15 @@ function ThirdLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select"
-          onPress={() => {
-            if (isComplete) enableLevel(4);
-            navigation.navigate("MergeSortLevels")
-          }} />
+        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
+           })} />
         <Text style={{ fontSize: 40 }}>
-          {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs % 60)}
-        </Text>
+        {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
+      </Text>
 
       </View>
     </ScrollView>
   );
 }
 
-export default ThirdLevelScreen;
+export default FifthLevelScreen;

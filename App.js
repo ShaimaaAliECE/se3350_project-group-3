@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button } from 'react-native-web';
-
+import SignUp from './src/pages/Login/signUp';
 import HomeScreen from './src/pages/Home';
 import FirstLevelScreen from './src/pages/FirstLevel';
 import MergeSortLevels from './src/pages/mergeSortLevels';
@@ -12,6 +12,9 @@ import QuickSortLevels from './src/pages/QuickSortLevels';
 import LoginScreen from './src/pages/Login';
 import SecondLevelScreen from './src/pages/SecondLevel';
 import ThirdLevelScreen from './src/pages/ThirdLevel';
+import FourthLevelScreen from './src/pages/FourthLevel';
+import FifthLevelScreen from './src/pages/FifthLevel';
+import UserData from './src/pages/Analytics/userData';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,34 +33,38 @@ function App() {
       },
       {
         level: 2,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 3,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 4,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 5,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       }
     ]
   );
+
+  const addUser = (username) => {
+    setUser(username)
+  }
 
   const configureLevel = (level, enabled) => {
     setLevels(
@@ -119,6 +126,33 @@ function App() {
     )
   }
 
+  const getLevelDisabled = (level) => {
+    const index = levels.findIndex((l) => l.level == level);
+
+    if (index !== -1) {
+      return !levels[index].enabled
+    }
+
+    return true;
+  }
+
+  const enableLevel = (level) => {
+    if (level !== 1) {
+      setLevels(
+        prev => {
+          const newLevels = [...prev];
+          const index = newLevels.findIndex((n) => n.level == level);
+
+          if (index !== -1) {
+            newLevels[index].enabled = true;
+          }
+
+          return newLevels;
+        }
+      )
+    }
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -127,11 +161,14 @@ function App() {
         configureLevel,
         addTime,
         addMistake,
-        addAttempt
+        addAttempt,
+        addUser,
+        getLevelDisabled,
+        enableLevel
       }}
     >
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home"
+        <Stack.Navigator initialRouteName="SignUp"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#800080',
@@ -147,6 +184,8 @@ function App() {
           <Stack.Screen name="MergeSortLevels" component={MergeSortLevels} />
           <Stack.Screen name="QuickSortLevels" component={QuickSortLevels} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUp}/>
+          <Stack.Screen name="UserData" component={UserData}/>
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalContext.Provider>
