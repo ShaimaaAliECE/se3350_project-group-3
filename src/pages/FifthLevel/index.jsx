@@ -17,7 +17,7 @@ const {
 } = require("../../Algorithms/MergeSort");
 
 let arr = new Array();
-arr[0] = generateArray(2);
+arr[0] = generateArray(4);
 
 function generateEmptyArray(length) {
   let array = [];
@@ -29,7 +29,7 @@ function generateEmptyArray(length) {
   return array;
 }
 
-function ThirdLevelScreen({ route, navigation }) {
+function FifthLevelScreen({ route, navigation }) {
   const [step, setStep] = useState(1);
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
@@ -132,8 +132,6 @@ function ThirdLevelScreen({ route, navigation }) {
     setSelectedIndex({});
     setCheckAnswerVisible(false);
     setSecs(0);
-    setShowBubble(true);
-    setSelectableBubles(generateEmptyArray(20));
     arr = new Array();
     arr[0] = generateArray(2);
     console.log("Array is" + arr[0]);
@@ -462,7 +460,7 @@ function ThirdLevelScreen({ route, navigation }) {
     console.log("count: ", count);
 
     if (!isComplete) {
-      if ((step != 1 && count == 10 * (step - 1))) {
+      if (step != 1 && count == 10 * (step - 1)) {
         if (step >= 9) {
           setIsComplete(true);
         }
@@ -519,8 +517,6 @@ function ThirdLevelScreen({ route, navigation }) {
       playCorrectFeedback();
     } else {
       setIsBubbleCorrect(false)
-      let num = attempt;
-      setAttempt(num + 1);
       playIncorrectFeedback();
     }
   }
@@ -552,8 +548,7 @@ function ThirdLevelScreen({ route, navigation }) {
         <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step > 1 && step <= 9 ) {
-              if (!showBubble)
+            if (step > 1 && step <= 9) {
               checkAnswer();
               if (showBubble) checkSplitMergeAnswer();
               setCheckAnswerVisible(true)
@@ -600,4 +595,4 @@ function ThirdLevelScreen({ route, navigation }) {
   );
 }
 
-export default ThirdLevelScreen;
+export default FifthLevelScreen;

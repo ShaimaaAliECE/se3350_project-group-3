@@ -30,8 +30,6 @@ function MergeSortLevels({ route, navigation }) {
   const [sound, setSound] = React.useState();
 
   
-
-
   async function playCorrectFeedback() {
     correct = 0;
     const { sound } = await Audio.Sound.createAsync(
@@ -92,14 +90,9 @@ function MergeSortLevels({ route, navigation }) {
         <Button 
         title="Level 4"
         disabled={permanentLevel4}
-        onPress={async() => {
-          if (correct == 1 || correct == 2) {
-            playCorrectFeedback()
-          }
-          else if (correct == 0) {
-            playIncorrectFeedback()
-          }}}
-        color= {colorFeedback[correct]}
+        onPress={() => {
+          navigation.navigate('FourthLevel')
+        }}
       />
        <View style={{ height: 20}} />
         <Button

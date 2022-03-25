@@ -11,6 +11,8 @@ import QuickSortLevels from './src/pages/QuickSortLevels';
 import LoginScreen from './src/pages/Login';
 import SecondLevelScreen from './src/pages/SecondLevel';
 import ThirdLevelScreen from './src/pages/ThirdLevel';
+import FourthLevelScreen from './src/pages/FourthLevel';
+import FifthLevelScreen from './src/pages/FifthLevel';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,8 +31,8 @@ function App() {
         <Stack.Screen name="FirstLevel" component={FirstLevelScreen}/>
         <Stack.Screen name="SecondLevel" component={SecondLevelScreen} />
         <Stack.Screen name="ThirdLevel" component={ThirdLevelScreen} />
-        {/*<Stack.Screen name="FourthLevel" component={FourthLevelScreen} />
-        <Stack.Screen name="FifthLevel" component={FifthLevelScreen} /> */}
+        <Stack.Screen name="FourthLevel" component={FourthLevelScreen}/>
+        <Stack.Screen name="FifthLevel" component={FifthLevelScreen} />
         <Stack.Screen name="MergeSortLevels" component={MergeSortLevels} />
         <Stack.Screen name="QuickSortLevels" component={QuickSortLevels} />
         <Stack.Screen name="Login" component={LoginScreen} />

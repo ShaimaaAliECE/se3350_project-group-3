@@ -23,7 +23,7 @@ export function Reset(props){
           <View style={{margin: 20, backgroundColor: 'white', borderRadius: 20, padding: 35, alignItems: 'center', shadowColor: '#000',
             shadowOffset: {width: 0,height: 2,},shadowOpacity: 0.25,shadowRadius: 4,elevation: 5}}>
             <Text style={{marginBottom: 15, textAlign: 'center'}}>You have unsuccessfully attempted this level 3 times. {<br/>}
-            You now have the followign options: </Text>
+            You now have the following options: </Text>
             <Pressable style={[{borderRadius: 20,padding: 10,elevation: 2}, {backgroundColor: '#2196F3'}]}
               onPress={() => { props.reset(1) }}> 
               <Text style={{color: 'white',fontWeight: 'bold',textAlign: 'center'}}>Restart Level</Text>
