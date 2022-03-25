@@ -1,30 +1,59 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Audio } from 'expo-av';
+import { GlobalContext } from '../../../App';
 
-let colorFeedback = ["#25C112","#C22A25", "#128CC1"];
+let colorFeedback = ["#25C112", "#C22A25", "#128CC1"];
 let correct = 2;
 
-function MergeSortLevels({ navigation }) {
+//change to true to actually account for the moving along
+let permanentLevel2 = false;
+let permanentLevel3 = false;
+let permanentLevel4 = false;
+let permanentLevel5 = false;
+
+function MergeSortLevels({ route, navigation }) {
+  let levelTwo, levelThree, levelFour, levelFive;
+
+  if (route.params) {
+    levelTwo = route.params.levelTwo
+    levelThree = route.params.levelThree
+    levelFour = route.params.levelFour
+    levelFive = route.params.levelFive
+  }
+
+  if (levelTwo != true) {
+    permanentLevel2 = false;
+  }
+  if (levelThree != true) {
+    permanentLevel3 = false;
+  }
+  if (levelFour != true) {
+    permanentLevel4 = false;
+  }
+  if (levelFive != true) {
+    permanentLevel5 = false;
+  }
   const [sound, setSound] = React.useState();
 
+  
   async function playCorrectFeedback() {
     correct = 0;
     const { sound } = await Audio.Sound.createAsync(
-       require('../../../assets/correct.mp3')
+      require('../../../assets/correct.mp3')
     );
     setSound(sound);
-    await sound.playAsync(); 
+    await sound.playAsync();
   }
 
   async function playIncorrectFeedback() {
     correct = 1;
     const { sound } = await Audio.Sound.createAsync(
-       require('../../../assets/incorrect.mp3')
+      require('../../../assets/incorrect.mp3')
     );
     setSound(sound);
-    await sound.playAsync(); 
+    await sound.playAsync();
   }
 
   function returnToBlue() {
@@ -34,56 +63,59 @@ function MergeSortLevels({ navigation }) {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync(); }
+        console.log('Unloading Sound');
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
-  
+
+  const { user, levels, getLevelDisabled } = useContext(GlobalContext);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Merge Sort Levels</Text>
       <View style={{ height: 20 }} />
-      <Button 
+      <Button
         title="Level 1"
+        disabled={getLevelDisabled(1)}
         onPress={() => {
           navigation.navigate('FirstLevel')
         }}
       />
-       <View style={{ height: 20 }} />
-        <Button 
+      <View style={{ height: 20 }} />
+      <Button
         title="Level 2"
+        disabled={getLevelDisabled(2)}
         onPress={() => {
           navigation.navigate('SecondLevel')
         }}
       />
-       <View style={{ height: 20 }} />
-        <Button
+      <View style={{ height: 20 }} />
+      <Button
         title="Level 3"
+        disabled={getLevelDisabled(3)}
         onPress={() => {
           navigation.navigate('ThirdLevel')
         }}
       />
-       <View style={{ height: 20 }} />
-        <Button 
+      <View style={{ height: 20 }} />
+      <Button
         title="Level 4"
-        onPress={async() => {
-          if (correct == 1 || correct == 2) {
-            playCorrectFeedback()
-          }
-          else if (correct == 0) {
-            playIncorrectFeedback()
-          }}}
-        color= {colorFeedback[correct]}
+        disabled={getLevelDisabled(4)}
+        onPress={() => {
+          navigation.navigate('FourthLevel')
+        }}
       />
-       <View style={{ height: 20}} />
-        <Button
+      <View style={{ height: 20 }} />
+      <Button
         title="Level 5"
+        disabled={getLevelDisabled(5)}
         onPress={() => {
           navigation.navigate('FifthLevel')
         }}
-        
+
       />
-       <View style={{ height: 20 }} />
+      <View style={{ height: 20 }} />
       <Button color="#128CC1"
         title="Home"
         onPress={() => {
@@ -91,9 +123,9 @@ function MergeSortLevels({ navigation }) {
           navigation.navigate('Home');
         }}
       />
-       <View style={{ height: 20 }} />
+      <View style={{ height: 20 }} />
     </View>
-    
+
   );
 }
 export default MergeSortLevels;

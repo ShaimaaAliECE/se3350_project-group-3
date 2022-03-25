@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, ScrollView, Text, View } from "react-native";
+import { GlobalContext } from "../../../App";
 import NumberInput from "../../components/NumberInput";
 import Data from "../../config/steps.json"
 
@@ -258,6 +259,8 @@ function FirstLevelScreen({ route, navigation }) {
     }
   };
 
+  const { enableLevel } = useContext(GlobalContext);
+
   return (
     <ScrollView style={{ flex: 1 }}>
       <View style={{ alignItems: "center", marginVertical: 60 }}>
@@ -487,8 +490,11 @@ function FirstLevelScreen({ route, navigation }) {
           </>
         ) : null}
         <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate("Home")}
+          title="Go to Level Select"
+          onPress={() => {
+            enableLevel(2);
+            navigation.navigate("MergeSortLevels")
+          }}
         />
 
         <Button 
@@ -504,6 +510,7 @@ function FirstLevelScreen({ route, navigation }) {
         <Button
           title="Next Level"
           onPress={() => {
+            enableLevel(2);
             navigation.navigate("SecondLevel");
           }}
         />
