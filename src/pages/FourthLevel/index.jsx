@@ -133,7 +133,7 @@ function FourthLevelScreen({ route, navigation }) {
     setCheckAnswerVisible(false);
     setSecs(0);
     setShowBubble(true);
-    setSelectableBubles(generateEmptyArray(20));
+    setSelectableBubles(generateEmptyArray(40));
     arr = new Array();
     arr[0] = generateArray(4);
     console.log("Array is" + arr[0]);
@@ -264,11 +264,11 @@ function FourthLevelScreen({ route, navigation }) {
 
     switch (step) {
       case 6:
-        index = [0,8]
+        index = [0, 4, 8, 12];
         length = 16;
         break;
       case 7:
-        index = [0, 4];
+        index = [0, 1, 2, 3, 4, 5, 6, 7];
         length = 8;
         break;
       case 8:
@@ -521,10 +521,12 @@ function FourthLevelScreen({ route, navigation }) {
     console.log(tmpIsCorrect);
 
     if (tmpIsCorrect) {
-      setIsBubbleCorrect(true)
+      setIsBubbleCorrect(true);
       playCorrectFeedback();
     } else {
-      setIsBubbleCorrect(false)
+      setIsBubbleCorrect(false);
+      let num = attempt;
+      setAttempt(num + 1);
       playIncorrectFeedback();
     }
   }
