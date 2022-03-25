@@ -17,7 +17,7 @@ const {
 } = require("../../Algorithms/MergeSort");
 
 let arr = new Array();
-arr[0] = generateArray(4);
+arr[0] = generateArray(5);
 
 function generateEmptyArray(length) {
   let array = [];
@@ -105,7 +105,7 @@ function FifthLevelScreen({ route, navigation }) {
   useEffect(() => {
     setStep(1);
     arr = new Array();
-    arr[0] = generateArray(2);
+    arr[0] = generateArray(5);
   }, []);
 
   React.useEffect(() => {
@@ -132,8 +132,10 @@ function FifthLevelScreen({ route, navigation }) {
     setSelectedIndex({});
     setCheckAnswerVisible(false);
     setSecs(0);
+    setShowBubble(true);
+    setSelectableBubles(generateEmptyArray(100));
     arr = new Array();
-    arr[0] = generateArray(2);
+    arr[0] = generateArray(5);
     console.log("Array is" + arr[0]);
   }
 
@@ -168,8 +170,7 @@ function FifthLevelScreen({ route, navigation }) {
         break;
       case 2:
         navigation.navigate("MergeSortLevels", { 
-          levelFour: (!isComplete), 
-          levelFive: true });
+          });
         break;
       case 3:
         navigation.navigate("Home")
@@ -184,7 +185,7 @@ function FifthLevelScreen({ route, navigation }) {
   useEffect(() => {
     console.log(step);
     for (let i = 1; i < step; i++) {
-      if (i > 5) {
+      if (i > 7) {
         break;
       } else if (i == 1) {
         arr[1] = split(arr, 1);
@@ -200,8 +201,8 @@ function FifthLevelScreen({ route, navigation }) {
       }
     }
 
-    if (step > 5) {
-      for (let i = 5; i <= step - 1; i++) {
+    if (step > 7) {
+      for (let i = 7; i <= step - 1; i++) {
         arr[i] = merged(arr[i - 1], i);
         let newArr = [...blankArr];
         newArr[i] = merged(newArr[i - 1], i, true);
@@ -215,7 +216,7 @@ function FifthLevelScreen({ route, navigation }) {
 
   const [blankArr, setBlankArr] = useState([]);
   const [showBubble, setShowBubble] = useState(true);
-  const [selectableBubbles, setSelectableBubles] = useState(generateEmptyArray(20));
+  const [selectableBubbles, setSelectableBubles] = useState(generateEmptyArray(100));
 
   useEffect(() => {
     setBlankArr((prev) => {
@@ -241,6 +242,12 @@ function FifthLevelScreen({ route, navigation }) {
       case 4:
         repeat = 8;
         break;
+      case 5:
+        repeat = 16;
+        break;
+      case 6:
+        repeat = 32;
+        break;
       default:
         repeat = 1;
     }
@@ -259,15 +266,23 @@ function FifthLevelScreen({ route, navigation }) {
     let j = 0;
 
     switch (step) {
-      case 5:
-        index = [0, 4];
+      case 7:
+        index = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 17, 18, 20, 22, 24, 26, 28, 30];
+        length = 32;
+        break;
+      case 8:
+        index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        length = 16;
+        break;
+      case 9:
+        index = [0, 1, 2, 3, 4, 5, 6, 7];
         length = 8;
         break;
-      case 6:
+      case 10:
         index = [0, 1, 2, 3];
         length = 4;
         break;
-      case 7:
+      case 11:
         index = [0, 1];
         length = 2;
         break;
@@ -291,7 +306,7 @@ function FifthLevelScreen({ route, navigation }) {
   function generateSplitAlgorithm() {
     let components = [];
     for (let j = 0; j < arr.length; j++) {
-      if (j > 4) {
+      if (j > 6) {
         break;
       }
 
@@ -349,7 +364,7 @@ function FifthLevelScreen({ route, navigation }) {
   function generateMergeAlgorithm() {
     let components = [];
 
-    for (let j = 5; j < arr.length; j++) {
+    for (let j = 7; j < arr.length; j++) {
       console.log(arr[j].length);
       components.push(
         <View style={{ alignItems: "center" }}>
@@ -460,8 +475,8 @@ function FifthLevelScreen({ route, navigation }) {
     console.log("count: ", count);
 
     if (!isComplete) {
-      if (step != 1 && count == 10 * (step - 1)) {
-        if (step >= 9) {
+      if (step != 1 && count == 50 * (step - 1)) {
+        if (step >= 13) {
           setIsComplete(true);
         }
         setIsCorrect(true);
@@ -516,7 +531,9 @@ function FifthLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(true)
       playCorrectFeedback();
     } else {
-      setIsBubbleCorrect(false)
+      setIsBubbleCorrect(false);
+      let num = attempt;
+      setAttempt(num + 1);
       playIncorrectFeedback();
     }
   }
@@ -538,7 +555,7 @@ function FifthLevelScreen({ route, navigation }) {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}horizontal={true}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <View style={{ height: 20 }} />
         {generateSplitAlgorithm()}
@@ -548,7 +565,8 @@ function FifthLevelScreen({ route, navigation }) {
         <Text>After getting an answer correct, DO NOT try to change the numbers and then go to the next question. You will still see the next question, but will not be able to go to the question after until all errors are fixed!!!</Text>
         <Button
           onPress={() => {
-            if (step > 1 && step <= 9) {
+            if (step > 1 && step <= 13) {
+              if (!showBubble)
               checkAnswer();
               if (showBubble) checkSplitMergeAnswer();
               setCheckAnswerVisible(true)
@@ -572,9 +590,9 @@ function FifthLevelScreen({ route, navigation }) {
 
         <Button
           onPress={() => {
-            if (step <= 8 && step > 1 && isCorrect) {
+            if (step <= 12 && step > 1 && isCorrect) {
               setStep(step + 1);
-              setSelectableBubles(generateEmptyArray(20));
+              setSelectableBubles(generateEmptyArray(100));
               setShowBubble(true);
             }
             else if (step == 1) {
@@ -584,8 +602,7 @@ function FifthLevelScreen({ route, navigation }) {
           title="Next Question"
         />
         <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
-           levelFour: (!isComplete), 
-           levelFive: true })} />
+           })} />
         <Text style={{ fontSize: 40 }}>
         {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
       </Text>

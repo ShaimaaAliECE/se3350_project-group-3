@@ -594,9 +594,8 @@ function FourthLevelScreen({ route, navigation }) {
           }}
           title="Next Question"
         />
-        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", { 
-           levelFour: (!isComplete), 
-           levelFive: true })} />
+        <Button title="Go to Level Select" onPress={() => navigation.navigate("MergeSortLevels", {  
+           levelFive: (!isComplete) })} />
         <Text style={{ fontSize: 40 }}>
         {Math.floor(secs / 60)}:{(secs % 60) < 10 && 0}{Math.floor(secs%60)}
       </Text>
