@@ -40,21 +40,21 @@ function App() {
       },
       {
         level: 3,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 4,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0
       },
       {
         level: 5,
-        enabled: true,
+        enabled: false,
         timeSpent: 0,
         numOfMistakes: 0,
         numOfAttempts: 0

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import SignUpConfirmation from '../Modal/SignUpConfirmation';
 
 
 const setUser = async (username, password) => {
@@ -12,9 +12,7 @@ const setUser = async (username, password) => {
     } catch(e) {
       // save error
     }
-  
-    console.log('Done.')
-    console.log(value)
+
   }
 
 const getUser = async () => {
@@ -32,6 +30,21 @@ export default function SignUp({navigation}) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [displayConfirmation, setDisplayConfirmation] = useState(false)
+
+    function isActive(){
+      if(displayConfirmation){
+        return true
+      }
+      else{
+        return false
+      }
+    }
+
+    function close(){
+      setDisplayConfirmation(false)
+      navigation.navigate("Login")
+    }
     
     return (
       
@@ -46,6 +59,11 @@ export default function SignUp({navigation}) {
         navigation.navigate("Login")
       }}/>
       
+        {isActive() ? 
+          <SignUpConfirmation close={close}/>
+        :
+        null
+        }
         <Text>Username</Text>
         <TextInput style={{ borderWidth: 1, borderColor: 'black'}} value={username} onChangeText={(text) => setUsername(text)} />
         
@@ -54,19 +72,15 @@ export default function SignUp({navigation}) {
         <Button
             title="Sign Up"
             onPress={() => {
+              if(username && password){
+                setDisplayConfirmation(true)
                 setUser(username, password)
+              }
          
             }       
         }
         />
-        <Button
-            title="Get"
-            onPress={() => {
-                console.log(getUser())
-         
-            }       
-        }
-        />
+    
     </View>
     )
 }

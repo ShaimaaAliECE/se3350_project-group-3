@@ -287,7 +287,7 @@ function FirstLevelScreen({ route, navigation }) {
             </Text>
             <View style={{ height: 20 }} />
             <View style={{ flexDirection: "row" }}>
-              {substep > 0 ? algorithm(2, numbers).left.map((number) => {
+              {substep > 0 ? algorithm(2, numbers).left.map((number) => { //.map displays the circles on the screen - after the ? is where it displays/maps the number to the next part
                 return <NumberInput value={number} editable={false} />;
                 }): null }
 
@@ -457,15 +457,15 @@ function FirstLevelScreen({ route, navigation }) {
             </View>
           </>
         ) : null}
-        {step > 7 ? (
+        {step > 7 ? ( //- this is when merging starts
           <>
             <View style={{ height: 20 }} />
             <Text style={{ width: "60%", textAlign: "center" }}>
               {Data.Level1["7"]}
             </Text>
             <View style={{ height: 20 }} />
-            <View style={{ flexDirection: "row" }}>
-              {substep > 39 ? algorithm(8, numbers).left.map((number) => {
+            <View style={{ flexDirection: "row" }}> 
+              {substep > 39 ? algorithm(8, numbers).left.map((number) => { //substeps 34 and 35 get merged into subset 39 
                 return <NumberInput value={number} editable={false} />;
               }): null }
               <View style={{ width: 20 }} />
