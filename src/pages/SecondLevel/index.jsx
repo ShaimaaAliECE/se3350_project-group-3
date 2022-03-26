@@ -56,7 +56,7 @@ function SecondLevelScreen({ route, navigation }) {
   };
 
   useEffect(() => {
-    addAttempt(2, 1);
+    addAttempt(2);
   }, []);
 
   useEffect(() => {
@@ -127,7 +127,6 @@ function SecondLevelScreen({ route, navigation }) {
   let displayNumbers = true;
 
   function resetStates() {
-    addAttempt(2, 1);
     setAttempt(0);
     setBlankArr((prev) => {
       let newArr = [...prev];
@@ -138,7 +137,7 @@ function SecondLevelScreen({ route, navigation }) {
     setSelectedIndex({});
     setCheckAnswerVisible(false);
     setSecs(0);
-    addAttempt(1);
+    addAttempt(2);
     arr = new Array();
     arr[0] = generateArray(2);
     console.log("Array is" + arr[0]);
@@ -423,7 +422,7 @@ function SecondLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
-        addMistake(2, 1);
+        addMistake(2);
         playIncorrectFeedback();
       }
     }

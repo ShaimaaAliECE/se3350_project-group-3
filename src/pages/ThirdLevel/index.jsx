@@ -8,6 +8,7 @@ import { Audio } from "expo-av";
 import { StepModal } from "../Modal/stepModal";
 import Question from "../../Images/question.png"
 import { Verification } from "../Modal/verification";
+import { Reset } from "../Modal/resetModal";
 import { GlobalContext } from "../../../App";
 
 const {
@@ -36,9 +37,11 @@ function ThirdLevelScreen({ route, navigation }) {
   const [sound, setSound] = React.useState();
   const [isCorrect, setIsCorrect] = useState(false)
   const [isBubbleCorrect, setIsBubbleCorrect] = useState(false);
+  const [resetModalVisible, setResetModalVisble] = useState(false);
 
   const [secs, setSecs] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   const [idleTime, setIdleTime] = useState(300000);
   let idleTimeout;
@@ -58,8 +61,15 @@ function ThirdLevelScreen({ route, navigation }) {
   }
 
   useEffect(() => {
-    addAttempt(3, 1);
+    addAttempt(3);
   }, []);
+
+  useEffect(() => {
+    if (attempt >= 3) {
+      setResetModalVisble(true);
+      setAttempt(0);
+    }
+  }, [attempt]);
 
   useEffect(() => {
 
@@ -94,7 +104,7 @@ function ThirdLevelScreen({ route, navigation }) {
     const timerId = setInterval(() => {
       if (!isComplete) {
         setSecs(s => s + 1)
-        addTime(1);
+        addTime(3, 1);
       } else {
         setSecs(s => s);
       }
@@ -134,7 +144,7 @@ function ThirdLevelScreen({ route, navigation }) {
     setSecs(0);
     setShowBubble(true);
     setSelectableBubles(generateEmptyArray(20));
-    addAttempt(1);
+    addAttempt(3);
     arr = new Array();
     arr[0] = generateArray(2);
     console.log("Array is" + arr[0]);
@@ -158,8 +168,30 @@ function ThirdLevelScreen({ route, navigation }) {
       return false;
   }
 
+  function isResetModalActive() {
+    if (resetModalVisible) return true;
+    else return false;
+  }
+
+  function reset(choice) {
+    setResetModalVisble(false);
+    switch (choice) {
+      case 1:
+        resetStates();
+        break;
+      case 2:
+        navigation.navigate("MergeSortLevels", {
+          levelFour: (!isComplete),
+          levelFive: true
+        });
+        break;
+      case 3:
+        navigation.navigate("Home")
+    }
+  }
+
   function displayCheck() {
-    if (checkAnswerVisible)
+    if (checkAnswerVisible && attempt != 3)
       return true;
     else
       return false;
@@ -456,7 +488,7 @@ function ThirdLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
-        addMistake(1);
+        addMistake(3);
         playIncorrectFeedback();
       }
     }
@@ -506,7 +538,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false)
       let num = attempt;
       setAttempt(num + 1);
-      addAttempt(1);
+      addMistake(1);
       playIncorrectFeedback();
     }
   }
@@ -558,6 +590,8 @@ function ThirdLevelScreen({ route, navigation }) {
           :
           null
         }
+
+        {isResetModalActive() ? <Reset reset={reset} /> : null}
 
         <Button
           onPress={() => {

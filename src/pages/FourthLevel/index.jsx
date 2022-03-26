@@ -47,7 +47,7 @@ function FourthLevelScreen({ route, navigation }) {
   let idleTimeout;
 
   useEffect(() => {
-    addAttempt(4, 1);
+    addAttempt(4);
   }, []);
 
   const setTimeouts = () => {
@@ -103,7 +103,7 @@ function FourthLevelScreen({ route, navigation }) {
     const timerId = setInterval(() => {
       if (!isComplete) {
         setSecs(s => s + 1)
-        addTime(1);
+        addTime(4, 1);
       }
       else {
         setSecs(s => s);
@@ -144,7 +144,7 @@ function FourthLevelScreen({ route, navigation }) {
     setSecs(0);
     setShowBubble(true);
     setSelectableBubles(generateEmptyArray(40));
-    addAttempt(1);
+    addAttempt(4);
     arr = new Array();
     arr[0] = generateArray(4);
     console.log("Array is" + arr[0]);
@@ -490,7 +490,7 @@ function FourthLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
-        addMistake(1);
+        addMistake(5);
         playIncorrectFeedback();
       }
     }
@@ -540,7 +540,7 @@ function FourthLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false);
       let num = attempt;
       setAttempt(num + 1);
-      addMistake(1);
+      addMistake(5);
       playIncorrectFeedback();
     }
   }

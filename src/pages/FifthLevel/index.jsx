@@ -47,7 +47,7 @@ function FifthLevelScreen({ route, navigation }) {
   let idleTimeout;
 
   useEffect(() => {
-    addAttempt(5, 1);
+    addAttempt(5);
   }, []);
 
   const setTimeouts = () => {
@@ -103,7 +103,7 @@ function FifthLevelScreen({ route, navigation }) {
     const timerId = setInterval(() => {
     if (!isComplete) {
       setSecs(s => s + 1)
-      addTime(1);
+      addTime(5, 1);
     } else {
       setSecs(s => s);
     }
@@ -143,7 +143,7 @@ function FifthLevelScreen({ route, navigation }) {
     setSecs(0);
     setShowBubble(true);
     setSelectableBubles(generateEmptyArray(100));
-    addAttempt(5, 1);
+    addAttempt(5);
     arr = new Array();
     arr[0] = generateArray(5);
     console.log("Array is" + arr[0]);
@@ -495,7 +495,7 @@ function FifthLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
-        addMistake(5, 1);
+        addMistake(5);
         playIncorrectFeedback();
       }
     }
@@ -545,7 +545,7 @@ function FifthLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false);
       let num = attempt;
       setAttempt(num + 1);
-      addMistake(5, 1);
+      addMistake(5);
       playIncorrectFeedback();
     }
   }
