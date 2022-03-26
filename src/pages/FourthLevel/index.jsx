@@ -562,7 +562,7 @@ function FourthLevelScreen({ route, navigation }) {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}horizontal={true}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <View style={{ height: 20 }} />
         {generateSplitAlgorithm()}
