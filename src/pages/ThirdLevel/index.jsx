@@ -538,7 +538,7 @@ function ThirdLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false)
       let num = attempt;
       setAttempt(num + 1);
-      addMistake(1);
+      addMistake(3);
       playIncorrectFeedback();
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, Text, View, ScrollView, Image } from "react-native";
 import NumberInput from "../../components/NumberInput";
 import "../../Algorithms/MergeSort";
@@ -490,7 +490,7 @@ function FourthLevelScreen({ route, navigation }) {
         setIsCorrect(false);
         let num = attempt;
         setAttempt(num + 1);
-        addMistake(5);
+        addMistake(4);
         playIncorrectFeedback();
       }
     }
@@ -540,7 +540,7 @@ function FourthLevelScreen({ route, navigation }) {
       setIsBubbleCorrect(false);
       let num = attempt;
       setAttempt(num + 1);
-      addMistake(5);
+      addMistake(4);
       playIncorrectFeedback();
     }
   }
