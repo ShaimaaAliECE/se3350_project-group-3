@@ -37,11 +37,6 @@ function LoginScreen({ navigation }) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
         <h1>Login</h1>
-        <Button 
-        title="Sign Up"
-        onPress={() => {
-            navigation.navigate("SignUp")
-        }}/>
 
             <Text>Username</Text>
             <TextInput style={{ borderWidth: 1, borderColor: 'black'}} value={username} onChangeText={(text) => setUsername(text)} />
