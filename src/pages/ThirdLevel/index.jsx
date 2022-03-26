@@ -110,7 +110,7 @@ function ThirdLevelScreen({ route, navigation }) {
       }
     }, 1000)
     return () => clearInterval(timerId);
-  }, []);
+  }, [isComplete]);
 
   useEffect(() => {
     setStep(1);
