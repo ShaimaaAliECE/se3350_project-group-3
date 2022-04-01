@@ -9,37 +9,22 @@ function QuickSortLevels({ navigation }) {
       <View style={{ height: 20 }} />
       <Button
         title="Level 1"
-        onPress={() => {
-          navigation.navigate('FirstLevel')
-        }}
       />
        <View style={{ height: 20 }} />
         <Button
         title="Level 2"
-        onPress={() => {
-          navigation.navigate('SecondLevel')
-        }}
       />
        <View style={{ height: 20 }} />
         <Button
         title="Level 3"
-        onPress={() => {
-          navigation.navigate('ThirdLevel')
-        }}
       />
        <View style={{ height: 20 }} />
         <Button
         title="Level 4"
-        onPress={() => {
-          navigation.navigate('FourthLevel')
-        }}
       />
        <View style={{ height: 20 }} />
         <Button
         title="Level 5"
-        onPress={() => {
-          navigation.navigate('FifthLevel')
-        }}
       />
        <View style={{ height: 20 }} />
       <Button
